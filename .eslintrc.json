@@ -1,5 +1,19 @@
 {
 	"root": true,
 	"parser": "@typescript-eslint/parser",
-	"extends": ["plugin:react-hooks/recommended", "prettier"]
+	"extends": ["plugin:react-hooks/recommended", "prettier"],
+	"rules": {
+		"no-restricted-imports": [
+			"error",
+			{
+				"paths": [
+					{
+						"name": "styled-components",
+						"message": "Please import from styled-components/macro."
+					}
+				],
+				"patterns": ["!styled-components/macro"]
+			}
+		]
+	}
 }

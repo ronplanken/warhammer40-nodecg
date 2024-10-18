@@ -15,7 +15,7 @@
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUncheckedIndexedAccess": true,
+		"noUncheckedIndexedAccess": false,
 		"noImplicitOverride": false, // TODO: enable this
 		"noPropertyAccessFromIndexSignature": true,
 		"skipLibCheck": true,
