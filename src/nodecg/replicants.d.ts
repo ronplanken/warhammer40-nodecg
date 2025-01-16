@@ -1,4 +1,4 @@
-import {Example} from "./generated/example";
+import {Game, Player, Scores} from "./generated";
 
 type Assets = {
 	base: string;
@@ -11,10 +11,10 @@ type Assets = {
 };
 
 type ReplicantMap = {
-	example: Example;
+	player1: Player;
+	player2: Player;
+	game: Game;
+	scores: Scores;
 };
 
-export type {
-	ReplicantMap,
-	Example
-};
+export type {ReplicantMap, Player, Game, Scores};

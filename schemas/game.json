@@ -1,0 +1,50 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"type": "object",
+	"properties": {
+		"deployment": {
+			"type": "string"
+		},
+		"mission": {
+			"type": "string"
+		},
+		"rule": {
+			"type": "string"
+		},
+		"round": {
+			"type": "object",
+			"properties": {
+				"round_1_top": {
+					"type": "boolean"
+				},
+				"round_2_top": {
+					"type": "boolean"
+				},
+				"round_3_top": {
+					"type": "boolean"
+				},
+				"round_4_top": {
+					"type": "boolean"
+				},
+				"round_5_top": {
+					"type": "boolean"
+				},
+				"round_1_bot": {
+					"type": "boolean"
+				},
+				"round_2_bot": {
+					"type": "boolean"
+				},
+				"round_3_bot": {
+					"type": "boolean"
+				},
+				"round_4_bot": {
+					"type": "boolean"
+				},
+				"round_5_bot": {
+					"type": "boolean"
+				}
+			}
+		}
+	}
+}

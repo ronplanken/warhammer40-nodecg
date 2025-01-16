@@ -5,13 +5,13 @@ import {MessageMap} from "../nodecg/messages";
 
 declare global {
 	const nodecg: CreateNodecgInstance<
-		"react-vite-tmpl",
+		"warhammer-40k",
 		Configschema,
 		ReplicantMap,
 		MessageMap
 	>;
 	const NodeCG: CreateNodecgConstructor<
-		"react-vite-tmpl",
+		"warhammer-40k",
 		Configschema,
 		ReplicantMap,
 		MessageMap

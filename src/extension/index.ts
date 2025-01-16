@@ -1,10 +1,96 @@
 import {NodeCG} from "./nodecg";
 
 export default (nodecg: NodeCG) => {
-	nodecg.log.info("Hello World!");
+	const defaultMatchData = {
+		game: {
+			playerAWonRollOff: false,
+		},
+		playerA: {
+			secondaryType: "fixed",
+			cp: 0,
+			fixedSecondaries: [null, null],
+			rounds: [
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+			],
+		},
+		playerB: {
+			secondaryType: "fixed",
+			cp: 0,
+			fixedSecondaries: [null, null],
+			rounds: [
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+				{
+					primaryScore: 0,
+					secondary1: null,
+					secondary1Score: 0,
+					secondary2: null,
+					secondary2Score: 0,
+				},
+			],
+		},
+	};
 
-	const rep = nodecg.Replicant("example");
-	if (rep.value) {
-		rep.value.message = "Hello from Extension to Graphic and Dashboard";
-	}
+	// Maak de Replicant aan met de default waarde
+	nodecg.Replicant("scores", {defaultValue: defaultMatchData});
 };

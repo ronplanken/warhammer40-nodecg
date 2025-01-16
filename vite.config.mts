@@ -9,12 +9,21 @@ export default defineConfig(({mode}) => ({
 	server: {
 		host: "0.0.0.0",
 	},
+  css: {
+    preprocessorOptions: {
+      less: {
+        math: "always",
+        relativeUrls: true,
+        javascriptEnabled: true
+      },
+    },
+  },
 	clearScreen: false,
 	plugins: [
 		macrosPlugin(),
 		react(),
 		nodecg({
-			bundleName: "react-vite-tmpl",
+			bundleName: "warhammer-40k",
 			graphics: "./src/browser/graphics/views/*.tsx",
 			dashboard: "./src/browser/dashboard/views/*.tsx",
 			extension: {

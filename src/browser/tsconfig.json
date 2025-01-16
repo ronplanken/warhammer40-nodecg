@@ -5,7 +5,13 @@
 		"lib": ["ES2022", "DOM"],
 		"jsx": "react-jsx",
 		"noEmit": true,
-		"types": ["vite/client"]
+		"types": ["vite/client"],
+		"noImplicitAny": false // <-----
 	},
-	"include": ["./**/*.ts", "./**/*.tsx", "../nodecg/**/*.d.ts"]
+	"include": [
+		"./**/*.ts",
+		"./**/*.tsx",
+		"../nodecg/**/*.d.ts",
+		"dashboard/views/scores.tsx"
+	]
 }

@@ -1,0 +1,412 @@
+@import "./factions.less";
+
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Regular.otf");
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Bold.otf");
+	font-weight: bold; /*config its weight*/
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Italic.otf");
+	font-style: italic;
+}
+
+body {
+	font-family: ConduitITC, times new roman, serif;
+}
+.score-screen {
+	background-color: rgb(212, 212, 212);
+
+	.playerA {
+		height: 100vh;
+		color: white;
+		background-color: #4C0606;
+
+		.mission-choice {
+			padding-top: 32px;
+
+			.title {
+				font-size: 26px;
+				font-weight: bold;
+			}
+
+			button {
+				font-size: 28px;
+				height: 64px;
+			}
+		}
+		.mission-bar {
+			padding-top: 0px;
+			height: 725px;
+		}
+		.main-bar, .secondary-actions {
+			button {
+				font-size: 22px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+				font-weight: bold;
+			}
+			.title {
+				font-size: 26px;
+				font-weight: bold;
+			}
+			.cp {
+				background-color: #00000033;
+				border: 2px solid white;
+				border-radius: 8px;
+				margin-left: 8px;
+				margin-right: 8px;
+				padding: 13px;
+				height: 60px;
+				text-align: center;
+				font-size: 26px;
+				width: 70px;
+			}
+			.primary {
+				background-color: #00000033;
+				border: 2px solid white;
+				border-radius: 8px;
+				margin-left: 8px;
+				margin-right: 8px;
+				padding: 13px;
+				height: 60px;
+				text-align: center;
+				font-size: 26px;
+				width: 70px;
+			}
+		}
+
+		.mission-action-bar {
+			button {
+				font-size: 26px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+			}
+		}
+		.mission-top-bar {
+      padding-top: 32px;
+      height: 100px;
+			button {
+				font-size: 20px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+        width: 115px;
+			}
+		}
+		.mission-bottom-bar {
+      padding-top: 8px;
+			button {
+				font-size: 20px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+        width: 115px;
+			}
+		}
+
+		.round-bar {
+			button {
+				font-size: 26px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+			}
+			.round {
+				background-color: #00000033;
+				border: 2px solid white;
+				border-radius: 8px;
+				margin: 8px;
+				padding: 13px;
+				height: 60px;
+				text-align: center;
+				font-size: 26px;
+			}
+		}
+		.vp {
+			text-align: left;
+			margin: 16px;
+			font-size: 40px;
+      font-weight: bold;
+		}
+
+		.name {
+			margin: 8px;
+			text-align: right;
+			font-size: 44px;
+			height: 65px;
+
+			padding-right: 64px !important;
+		}
+	}
+
+	.playerB {
+		text-align: left;
+		color: white;
+		background-color: #00007f;
+
+		.mission-choice {
+			padding-top: 32px;
+
+			.title {
+				font-size: 26px;
+				font-weight: bold;
+			}
+
+			button {
+				font-size: 28px;
+				height: 64px;
+			}
+		}
+		.mission-bar {
+			padding-top: 0px;
+			height: 725px;
+		}
+		.main-bar, .secondary-actions {
+			button {
+				font-size: 22px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+				font-weight: bold;
+			}
+			.title {
+				font-size: 26px;
+				font-weight: bold;
+			}
+			.cp {
+				background-color: #00000033;
+				border: 2px solid white;
+				border-radius: 8px;
+				margin-left: 8px;
+				margin-right: 8px;
+				padding: 13px;
+				height: 60px;
+				text-align: center;
+				font-size: 26px;
+				width: 70px;
+			}
+			.primary {
+				background-color: #00000033;
+				border: 2px solid white;
+				border-radius: 8px;
+				margin-left: 8px;
+				margin-right: 8px;
+				padding: 13px;
+				height: 60px;
+				text-align: center;
+				font-size: 26px;
+				width: 70px;
+			}
+		}
+
+		.mission-action-bar {
+			button {
+				font-size: 26px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+			}
+		}
+		.mission-top-bar {
+      padding-top: 32px;
+      height: 100px;
+			button {
+				font-size: 20px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+        width: 115px;
+			}
+		}
+		.mission-bottom-bar {
+      padding-top: 8px;
+			button {
+				font-size: 20px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+        width: 115px;
+			}
+		}
+
+		.round-bar {
+			button {
+				font-size: 26px;
+				height: 60px;
+				padding-top: 8px;
+				padding-bottom: 8px;
+			}
+			.round {
+				background-color: #00000033;
+				border: 2px solid white;
+				border-radius: 8px;
+				margin: 8px;
+				padding: 13px;
+				height: 60px;
+				text-align: center;
+				font-size: 26px;
+			}
+		}
+		.vp {
+			text-align: left;
+			margin: 16px;
+			font-size: 40px;
+      font-weight: bold;
+		}
+
+		.name {
+			margin: 8px;
+			text-align: right;
+			font-size: 44px;
+			height: 65px;
+
+      padding-left: 64px !important;
+		}
+	}
+}
+
+.mission {
+	width: 400px;
+	height: 725px;
+}
+
+.ASSASSINATION {
+
+	background-image: url("./images/missions/ASSASSINATION.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.BEHINDENEMYLINES {
+
+	background-image: url("./images/missions/BEHINDENEMYLINES.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.BRINGITDOWN {
+
+	background-image: url("./images/missions/BRINGITDOWN.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.STORMHOSTILEOBJECTIVE {
+
+	background-image: url("./images/missions/STORMHOSTILEOBJECTIVE.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.CULLTHEHORDE {
+
+	background-image: url("./images/missions/CULLTHEHORDE.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.ENGAGEONALLFRONTS {
+
+	background-image: url("./images/missions/ENGAGEONALLFRONTS.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.ESTABLISHLOCUS {
+
+	background-image: url("./images/missions/ESTABLISHLOCUS.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.CLEANSE {
+
+	background-image: url("./images/missions/CLEANSE.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.CONTAINMENT {
+
+	background-image: url("./images/missions/CONTAINMENT.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.MARKEDFORDEATH {
+
+	background-image: url("./images/missions/MARKEDFORDEATH.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.NOPRISONERS {
+
+	background-image: url("./images/missions/NOPRISONERS.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.DEFENDSTRONGHOLD {
+
+	background-image: url("./images/missions/DEFENDSTRONGHOLD.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.SABOTAGE {
+
+	background-image: url("./images/missions/SABOTAGE.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.OVERWHELMINGFORCE {
+
+	background-image: url("./images/missions/OVERWHELMINGFORCE.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.EXTENDBATTLELINES {
+
+	background-image: url("./images/missions/EXTENDBATTLELINES.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.RECOVERASSETS {
+
+	background-image: url("./images/missions/RECOVERASSETS.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.AREADENIAL {
+
+	background-image: url("./images/missions/AREADENIAL.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.SECURENOMANSLAND {
+
+	background-image: url("./images/missions/SECURENOMANSLAND.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.NONE {
+
+	background-image: url("./images/missions/BACKGROUND.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}

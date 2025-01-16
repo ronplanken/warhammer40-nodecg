@@ -1,44 +1,47 @@
 {
-  "name": "react-vite-tmpl",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "dev": "run-p dev:*",
-    "dev:schema-types": "onchange schemas configschema.json -i -- npm run schema-types",
-    "dev:tsc": "tsc -b src/browser src/extension -w --preserveWatchOutput",
-    "dev:vite": "vite",
-    "dev:nodecg": "onchange extension schema configschema.json -ik -- node --enable-source-maps ../..",
-    "format": "npm run test:prettier -- --write",
-    "build": "vite build",
-    "schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
-    "test": "run-s schema-types test:*",
-    "test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
-    "test:lint": "eslint --ext .ts,.tsx .",
-    "test:types": "tsc -b src/browser src/extension",
-    "prepare": "simple-git-hooks || true"
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,json,html,yml,css,scss,md}": [
-      "prettier --write"
-    ],
-    "package.json": [
-      "sort-package-json"
-    ]
-  },
-  "dependencies": {
+	"name": "warhammer-40k",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "run-p dev:*",
+		"dev:schema-types": "onchange schemas configschema.json -i -- npm run schema-types",
+		"dev:tsc": "tsc -b src/browser src/extension -w --preserveWatchOutput",
+		"dev:vite": "vite",
+		"dev:nodecg": "onchange extension schema configschema.json -ik -- node --enable-source-maps ../..",
+		"format": "npm run test:prettier -- --write",
+		"build": "vite build",
+		"schema-types": "del-cli src/nodecg/generated && nodecg schema-types -o src/nodecg/generated",
+		"test": "run-s schema-types test:*",
+		"test:prettier": "prettier \"**/*.{ts,tsx,json,html,yml,css,scss,md}\" --check",
+		"test:lint": "eslint --ext .ts,.tsx .",
+		"test:types": "tsc -b src/browser src/extension",
+		"prepare": "simple-git-hooks || true"
+	},
+	"simple-git-hooks": {
+		"pre-commit": "npx lint-staged"
+	},
+	"lint-staged": {
+		"*.{ts,tsx,json,html,yml,css,scss,md}": [
+			"prettier --write"
+		],
+		"package.json": [
+			"sort-package-json"
+		]
+	},
+	"dependencies": {
+		"@ant-design/icons": "^5.5.2",
 		"@googleapis/sheets": "^4.0.2",
-		"@mui/x-data-grid": "^7.12.0",
 		"@react-spring/web": "^9.7.3",
 		"@types/xml2js": "^0.4.14",
+		"antd": "^5.23.0",
 		"axios": "^1.7.3",
 		"body-parser": "^1.20.2",
 		"body-parser-xml": "^2.0.5",
 		"deep-equal": "^2.2.3",
 		"express": "^4.19.2",
 		"klona": "^2.0.6",
+		"less": "^4.2.1",
+		"modern-normalize": "^3.0.1",
 		"react-router-dom": "^6.25.1",
 		"react-transition-group": "^4.4.5",
 		"typesafe-i18n": "^5.26.2",
@@ -48,11 +51,7 @@
 	"devDependencies": {
 		"@babel/plugin-transform-typescript": "^7.24.7",
 		"@babel/preset-typescript": "^7.24.7",
-		"@emotion/react": "^11.10.8",
-		"@emotion/styled": "^11.10.8",
 		"@fontsource/roboto": "^4.5.8",
-		"@mui/icons-material": "^5.11.16",
-		"@mui/material": "^5.12.3",
 		"@types/deep-equal": "^1.0.4",
 		"@types/node": "^18.16.4",
 		"@types/react": "^18.2.5",
@@ -90,26 +89,81 @@
 			"fileName": false
 		}
 	},
-  "nodecg": {
-    "compatibleRange": "^2.0.0",
-    "dashboardPanels": [
-      {
-        "name": "exammple",
-        "title": "example",
-        "file": "example.html",
-        "width": 4,
-        "headerColor": "#00BEBE",
-        "workspace": "Example"
-      }
-    ],
-    "graphics": [
-      {
-        "file": "example.html",
-        "width": 1920,
-        "height": 1030
-      }
-    ],
-    "assetCategories": [],
-    "mount": []
-  }
+	"nodecg": {
+		"compatibleRange": "^2.0.0",
+		"dashboardPanels": [
+			{
+				"name": "Player Info",
+				"title": "Player Info",
+				"file": "player-info.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "Warhammer 40K"
+			},
+			{
+				"name": "Game Info",
+				"title": "Game Info",
+				"file": "game-info.html",
+				"width": 4,
+				"headerColor": "#00BEBE",
+				"workspace": "Warhammer 40K"
+			},
+			{
+				"name": "Scores",
+				"title": "Scores",
+				"file": "scores.html",
+				"fullbleed": "true",
+				"headerColor": "#00BEBE"
+			}
+		],
+		"graphics": [
+			{
+				"file": "player1-cp.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player2-cp.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player1-score.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player2-score.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player1-info.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player2-info.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "deployment.html",
+				"width": 1920,
+				"height": 50
+			},
+			{
+				"file": "round-info.html",
+				"width": 1920,
+				"height": 50
+			},
+			{
+				"file": "score-screen.html",
+				"width": 1920,
+				"height": 1080
+			}
+		],
+		"assetCategories": [],
+		"mount": []
+	}
 }

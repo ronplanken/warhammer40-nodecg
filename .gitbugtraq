@@ -1,6 +1,6 @@
 [bugtraq]
-  url = https://github.com/Brunhilde/react-vite-tmpl/issues/%BUGID%
-  #detects all issues in commit messages like "Issue #5:" 
+  url = https://github.com/Brunhilde/warhammer-40k/issues/%BUGID%
+  #detects all issues in commit messages like "Issue #5:"
   logfilterregex = "(?i)(?:(?:Issues?) ?[#]?(?:[ ,:;#]*\\d+)*)"
   loglinkregex = "#?\\d+"
   logregex = \\d+

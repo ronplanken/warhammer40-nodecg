@@ -1,0 +1,238 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Schema voor het besturen van een Warhammer 40k 10th edition match stream.",
+  "type": "object",
+  "properties": {
+    "game": {
+      "type": "object",
+      "properties": {
+        "playerAWonRollOff": {
+          "type": "boolean",
+          "description": "Geeft aan of Speler A de roll-off heeft gewonnen."
+        }
+      }
+    },
+    "playerA": {
+      "type": "object",
+      "properties": {
+        "secondaryType": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "tactical",
+            null
+          ],
+          "description": "Het type secundaire missies gekozen door Speler A."
+        },
+        "fixedSecondaries": {
+          "type": "array",
+          "items": {
+            "type": [ "string", "null" ],
+            "enum": [
+              "ASSASSINATION",
+              "BEHIND ENEMY LINES",
+              "BRING IT DOWN",
+              "STORM HOSTILE OBJECTIVE",
+              "CULL THE HORDE",
+              "ENGAGE ON ALL FRONTS",
+              "ESTABLISH LOCUS",
+              "CLEANSE",
+              null
+            ]
+          },
+          "description": "De twee vaste secundaire missies gekozen door Speler A."
+        },
+        "rounds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "primaryScore": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 50,
+                "description": "De primaire score van Speler A in deze ronde."
+              },
+              "secondary1": {
+                "type": [ "string", "null" ],
+                "enum": [
+                  "ASSASSINATION",
+                  "BEHIND ENEMY LINES",
+                  "BRING IT DOWN",
+                  "STORM HOSTILE OBJECTIVE",
+                  "CULL THE HORDE",
+                  "ENGAGE ON ALL FRONTS",
+                  "ESTABLISH LOCUS",
+                  "CLEANSE",
+                  "CONTAINMENT",
+                  "MARKED FOR DEATH",
+                  "NO PRISONERS",
+                  "DEFEND STRONGHOLD",
+                  "SABOTAGE",
+                  "OVERWHELMING FORCE",
+                  "EXTEND BATTLE LINES",
+                  "RECOVER ASSETS",
+                  "AREA DENIAL",
+                  "SECURE NO MAN’S LAND",
+                  null
+                ],
+                "description": "De eerste secundaire missie van Speler A in deze ronde."
+              },
+              "secondary1Score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 15,
+                "description": "De score behaald voor de eerste secundaire missie van Speler A in deze ronde."
+              },
+              "secondary2": {
+                "type": [ "string", "null" ],
+                "enum": [
+                  "ASSASSINATION",
+                  "BEHIND ENEMY LINES",
+                  "BRING IT DOWN",
+                  "STORM HOSTILE OBJECTIVE",
+                  "CULL THE HORDE",
+                  "ENGAGE ON ALL FRONTS",
+                  "ESTABLISH LOCUS",
+                  "CLEANSE",
+                  "CONTAINMENT",
+                  "MARKED FOR DEATH",
+                  "NO PRISONERS",
+                  "DEFEND STRONGHOLD",
+                  "SABOTAGE",
+                  "OVERWHELMING FORCE",
+                  "EXTEND BATTLE LINES",
+                  "RECOVER ASSETS",
+                  "AREA DENIAL",
+                  "SECURE NO MAN’S LAND",
+                  null
+                ],
+                "description": "De tweede secundaire missie van Speler A in deze ronde."
+              },
+              "secondary2Score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 15,
+                "description": "De score behaald voor de tweede secundaire missie van Speler A in deze ronde."
+              }
+            }
+          },
+          "minItems": 5,
+          "maxItems": 5,
+          "description": "De data per ronde voor Speler A."
+        }
+      }
+    },
+    "playerB": {
+      "type": "object",
+      "properties": {
+        "secondaryType": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "tactical",
+            null
+          ],
+          "description": "Het type secundaire missies gekozen door Speler B."
+        },
+        "fixedSecondaries": {
+          "type": "array",
+          "items": {
+            "type": [ "string", "null" ],
+            "enum": [
+              "ASSASSINATION",
+              "BEHIND ENEMY LINES",
+              "BRING IT DOWN",
+              "STORM HOSTILE OBJECTIVE",
+              "CULL THE HORDE",
+              "ENGAGE ON ALL FRONTS",
+              "ESTABLISH LOCUS",
+              "CLEANSE",
+              null
+            ]
+          },
+          "description": "De twee vaste secundaire missies gekozen door Speler B."
+        },
+        "rounds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "primaryScore": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 50,
+                "description": "De primaire score van Speler B in deze ronde."
+              },
+              "secondary1": {
+                "type": [ "string", "null" ],
+                "enum": [
+                  "ASSASSINATION",
+                  "BEHIND ENEMY LINES",
+                  "BRING IT DOWN",
+                  "STORM HOSTILE OBJECTIVE",
+                  "CULL THE HORDE",
+                  "ENGAGE ON ALL FRONTS",
+                  "ESTABLISH LOCUS",
+                  "CLEANSE",
+                  "CONTAINMENT",
+                  "MARKED FOR DEATH",
+                  "NO PRISONERS",
+                  "DEFEND STRONGHOLD",
+                  "SABOTAGE",
+                  "OVERWHELMING FORCE",
+                  "EXTEND BATTLE LINES",
+                  "RECOVER ASSETS",
+                  "AREA DENIAL",
+                  "SECURE NO MAN’S LAND",
+                  null
+                ],
+                "description": "De eerste secundaire missie van Speler B in deze ronde."
+              },
+              "secondary1Score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 15,
+                "description": "De score behaald voor de eerste secundaire missie van Speler B in deze ronde."
+              },
+              "secondary2": {
+                "type": [ "string", "null" ],
+                "enum": [
+                  "ASSASSINATION",
+                  "BEHIND ENEMY LINES",
+                  "BRING IT DOWN",
+                  "STORM HOSTILE OBJECTIVE",
+                  "CULL THE HORDE",
+                  "ENGAGE ON ALL FRONTS",
+                  "ESTABLISH LOCUS",
+                  "CLEANSE",
+                  "CONTAINMENT",
+                  "MARKED FOR DEATH",
+                  "NO PRISONERS",
+                  "DEFEND STRONGHOLD",
+                  "SABOTAGE",
+                  "OVERWHELMING FORCE",
+                  "EXTEND BATTLE LINES",
+                  "RECOVER ASSETS",
+                  "AREA DENIAL",
+                  "SECURE NO MAN’S LAND",
+                  null
+                ],
+                "description": "De tweede secundaire missie van Speler B in deze ronde."
+              },
+              "secondary2Score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 15,
+                "description": "De score behaald voor de tweede secundaire missie van Speler B in deze ronde."
+              }
+            }
+          },
+          "minItems": 5,
+          "maxItems": 5,
+          "description": "De data per ronde voor Speler B."
+        }
+      }
+    }
+  }
+}

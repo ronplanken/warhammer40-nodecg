@@ -1,0 +1,232 @@
+@import "./factions.less";
+
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Regular.otf");
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Bold.otf");
+	font-weight: bold; /*config its weight*/
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Italic.otf");
+	font-style: italic;
+}
+
+body {
+	font-family: ConduitITC, times new roman, serif;
+}
+
+.score-screen {
+	height: 100vh;
+	background-color: rgb(212, 212, 212);
+
+	.playerA {
+		padding-right: 64px !important;
+		color: white;
+		background-color: #7f0000;
+
+		.name-bar {
+			margin-left: 8px;
+			margin-right: 8px;
+			padding-top: 8px;
+			text-align: right;
+
+			.name {
+				font-size: 50px;
+				height: 65px;
+			}
+		}
+	}
+
+	.playerB {
+		text-align: left;
+		padding-left: 64px !important;
+		color: white;
+		background-color: #00007f;
+
+		.name-bar {
+			margin-left: 8px;
+			margin-right: 8px;
+			padding-top: 8px;
+			text-align: right;
+
+			.name {
+				font-size: 50px;
+				height: 65px;
+			}
+		}
+	}
+}
+
+.game-info {
+	.deployment {
+		padding-left: 8px;
+		text-align: left;
+		color: white;
+		width: 100%;
+		font-size: 24px;
+		font-weight: 800;
+	}
+
+	.mission {
+		padding-left: 8px;
+		text-align: left;
+		color: white;
+		width: 100%;
+		font-size: 20px;
+	}
+	.rule {
+		padding-left: 8px;
+		text-align: left;
+		color: white;
+		width: 100%;
+		font-size: 20px;
+		font-style: italic;
+	}
+}
+
+.player {
+	.name {
+		font-size: 40px;
+		font-weight: bold;
+	}
+
+	.subfaction {
+		font-size: 36px;
+		font-style: italic;
+	}
+
+	.left {
+		text-align: right;
+		color: white;
+		padding-top: 16px;
+
+		.subfaction {
+			padding-right: 16px;
+		}
+	}
+
+	.right {
+		text-align: left;
+		color: white;
+		padding-top: 16px;
+		padding-left: 38px;
+
+		.subfaction {
+			margin-left: -16px;
+		}
+	}
+
+	.left-faction {
+		each(@factions, {
+    &.@{value}::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      left: 16px;
+      top: 24px;
+      width: 100%;
+      height: 85px;
+      opacity: 1;
+      // background-image: url( https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg );
+      // background-repeat: no-repeat;
+      // background-size: contain;
+      // background-position: left;
+
+      mask-origin: padding-box;
+      mask-position: top left;
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-image: url("https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg");
+
+      background-color: black;
+
+      z-index: -1;
+
+    }
+    &.AM::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      right: 16px;
+      top: 48px;
+      width: 100%;
+      height: 85px;
+      opacity: 1;
+      // background-image: url( https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg );
+      // background-repeat: no-repeat;
+      // background-size: contain;
+      // background-position: left;
+
+      mask-origin: padding-box;
+      mask-position: top left;
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-image: url("https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/AM.svg");
+
+      background-color: black;
+
+      z-index: -1;
+
+    }
+  });
+	}
+
+	.right-faction {
+		each(@factions, {
+    &.@{value}::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      right: 16px;
+      top: 24px;
+      width: 100%;
+      height: 95px;
+      opacity: 1;
+      // background-image: url( https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg );
+      // background-repeat: no-repeat;
+      // background-size: contain;
+      // background-position: left;
+
+      mask-origin: padding-box;
+      mask-position: top right;
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-image: url("https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg");
+
+      background-color: black;
+
+      z-index: -1;
+
+    }
+    &.AM::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      right: 16px;
+      top: 24px;
+      width: 100%;
+      height: 75px;
+      opacity: 1;
+      // background-image: url( https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg );
+      // background-repeat: no-repeat;
+      // background-size: contain;
+      // background-position: left;
+
+      mask-origin: padding-box;
+      mask-position: top right;
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-image: url("https://raw.githubusercontent.com/ronplanken/40k-Data-Card/master/src/dc/@{value}.svg");
+
+      background-color: black;
+
+      z-index: -1;
+
+    }
+  });
+	}
+}
