@@ -24,6 +24,31 @@
           ],
           "description": "Het type secundaire missies gekozen door Speler A."
         },
+        "currentRound": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4,
+          "description": "De huidige ronde voor Speler A (0-indexed, 0 is ronde 1, 4 is ronde 5)."
+        },
+        "cp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Aantal command points voor Speler A."
+        },
+        "secondaryDiscards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lijst van secundaire missies die zijn afgelegd door Speler A."
+        },
+        "completedSecondaries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lijst van secundaire missies die zijn voltooid door Speler A."
+        },
         "fixedSecondaries": {
           "type": "array",
           "items": {
@@ -73,7 +98,7 @@
                   "EXTEND BATTLE LINES",
                   "RECOVER ASSETS",
                   "AREA DENIAL",
-                  "SECURE NO MAN’S LAND",
+                  "SECURE NO MANS LAND",
                   null
                 ],
                 "description": "De eerste secundaire missie van Speler A in deze ronde."
@@ -104,7 +129,7 @@
                   "EXTEND BATTLE LINES",
                   "RECOVER ASSETS",
                   "AREA DENIAL",
-                  "SECURE NO MAN’S LAND",
+                  "SECURE NO MANS LAND",
                   null
                 ],
                 "description": "De tweede secundaire missie van Speler A in deze ronde."
@@ -134,6 +159,31 @@
             null
           ],
           "description": "Het type secundaire missies gekozen door Speler B."
+        },
+        "currentRound": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4,
+          "description": "De huidige ronde voor Speler B (0-indexed, 0 is ronde 1, 4 is ronde 5)."
+        },
+        "cp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Aantal command points voor Speler B."
+        },
+        "secondaryDiscards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lijst van secundaire missies die zijn afgelegd door Speler B."
+        },
+        "completedSecondaries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Lijst van secundaire missies die zijn voltooid door Speler B."
         },
         "fixedSecondaries": {
           "type": "array",
@@ -184,7 +234,7 @@
                   "EXTEND BATTLE LINES",
                   "RECOVER ASSETS",
                   "AREA DENIAL",
-                  "SECURE NO MAN’S LAND",
+                  "SECURE NO MANS LAND",
                   null
                 ],
                 "description": "De eerste secundaire missie van Speler B in deze ronde."
@@ -215,7 +265,7 @@
                   "EXTEND BATTLE LINES",
                   "RECOVER ASSETS",
                   "AREA DENIAL",
-                  "SECURE NO MAN’S LAND",
+                  "SECURE NO MANS LAND",
                   null
                 ],
                 "description": "De tweede secundaire missie van Speler B in deze ronde."

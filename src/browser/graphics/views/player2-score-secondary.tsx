@@ -13,12 +13,11 @@ const App = () => {
 
 	return (
 		<div className='vp'>
-			{rep?.playerA?.rounds?.reduce((total, round) => {
-				const score =
-					round.primaryScore + round.secondary1Score + round.secondary2Score;
+			{rep?.playerB?.rounds?.reduce((total, round) => {
+				const score = round.secondary1Score + round.secondary2Score;
 				total += score || 0;
 				return total;
-			}, 0) + 10}
+			}, 0)}
 		</div>
 	);
 };

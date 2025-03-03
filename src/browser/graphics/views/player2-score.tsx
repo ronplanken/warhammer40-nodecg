@@ -18,7 +18,7 @@ const App = () => {
 					round.primaryScore + round.secondary1Score + round.secondary2Score;
 				total += score || 0;
 				return total;
-			}, 0)}
+			}, 0) + 10}
 		</div>
 	);
 };

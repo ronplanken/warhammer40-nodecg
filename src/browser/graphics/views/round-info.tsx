@@ -15,6 +15,7 @@ const circleStyle = {
 	margin: "0 10px",
 	overflow: "hidden",
 	position: "relative" as any,
+	border: "1px solid black",
 };
 
 const halfStyle = {

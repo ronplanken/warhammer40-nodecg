@@ -49,14 +49,13 @@ const App = () => {
 	const matchDataRep = nodecg.Replicant("scores");
 	const matchData = useReplicant("scores");
 
-	const [p1Round, setP1Round] = useState(0);
+	// Removed local p1Round and p2Round state
 	const [p1KeepSecondary1, setP1KeepSecondary1] = useState(false);
 	const [isModalP1S1, setIsModalP1S1] = useState(false);
 	const [isModalP1S2, setIsModalP1S2] = useState(false);
 	const [isModalP1Deck, setIsModalP1Deck] = useState(false);
 	const [p1KeepSecondary2, setP1KeepSecondary2] = useState(false);
 
-	const [p2Round, setP2Round] = useState(0);
 	const [p2KeepSecondary1, setP2KeepSecondary1] = useState(false);
 	const [isModalP2S1, setIsModalP2S1] = useState(false);
 	const [isModalP2S2, setIsModalP2S2] = useState(false);
@@ -65,6 +64,16 @@ const App = () => {
 
 	const ref = useRef<HTMLDivElement>(null);
 	useFitViewport(ref);
+
+	// Helper function to update round number for a player
+	const updateRound = (player, value) => {
+		if (value < 0 || value > 4) return; // Validate round range
+
+		matchDataRep.value = {
+			...matchData,
+			[player]: {...matchData[player], currentRound: value},
+		};
+	};
 
 	const updateSecondaryType = (player, value) => {
 		matchDataRep.value = {
@@ -91,11 +100,11 @@ const App = () => {
 		};
 	};
 
-	const updateDiscardedMission = (player, secondaryIndex) => {
+	const updateDiscardedMission = (player, secondaryIndex, round) => {
 		const updatedRounds = [...matchData[player].rounds];
 		const secondaryKey = secondaryIndex === 0 ? "secondary1" : "secondary2";
 		const discardedSecondary =
-			matchData[player]?.rounds?.[p1Round]?.[secondaryKey];
+			matchData[player]?.rounds?.[round]?.[secondaryKey];
 
 		let discardedSecondaries: any = [];
 
@@ -108,8 +117,8 @@ const App = () => {
 			discardedSecondaries = [discardedSecondary];
 		}
 
-		updatedRounds[p1Round] = {
-			...updatedRounds[p1Round],
+		updatedRounds[round] = {
+			...updatedRounds[round],
 			[secondaryKey]: undefined,
 		};
 		matchDataRep.value = {
@@ -118,6 +127,31 @@ const App = () => {
 				...matchData[player],
 				rounds: updatedRounds,
 				secondaryDiscards: discardedSecondaries,
+			},
+		};
+	};
+	const updateCompletedMission = (player, secondaryIndex, round) => {
+		const updatedRounds = [...matchData[player].rounds];
+		const secondaryKey = secondaryIndex === 0 ? "secondary1" : "secondary2";
+		const completedSecondary =
+			matchData[player]?.rounds?.[round]?.[secondaryKey];
+
+		let completedSecondaries: any = [];
+
+		if (matchData[player].secondaryDiscards.length > 0) {
+			completedSecondaries = [
+				...matchData[player].secondaryDiscards,
+				completedSecondary,
+			];
+		} else {
+			completedSecondaries = [completedSecondary];
+		}
+
+		matchDataRep.value = {
+			...matchData,
+			[player]: {
+				...matchData[player],
+				completedSecondaries: completedSecondaries,
 			},
 		};
 	};
@@ -228,11 +262,50 @@ const App = () => {
 		});
 
 		updatedMissions.sort((a, b) => {
-			return a.type.localeCompare(a.type);
+			return a.type.localeCompare(b.type);
 		});
 
 		return updatedMissions;
 	};
+
+	const removeDiscardedMission = (player, name) => {
+		const discards = [
+			...matchData[player].secondaryDiscards.filter((item) => item !== name),
+		];
+
+		matchDataRep.value = {
+			...matchData,
+			[player]: {
+				...matchData[player],
+				secondaryDiscards: [...discards],
+			},
+		};
+	};
+
+	const addDiscardedMission = (player, name) => {
+		const discards = [...matchData[player].secondaryDiscards, name];
+
+		matchDataRep.value = {
+			...matchData,
+			[player]: {
+				...matchData[player],
+				secondaryDiscards: [...discards],
+			},
+		};
+	};
+
+	// Initialize player rounds if they don't exist
+	if (matchData && !matchData.playerA?.currentRound && matchData.playerA) {
+		updateRound("playerA", 0);
+	}
+
+	if (matchData && !matchData.playerB?.currentRound && matchData.playerB) {
+		updateRound("playerB", 0);
+	}
+
+	// Get current round values from replicant
+	const p1Round = matchData?.playerA?.currentRound || 0;
+	const p2Round = matchData?.playerB?.currentRound || 0;
 
 	return (
 		<>
@@ -242,17 +315,42 @@ const App = () => {
 					<Col className='playerA' span={12}>
 						<Row justify={"space-between"}>
 							<Col>
-								<div className='vp'>
-									VP:{" "}
-									{matchData?.playerA?.rounds?.reduce((total, round) => {
-										const score =
-											round.primaryScore +
-											round.secondary1Score +
-											round.secondary2Score;
-										total += score || 0;
-										return total;
-									}, 0)}
-								</div>
+								<Row justify={"space-between"} align={"middle"}>
+									<Col>
+										<div className='vp' onClick={() => setIsModalP1Deck(true)}>
+											VP:{" "}
+											{matchData?.playerA?.rounds?.reduce((total, round) => {
+												const score =
+													round.primaryScore +
+													round.secondary1Score +
+													round.secondary2Score;
+												total += score || 0;
+												return total;
+											}, 0) + 10}
+										</div>
+									</Col>
+									<Col>
+										<div className='pri'>
+											PRI:{" "}
+											{matchData?.playerA?.rounds?.reduce((total, round) => {
+												const score = round.primaryScore;
+												total += score || 0;
+												return total;
+											}, 0)}
+										</div>
+									</Col>
+									<Col>
+										<div className='sec'>
+											Sec:{" "}
+											{matchData?.playerA?.rounds?.reduce((total, round) => {
+												const score =
+													round.secondary1Score + round.secondary2Score;
+												total += score || 0;
+												return total;
+											}, 0)}
+										</div>
+									</Col>
+								</Row>
 							</Col>
 							<Col>
 								<div className='name'>{p1?.name}</div>
@@ -318,7 +416,7 @@ const App = () => {
 													type='primary'
 													disabled={p1Round < 1}
 													onClick={() => {
-														setP1Round((val) => val - 1);
+														updateRound("playerA", p1Round - 1);
 													}}
 												>
 													<LeftOutlined />
@@ -352,7 +450,7 @@ const App = () => {
 															setP1KeepSecondary2(false);
 														}
 
-														setP1Round((val) => val + 1);
+														updateRound("playerA", p1Round + 1);
 													}}
 												>
 													<RightOutlined />
@@ -406,91 +504,6 @@ const App = () => {
 										</Row>
 									</Col>
 								</Row>
-								{/* <Row
-									align={"middle"}
-									justify='center'
-									gutter={8}
-									className='main-bar'
-								>
-									<Col span={12}>
-										<Row align={"middle"} justify='center'>
-											<Col>
-												{" "}
-												<div className='title'>CP</div>
-											</Col>
-										</Row>
-										<Row justify='center'>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updateCp("playerA", matchData.playerA.cp - 1)
-													}
-												>
-													-1
-												</Button>
-											</Col>
-											<Col>
-												<div className='cp'>{matchData?.playerA?.cp || 0}</div>
-											</Col>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updateCp("playerA", matchData.playerA.cp + 1)
-													}
-												>
-													+1
-												</Button>
-											</Col>
-										</Row>
-									</Col>
-									<Col span={12}>
-										<Row justify='center'>
-											<Col>
-												<div className='title'>PRIMARY</div>
-											</Col>
-										</Row>
-										<Row justify='center'>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updatePrimaryScore(
-															"playerA",
-															p1Round,
-															matchData?.playerA?.rounds[p1Round]
-																?.primaryScore - 1,
-														)
-													}
-												>
-													-1
-												</Button>
-											</Col>
-											<Col>
-												<div className='primary'>
-													{matchData?.playerA?.rounds[p1Round]?.primaryScore ||
-														0}
-												</div>
-											</Col>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updatePrimaryScore(
-															"playerA",
-															p1Round,
-															matchData?.playerA?.rounds[p1Round]
-																?.primaryScore + 1,
-														)
-													}
-												>
-													+1
-												</Button>
-											</Col>
-										</Row>
-									</Col>
-								</Row> */}
 							</>
 						)}
 						{matchData?.playerA?.secondaryType === undefined && (
@@ -544,10 +557,20 @@ const App = () => {
 											<Col>
 												<Button
 													onClick={() => {
-														updateDiscardedMission("playerA", 0);
+														if (
+															matchData?.playerA?.rounds[p1Round]
+																?.secondary1Score > 0
+														) {
+															updateCompletedMission("playerA", 0, p1Round);
+														} else {
+															updateDiscardedMission("playerA", 0, p1Round);
+														}
 													}}
 												>
-													Discard
+													{matchData?.playerA?.rounds[p1Round]
+														?.secondary1Score > 0
+														? "Completed"
+														: "Discard"}
 												</Button>
 											</Col>
 										)}
@@ -588,10 +611,20 @@ const App = () => {
 											<Col>
 												<Button
 													onClick={() => {
-														updateDiscardedMission("playerA", 1);
+														if (
+															matchData?.playerA?.rounds[p1Round]
+																?.secondary2Score > 0
+														) {
+															updateCompletedMission("playerA", 1, p1Round);
+														} else {
+															updateDiscardedMission("playerA", 1, p1Round);
+														}
 													}}
 												>
-													Discard
+													{matchData?.playerA?.rounds[p1Round]
+														?.secondary2Score > 0
+														? "Completed"
+														: "Discard"}
 												</Button>
 											</Col>
 										)}
@@ -803,17 +836,43 @@ const App = () => {
 								<div className='name'>{p2?.name}</div>
 							</Col>
 							<Col>
-								<div className='vp'>
-									VP:{" "}
-									{matchData?.playerB?.rounds?.reduce((total, round) => {
-										const score =
-											round.primaryScore +
-											round.secondary1Score +
-											round.secondary2Score;
-										total += score || 0;
-										return total;
-									}, 0)}
-								</div>
+								<Row justify={"space-between"} align={"middle"}>
+									<Col>
+										<div className='sec'>
+											Sec:{" "}
+											{matchData?.playerB?.rounds?.reduce((total, round) => {
+												const score =
+													round.secondary1Score + round.secondary2Score;
+												total += score || 0;
+												return total;
+											}, 0)}
+										</div>
+									</Col>
+									<Col>
+										<div className='pri'>
+											PRI:{" "}
+											{matchData?.playerB?.rounds?.reduce((total, round) => {
+												const score = round.primaryScore;
+												total += score || 0;
+												return total;
+											}, 0)}
+										</div>
+									</Col>
+
+									<Col>
+										<div className='vp' onClick={() => setIsModalP2Deck(true)}>
+											VP:{" "}
+											{matchData?.playerB?.rounds?.reduce((total, round) => {
+												const score =
+													round.primaryScore +
+													round.secondary1Score +
+													round.secondary2Score;
+												total += score || 0;
+												return total;
+											}, 0) + 10}
+										</div>
+									</Col>
+								</Row>
 							</Col>
 						</Row>
 						{matchData?.playerB?.secondaryType !== undefined && (
@@ -876,7 +935,7 @@ const App = () => {
 													type='primary'
 													disabled={p2Round < 1}
 													onClick={() => {
-														setP2Round((val) => val - 1);
+														updateRound("playerB", p2Round - 1);
 													}}
 												>
 													<LeftOutlined />
@@ -910,7 +969,7 @@ const App = () => {
 															setP2KeepSecondary2(false);
 														}
 
-														setP2Round((val) => val + 1);
+														updateRound("playerB", p2Round + 1);
 													}}
 												>
 													<RightOutlined />
@@ -964,91 +1023,6 @@ const App = () => {
 										</Row>
 									</Col>
 								</Row>
-								{/* <Row
-									align={"middle"}
-									justify='center'
-									gutter={8}
-									className='main-bar'
-								>
-									<Col span={12}>
-										<Row align={"middle"} justify='center'>
-											<Col>
-												{" "}
-												<div className='title'>CP</div>
-											</Col>
-										</Row>
-										<Row justify='center'>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updateCp("playerB", matchData.playerB.cp - 1)
-													}
-												>
-													-1
-												</Button>
-											</Col>
-											<Col>
-												<div className='cp'>{matchData?.playerB?.cp || 0}</div>
-											</Col>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updateCp("playerB", matchData.playerB.cp + 1)
-													}
-												>
-													+1
-												</Button>
-											</Col>
-										</Row>
-									</Col>
-									<Col span={12}>
-										<Row justify='center'>
-											<Col>
-												<div className='title'>PRIMARY</div>
-											</Col>
-										</Row>
-										<Row justify='center'>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updatePrimaryScore(
-															"playerB",
-															p2Round,
-															matchData?.playerB?.rounds[p2Round]
-																?.primaryScore - 1,
-														)
-													}
-												>
-													-1
-												</Button>
-											</Col>
-											<Col>
-												<div className='primary'>
-													{matchData?.playerB?.rounds[p2Round]?.primaryScore ||
-														0}
-												</div>
-											</Col>
-											<Col>
-												<Button
-													type='primary'
-													onClick={() =>
-														updatePrimaryScore(
-															"playerB",
-															p2Round,
-															matchData?.playerB?.rounds[p2Round]
-																?.primaryScore + 1,
-														)
-													}
-												>
-													+1
-												</Button>
-											</Col>
-										</Row>
-									</Col>
-								</Row> */}
 							</>
 						)}
 						{matchData?.playerB?.secondaryType === undefined && (
@@ -1102,10 +1076,20 @@ const App = () => {
 											<Col>
 												<Button
 													onClick={() => {
-														updateDiscardedMission("playerB", 0);
+														if (
+															matchData?.playerB?.rounds[p2Round]
+																?.secondary1Score > 0
+														) {
+															updateCompletedMission("playerB", 0, p2Round);
+														} else {
+															updateDiscardedMission("playerB", 0, p2Round);
+														}
 													}}
 												>
-													Discard
+													{matchData?.playerB?.rounds[p2Round]
+														?.secondary1Score > 0
+														? "Completed"
+														: "Discard"}
 												</Button>
 											</Col>
 										)}
@@ -1146,10 +1130,20 @@ const App = () => {
 											<Col>
 												<Button
 													onClick={() => {
-														updateDiscardedMission("playerB", 1);
+														if (
+															matchData?.playerB?.rounds[p2Round]
+																?.secondary2Score > 0
+														) {
+															updateCompletedMission("playerB", 1, p2Round);
+														} else {
+															updateDiscardedMission("playerB", 1, p2Round);
+														}
 													}}
 												>
-													Discard
+													{matchData?.playerB?.rounds[p2Round]
+														?.secondary2Score > 0
+														? "Completed"
+														: "Discard"}
 												</Button>
 											</Col>
 										)}
@@ -1403,17 +1397,56 @@ const App = () => {
 				<Modal
 					title='Deck List Player 1'
 					open={isModalP1Deck}
+					footer={[
+						<Button type='primary' onClick={() => setIsModalP1Deck(false)}>
+							Close
+						</Button>,
+					]}
 					onCancel={() => setIsModalP1Deck(false)}
 				>
 					<List
 						bordered
 						dataSource={getDeckList("playerA")}
 						renderItem={(item) => {
-							return (
-								<List.Item>
-									{item.name} {item.type}
-								</List.Item>
-							);
+							if (item.type === "default") {
+								return (
+									<List.Item
+										className={item.type}
+										actions={[
+											<Button
+												onClick={() =>
+													addDiscardedMission("playerA", item.name)
+												}
+											>
+												Discard
+											</Button>,
+										]}
+									>
+										{item.name}
+									</List.Item>
+								);
+							}
+							if (item.type === "used") {
+								return <List.Item className={item.type}>{item.name}</List.Item>;
+							}
+							if (item.type === "discarded") {
+								return (
+									<List.Item
+										className={item.type}
+										actions={[
+											<Button
+												onClick={() =>
+													removeDiscardedMission("playerA", item.name)
+												}
+											>
+												Undo
+											</Button>,
+										]}
+									>
+										{item.name}
+									</List.Item>
+								);
+							}
 						}}
 					></List>
 				</Modal>
@@ -1464,17 +1497,56 @@ const App = () => {
 				<Modal
 					title='Deck List Player 2'
 					open={isModalP2Deck}
+					footer={[
+						<Button type='primary' onClick={() => setIsModalP2Deck(false)}>
+							Close
+						</Button>,
+					]}
 					onCancel={() => setIsModalP2Deck(false)}
 				>
 					<List
 						bordered
 						dataSource={getDeckList("playerB")}
 						renderItem={(item) => {
-							return (
-								<List.Item>
-									{item.name} {item.type}
-								</List.Item>
-							);
+							if (item.type === "default") {
+								return (
+									<List.Item
+										className={item.type}
+										actions={[
+											<Button
+												onClick={() =>
+													addDiscardedMission("playerB", item.name)
+												}
+											>
+												Discard
+											</Button>,
+										]}
+									>
+										{item.name}
+									</List.Item>
+								);
+							}
+							if (item.type === "used") {
+								return <List.Item className={item.type}>{item.name}</List.Item>;
+							}
+							if (item.type === "discarded") {
+								return (
+									<List.Item
+										className={item.type}
+										actions={[
+											<Button
+												onClick={() =>
+													removeDiscardedMission("playerB", item.name)
+												}
+											>
+												Undo
+											</Button>,
+										]}
+									>
+										{item.name}
+									</List.Item>
+								);
+							}
 						}}
 					></List>
 				</Modal>

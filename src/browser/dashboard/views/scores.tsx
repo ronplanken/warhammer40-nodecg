@@ -154,6 +154,7 @@ const MatchControl = () => {
 				fixedSecondaries: [null, null],
 				primaryScore: 0,
 				secondaryDiscards: [],
+				completedSecondaries: [],
 				rounds: [
 					{
 						primaryScore: 0,
@@ -197,6 +198,7 @@ const MatchControl = () => {
 				cp: 0,
 				fixedSecondaries: [null, null],
 				secondaryDiscards: [],
+				completedSecondaries: [],
 				rounds: [
 					{
 						primaryScore: 0,

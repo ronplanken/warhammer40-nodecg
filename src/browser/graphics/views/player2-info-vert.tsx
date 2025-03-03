@@ -1,5 +1,5 @@
 import "modern-normalize";
-import "../styles/player-score.less";
+import "../styles/player-info-vert.less";
 
 import {useFitViewport} from "../components/lib/use-fit-viewport.js";
 import {render} from "../../render.js";
@@ -7,18 +7,16 @@ import {useRef} from "react";
 import {useReplicant} from "../../use-replicant.js";
 
 const App = () => {
-	const rep = useReplicant("scores");
+	const rep = useReplicant("player2");
 	const ref = useRef<HTMLDivElement>(null);
 	useFitViewport(ref);
 
 	return (
-		<div className='vp'>
-			{rep?.playerA?.rounds?.reduce((total, round) => {
-				const score =
-					round.primaryScore + round.secondary1Score + round.secondary2Score;
-				total += score || 0;
-				return total;
-			}, 0) + 10}
+		<div className='player'>
+			<div className='left'>
+				<div className='name'>{rep?.name}</div>
+				<div className='subfaction'>{rep?.subfaction}</div>
+			</div>
 		</div>
 	);
 };

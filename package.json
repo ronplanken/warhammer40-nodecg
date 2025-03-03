@@ -138,12 +138,42 @@
 				"height": 300
 			},
 			{
+				"file": "player1-score-primary.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player1-score-secondary.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player2-score-primary.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player2-score-secondary.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
 				"file": "player1-info.html",
 				"width": 1920,
 				"height": 300
 			},
 			{
 				"file": "player2-info.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player1-info-vert.html",
+				"width": 1920,
+				"height": 300
+			},
+			{
+				"file": "player2-info-vert.html",
 				"width": 1920,
 				"height": 300
 			},
