@@ -5,7 +5,7 @@ import {useFitViewport} from "../components/lib/use-fit-viewport.js";
 import {render} from "../../render.js";
 import {useRef, useState} from "react";
 import {useReplicant} from "../../use-replicant.js";
-import {Button, Col, Input, List, message, Modal, Row} from "antd";
+import {Button, Col, Input, List, message, Modal, Row, Typography} from "antd";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 
 const fixedMissionOptions = [
@@ -294,15 +294,6 @@ const App = () => {
 		};
 	};
 
-	// Initialize player rounds if they don't exist
-	if (matchData && !matchData.playerA?.currentRound && matchData.playerA) {
-		updateRound("playerA", 0);
-	}
-
-	if (matchData && !matchData.playerB?.currentRound && matchData.playerB) {
-		updateRound("playerB", 0);
-	}
-
 	// Get current round values from replicant
 	const p1Round = matchData?.playerA?.currentRound || 0;
 	const p2Round = matchData?.playerB?.currentRound || 0;
@@ -551,7 +542,11 @@ const App = () => {
 							className='mission-top-bar'
 						>
 							<Col span={12}>
-								<Row justify='space-around' className='top'>
+								<Row
+									justify='space-between'
+									className='top'
+									style={{paddingLeft: 24, paddingRight: 24}}
+								>
 									{matchData?.playerA?.rounds[p1Round]?.secondary1 &&
 										matchData?.playerA?.secondaryType === "tactical" && (
 											<Col>
@@ -605,7 +600,11 @@ const App = () => {
 								</Row>
 							</Col>
 							<Col span={12}>
-								<Row justify='space-around' className='top'>
+								<Row
+									justify='space-between'
+									className='top'
+									style={{paddingLeft: 24, paddingRight: 24}}
+								>
 									{matchData?.playerA?.rounds[p1Round]?.secondary2 &&
 										matchData?.playerA?.secondaryType === "tactical" && (
 											<Col>
@@ -1070,7 +1069,11 @@ const App = () => {
 							className='mission-top-bar'
 						>
 							<Col span={12}>
-								<Row justify='space-around' className='top'>
+								<Row
+									justify='space-between'
+									className='top'
+									style={{paddingLeft: 24, paddingRight: 24}}
+								>
 									{matchData?.playerB?.rounds[p2Round]?.secondary1 &&
 										matchData?.playerB?.secondaryType === "tactical" && (
 											<Col>
@@ -1124,7 +1127,11 @@ const App = () => {
 								</Row>
 							</Col>
 							<Col span={12}>
-								<Row justify='space-around' className='top'>
+								<Row
+									justify='space-between'
+									className='top'
+									style={{paddingLeft: 24, paddingRight: 24}}
+								>
 									{matchData?.playerB?.rounds[p2Round]?.secondary2 &&
 										matchData?.playerB?.secondaryType === "tactical" && (
 											<Col>
@@ -1403,52 +1410,80 @@ const App = () => {
 						</Button>,
 					]}
 					onCancel={() => setIsModalP1Deck(false)}
+					width={800}
 				>
-					<List
-						bordered
-						dataSource={getDeckList("playerA")}
-						renderItem={(item) => {
-							if (item.type === "default") {
-								return (
-									<List.Item
-										className={item.type}
-										actions={[
-											<Button
-												onClick={() =>
-													addDiscardedMission("playerA", item.name)
-												}
+					<Row>
+						<Col span={12}>
+							<Typography.Title level={5}>Available Missions</Typography.Title>
+						</Col>
+						<Col span={12}>
+							<Typography.Title level={5}>Other Missions</Typography.Title>
+						</Col>
+					</Row>
+					<Row>
+						<Col span={12}>
+							<List
+								size='small'
+								bordered
+								dataSource={getDeckList("playerA")?.filter(
+									(item) => item.type === "default",
+								)}
+								renderItem={(item) => {
+									return (
+										<List.Item
+											className={item.type}
+											actions={[
+												<Button
+													type='primary'
+													onClick={() =>
+														addDiscardedMission("playerA", item.name)
+													}
+												>
+													Discard
+												</Button>,
+											]}
+										>
+											{item.name}
+										</List.Item>
+									);
+								}}
+							></List>
+						</Col>
+						<Col span={12}>
+							<List
+								size='small'
+								bordered
+								dataSource={getDeckList("playerA")?.filter(
+									(item) => item.type !== "default",
+								)}
+								renderItem={(item) => {
+									if (item.type === "used") {
+										return (
+											<List.Item className={item.type}>{item.name}</List.Item>
+										);
+									}
+									if (item.type === "discarded") {
+										return (
+											<List.Item
+												className={item.type}
+												actions={[
+													<Button
+														onClick={() =>
+															removeDiscardedMission("playerA", item.name)
+														}
+													>
+														Undo
+													</Button>,
+												]}
 											>
-												Discard
-											</Button>,
-										]}
-									>
-										{item.name}
-									</List.Item>
-								);
-							}
-							if (item.type === "used") {
-								return <List.Item className={item.type}>{item.name}</List.Item>;
-							}
-							if (item.type === "discarded") {
-								return (
-									<List.Item
-										className={item.type}
-										actions={[
-											<Button
-												onClick={() =>
-													removeDiscardedMission("playerA", item.name)
-												}
-											>
-												Undo
-											</Button>,
-										]}
-									>
-										{item.name}
-									</List.Item>
-								);
-							}
-						}}
-					></List>
+												{item.name}
+											</List.Item>
+										);
+									}
+								}}
+							></List>
+						</Col>
+					</Row>
 				</Modal>
 				<Modal
 					title='Selecteer Missie 1'
@@ -1497,6 +1532,7 @@ const App = () => {
 				<Modal
 					title='Deck List Player 2'
 					open={isModalP2Deck}
+					width={800}
 					footer={[
 						<Button type='primary' onClick={() => setIsModalP2Deck(false)}>
 							Close
@@ -1504,51 +1540,78 @@ const App = () => {
 					]}
 					onCancel={() => setIsModalP2Deck(false)}
 				>
-					<List
-						bordered
-						dataSource={getDeckList("playerB")}
-						renderItem={(item) => {
-							if (item.type === "default") {
-								return (
-									<List.Item
-										className={item.type}
-										actions={[
-											<Button
-												onClick={() =>
-													addDiscardedMission("playerB", item.name)
-												}
+					<Row>
+						<Col span={12}>
+							<Typography.Title level={5}>Available Missions</Typography.Title>
+						</Col>
+						<Col span={12}>
+							<Typography.Title level={5}>Other Missions</Typography.Title>
+						</Col>
+					</Row>
+					<Row>
+						<Col span={12}>
+							<List
+								size='small'
+								bordered
+								dataSource={getDeckList("playerB")?.filter(
+									(item) => item.type === "default",
+								)}
+								renderItem={(item) => {
+									return (
+										<List.Item
+											className={item.type}
+											actions={[
+												<Button
+													type='primary'
+													onClick={() =>
+														addDiscardedMission("playerB", item.name)
+													}
+												>
+													Discard
+												</Button>,
+											]}
+										>
+											{item.name}
+										</List.Item>
+									);
+								}}
+							></List>
+						</Col>
+						<Col span={12}>
+							<List
+								size='small'
+								bordered
+								dataSource={getDeckList("playerB")?.filter(
+									(item) => item.type !== "default",
+								)}
+								renderItem={(item) => {
+									if (item.type === "used") {
+										return (
+											<List.Item className={item.type}>{item.name}</List.Item>
+										);
+									}
+									if (item.type === "discarded") {
+										return (
+											<List.Item
+												className={item.type}
+												actions={[
+													<Button
+														onClick={() =>
+															removeDiscardedMission("playerB", item.name)
+														}
+													>
+														Undo
+													</Button>,
+												]}
 											>
-												Discard
-											</Button>,
-										]}
-									>
-										{item.name}
-									</List.Item>
-								);
-							}
-							if (item.type === "used") {
-								return <List.Item className={item.type}>{item.name}</List.Item>;
-							}
-							if (item.type === "discarded") {
-								return (
-									<List.Item
-										className={item.type}
-										actions={[
-											<Button
-												onClick={() =>
-													removeDiscardedMission("playerB", item.name)
-												}
-											>
-												Undo
-											</Button>,
-										]}
-									>
-										{item.name}
-									</List.Item>
-								);
-							}
-						}}
-					></List>
+												{item.name}
+											</List.Item>
+										);
+									}
+								}}
+							></List>
+						</Col>
+					</Row>
 				</Modal>
 			</div>
 		</>

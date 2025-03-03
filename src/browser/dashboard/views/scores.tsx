@@ -336,6 +336,14 @@ const MatchControl = () => {
 										{matchData?.[player]?.secondaryDiscards?.join(",")}
 									</Col>
 								</Row>
+								<Row align='middle' gutter={16} style={{marginBottom: 16}}>
+									<Col span={8} style={{textAlign: "right", color: "white"}}>
+										Completed:
+									</Col>
+									<Col span={8}>
+										{matchData?.[player]?.completedSecondaries?.join(",")}
+									</Col>
+								</Row>
 							</div>
 							<Divider style={{background: "white"}} />
 
