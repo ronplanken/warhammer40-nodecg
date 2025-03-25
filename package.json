@@ -191,6 +191,26 @@
 				"file": "score-screen.html",
 				"width": 1920,
 				"height": 1080
+			},
+			{
+				"file": "game-missions.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "game-scores.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "deployment-map.html",
+				"width": 1920,
+				"height": 1080
+			},
+			{
+				"file": "player-secondary.html",
+				"width": 1920,
+				"height": 1080
 			}
 		],
 		"assetCategories": [],

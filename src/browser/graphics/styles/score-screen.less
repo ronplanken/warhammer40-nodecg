@@ -17,6 +17,7 @@
 
 body {
 	font-family: ConduitITC, times new roman, serif;
+  overflow: hidden;
 }
 .score-screen {
 	background-color: rgb(212, 212, 212);
@@ -45,12 +46,15 @@ body {
 		}
 		.main-bar,
 		.secondary-actions {
+			padding-top: 8px;
+
 			button {
 				font-size: 22px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
 				font-weight: bold;
+				width: 80px;
 			}
 			.title {
 				font-size: 26px;
@@ -65,8 +69,10 @@ body {
 				padding: 13px;
 				height: 60px;
 				text-align: center;
-				font-size: 26px;
+				vertical-align: middle;
+				font-size: 32px;
 				width: 70px;
+				line-height: 1;
 			}
 			.primary {
 				background-color: #00000033;
@@ -77,8 +83,9 @@ body {
 				padding: 13px;
 				height: 60px;
 				text-align: center;
-				font-size: 26px;
-				width: 70px;
+				font-size: 32px;
+				width: 80px;
+				line-height: 1;
 			}
 		}
 
@@ -93,12 +100,70 @@ body {
 		.mission-top-bar {
 			padding-top: 32px;
 			height: 100px;
+
+			margin-bottom: 8px;
+
 			button {
 				font-size: 20px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
 				width: 115px;
+			}
+
+			.mission-button {
+				width: 135px;
+				border: 1px solid white !important;
+				background-color: #0d4d6b;
+				color: white;
+				font-weight: bold;
+				border-color: #0d4d6b;
+
+				&:hover,
+				&:focus {
+					background-color: #0a3a52;
+					border-color: #0a3a52;
+					color: white;
+				}
+
+				&.active {
+					background-color: #1db954; // Brighter green color
+					border-color: #1db954;
+
+					&:hover,
+					&:focus {
+						background-color: #18a449;
+						border-color: #18a449;
+					}
+				}
+				&.disabled {
+					background-color: grey !important;
+					border-color: darkgrey !important;
+
+					color: lightgrey;
+
+					&:hover,
+					&:focus {
+						background-color: #18a449;
+						border-color: #18a449;
+					}
+				}
+			}
+			.mission-primary-button {
+				width: 150px;
+				border: 1px solid white !important;
+
+				background-color: #0d4d6b;
+				color: white;
+				font-weight: bold;
+				border-color: #0d4d6b;
+
+				&:hover,
+				&:focus {
+					background-color: #06192a;
+					border-color: #06192a;
+					color: white;
+				}
 			}
 		}
 		.mission-bottom-bar {
@@ -187,12 +252,15 @@ body {
 		}
 		.main-bar,
 		.secondary-actions {
+			padding-top: 8px;
+
 			button {
 				font-size: 22px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
 				font-weight: bold;
+				width: 80px;
 			}
 			.title {
 				font-size: 26px;
@@ -207,8 +275,10 @@ body {
 				padding: 13px;
 				height: 60px;
 				text-align: center;
-				font-size: 26px;
+				vertical-align: middle;
+				font-size: 32px;
 				width: 70px;
+				line-height: 1;
 			}
 			.primary {
 				background-color: #00000033;
@@ -219,8 +289,9 @@ body {
 				padding: 13px;
 				height: 60px;
 				text-align: center;
-				font-size: 26px;
-				width: 70px;
+				font-size: 32px;
+				width: 80px;
+				line-height: 1;
 			}
 		}
 
@@ -235,12 +306,70 @@ body {
 		.mission-top-bar {
 			padding-top: 32px;
 			height: 100px;
+
+			margin-bottom: 8px;
+
 			button {
 				font-size: 20px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
 				width: 115px;
+			}
+
+			.mission-button {
+				width: 135px;
+				border: 1px solid white !important;
+				background-color: #0d4d6b;
+				color: white;
+				font-weight: bold;
+				border-color: #0d4d6b;
+
+				&:hover,
+				&:focus {
+					background-color: #0a3a52;
+					border-color: #0a3a52;
+					color: white;
+				}
+
+				&.active {
+					background-color: #1db954; // Brighter green color
+					border-color: #1db954;
+
+					&:hover,
+					&:focus {
+						background-color: #18a449;
+						border-color: #18a449;
+					}
+				}
+				&.disabled {
+					background-color: grey !important;
+					border-color: darkgrey !important;
+
+					color: lightgrey;
+
+					&:hover,
+					&:focus {
+						background-color: #18a449;
+						border-color: #18a449;
+					}
+				}
+			}
+			.mission-primary-button {
+				width: 150px;
+				border: 1px solid white !important;
+
+				background-color: #0d4d6b;
+				color: white;
+				font-weight: bold;
+				border-color: #0d4d6b;
+
+				&:hover,
+				&:focus {
+					background-color: #06192a;
+					border-color: #06192a;
+					color: white;
+				}
 			}
 		}
 		.mission-bottom-bar {
@@ -420,6 +549,18 @@ body {
 }
 .NONE {
 	background-image: url("./images/missions/BACKGROUND.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.NONE_ATTACKER {
+	background-image: url("./images/missions/BACKGROUND_ATTACKER.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.NONE_DEFENDER {
+	background-image: url("./images/missions/BACKGROUND_DEFENDER.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center;

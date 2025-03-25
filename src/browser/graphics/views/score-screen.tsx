@@ -31,12 +31,11 @@ const App = () => {
 	const [isModalP2S1, setIsModalP2S1] = useState(false);
 	const [isModalP2S2, setIsModalP2S2] = useState(false);
 	const [isModalP2Deck, setIsModalP2Deck] = useState(false);
-	console.log("Test");
 
 	// Helper functions for updating data
 	const updateRound = (player, value) => {
 		if (value < 0 || value > 4) return; // Validate round range
-		console.log("updateRound", matchData);
+
 		matchDataRep.value = {
 			...matchData,
 			[player]: {...matchData[player], currentRound: value},
@@ -109,6 +108,13 @@ const App = () => {
 		matchDataRep.value = {
 			...matchData,
 			[player]: {...matchData[player], secondaryType: value},
+		};
+	};
+
+	const updateDefenderAttacker = (player, defender, attacker) => {
+		matchDataRep.value = {
+			...matchData,
+			[player]: {...matchData[player], defender: defender, attacker: attacker},
 		};
 	};
 
@@ -354,6 +360,9 @@ const App = () => {
 						onSecondaryTypeChange={(type) =>
 							updateSecondaryType("playerA", type)
 						}
+						onDefenderAttackerChange={(defender, attacker) =>
+							updateDefenderAttacker("playerA", defender, attacker)
+						}
 						onCpChange={(value) => updateCp("playerA", value)}
 						onRoundChange={(value) => updateRound("playerA", value)}
 						onPrimaryScoreChange={(value) =>
@@ -364,12 +373,6 @@ const App = () => {
 							)
 						}
 						onSecondaryMissionChange={(roundIndex, secondaryIndex, value) => {
-							console.log(
-								"onSecondaryMissionChange",
-								roundIndex,
-								secondaryIndex,
-								value,
-							);
 							updateSecondaryMission(
 								"playerA",
 								roundIndex,
@@ -407,6 +410,8 @@ const App = () => {
 								keepSecondary2,
 							)
 						}
+						onOpenModalS1={() => setIsModalP1S1(true)}
+						onOpenModalS2={() => setIsModalP1S2(true)}
 					/>
 
 					{/* Player B Section */}
@@ -417,6 +422,9 @@ const App = () => {
 						alignment='right'
 						onSecondaryTypeChange={(type) =>
 							updateSecondaryType("playerB", type)
+						}
+						onDefenderAttackerChange={(defender, attacker) =>
+							updateDefenderAttacker("playerB", defender, attacker)
 						}
 						onCpChange={(value) => updateCp("playerB", value)}
 						onRoundChange={(value) => updateRound("playerB", value)}
@@ -465,6 +473,8 @@ const App = () => {
 								keepSecondary2,
 							)
 						}
+						onOpenModalS1={() => setIsModalP2S1(true)}
+						onOpenModalS2={() => setIsModalP2S2(true)}
 					/>
 				</Row>
 

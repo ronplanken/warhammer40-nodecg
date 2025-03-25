@@ -27,11 +27,9 @@ const halfStyle = {
 
 const App = () => {
 	const game = useReplicant("game");
-	const ref = useRef<HTMLDivElement>(null);
-	useFitViewport(ref);
 
 	return (
-		<div className='game-info' ref={ref}>
+		<div className='game-info'>
 			<div
 				style={{
 					display: "flex",

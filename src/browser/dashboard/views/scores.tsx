@@ -63,6 +63,18 @@ const MatchControl = () => {
 			[player]: {...matchData[player], secondaryType: value},
 		};
 	};
+	const updateDefender = (player, value) => {
+		matchDataRep.value = {
+			...matchData,
+			[player]: {...matchData[player], defender: value},
+		};
+	};
+	const updateAttacker = (player, value) => {
+		matchDataRep.value = {
+			...matchData,
+			[player]: {...matchData[player], attacker: value},
+		};
+	};
 
 	const updateFixedSecondary = (player, index, value) => {
 		const updatedFixedSecondaries = [...matchData[player].fixedSecondaries];
@@ -153,6 +165,7 @@ const MatchControl = () => {
 				cp: 0,
 				fixedSecondaries: [null, null],
 				primaryScore: 0,
+				currentRound: 0,
 				secondaryDiscards: [],
 				completedSecondaries: [],
 				rounds: [
@@ -197,6 +210,8 @@ const MatchControl = () => {
 				secondaryType: undefined,
 				cp: 0,
 				fixedSecondaries: [null, null],
+				primaryScore: 0,
+				currentRound: 0,
 				secondaryDiscards: [],
 				completedSecondaries: [],
 				rounds: [
@@ -257,15 +272,6 @@ const MatchControl = () => {
 						<Button danger>Reset Matchdata</Button>
 					</Popconfirm>
 				</Col>
-				<Col span={4} style={{textAlign: "right", color: "white"}}>
-					{`Speler A wint roll-off:`}
-				</Col>
-				<Col span={4}>
-					<Switch
-						checked={matchData?.game?.playerAWonRollOff}
-						onChange={updateRollOffWinner}
-					/>
-				</Col>
 			</Row>
 
 			<Divider style={{background: "white"}} />
@@ -276,7 +282,7 @@ const MatchControl = () => {
 							<Typography.Title level={3} style={{color: "white"}}>
 								{player === "playerA" ? "Speler A" : "Speler B"}
 							</Typography.Title>
-							<div style={{height: "70px"}}>
+							<div>
 								<Row align='middle' gutter={16} style={{marginBottom: 16}}>
 									<Col span={8} style={{textAlign: "right", color: "white"}}>
 										Secondary Missies Type:
@@ -290,6 +296,28 @@ const MatchControl = () => {
 											<Select.Option value='fixed'>Fixed</Select.Option>
 											<Select.Option value='tactical'>Tactical</Select.Option>
 										</Select>
+									</Col>
+								</Row>
+								<Row align='middle' gutter={16} style={{marginBottom: 16}}>
+									<Col span={8} style={{textAlign: "right", color: "white"}}>
+										Defender
+									</Col>
+									<Col span={16}>
+										<Switch
+											checked={matchData?.[player]?.defender}
+											onChange={updateDefender}
+										/>
+									</Col>
+								</Row>
+								<Row align='middle' gutter={16} style={{marginBottom: 16}}>
+									<Col span={8} style={{textAlign: "right", color: "white"}}>
+										Attacker
+									</Col>
+									<Col span={16}>
+										<Switch
+											checked={matchData?.[player]?.attacker}
+											onChange={updateAttacker}
+										/>
 									</Col>
 								</Row>
 

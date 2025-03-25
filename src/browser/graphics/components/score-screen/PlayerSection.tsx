@@ -24,6 +24,7 @@ interface PlayerSectionProps {
 		secondaryIndex: number,
 		value: number,
 	) => void;
+	onDefenderAttackerChange: (defender: boolean, attacker: boolean) => void;
 	onCompletedMissionChange: (
 		secondaryIndex: number,
 		roundIndex: number,
@@ -40,6 +41,8 @@ interface PlayerSectionProps {
 		keepSecondary1: boolean,
 		keepSecondary2: boolean,
 	) => void;
+	onOpenModalS1: () => void;
+	onOpenModalS2: () => void;
 }
 
 export const PlayerSection: React.FC<PlayerSectionProps> = ({
@@ -59,11 +62,12 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	onRandomTacticalMission,
 	onOpenDeckList,
 	onNextRound,
+	onDefenderAttackerChange,
+	onOpenModalS1,
+	onOpenModalS2,
 }) => {
 	const [keepSecondary1, setKeepSecondary1] = useState(false);
 	const [keepSecondary2, setKeepSecondary2] = useState(false);
-	const [isModalS1, setIsModalS1] = useState(false);
-	const [isModalS2, setIsModalS2] = useState(false);
 
 	const currentRound = player?.currentRound || 0;
 	const rounds = player?.rounds || [];
@@ -157,17 +161,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 				)}
 			</Row>
 
-			{player?.secondaryType !== undefined ? (
-				<MissionControls
-					cp={player.cp}
-					currentRound={currentRound}
-					primaryScore={currentRoundData.primaryScore || 0}
-					onCpChange={onCpChange}
-					onRoundChange={onRoundChange}
-					onPrimaryScoreChange={onPrimaryScoreChange}
-					onNextRound={handleNextRound}
-				/>
-			) : (
+			{player?.defender === undefined && player?.attacker === undefined ? (
 				<Row
 					gutter={16}
 					align='middle'
@@ -177,7 +171,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 					<Col span={24}>
 						<Row align='middle' justify='center'>
 							<Col>
-								<div className='title'>CHOOSE MISSION TYPE</div>
+								<div className='title'>CHOOSE ATTACKER / DEFENDER</div>
 							</Col>
 						</Row>
 						<Row gutter={16} align='middle' justify='center'>
@@ -185,31 +179,83 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 								<Button
 									block={true}
 									size='large'
-									onClick={() => onSecondaryTypeChange("fixed")}
+									style={{backgroundColor: "#ff4d4f", color: "white"}}
+									onClick={() => onDefenderAttackerChange(false, true)}
 								>
-									Fixed
+									ATTACKER
 								</Button>
 							</Col>
 							<Col span={8}>
 								<Button
 									block={true}
 									size='large'
-									onClick={() => onSecondaryTypeChange("tactical")}
+									style={{backgroundColor: "#4caf50", color: "white"}}
+									onClick={() => onDefenderAttackerChange(true, false)}
 								>
-									Tactical
+									DEFENDER
 								</Button>
 							</Col>
 						</Row>
 					</Col>
 				</Row>
+			) : (
+				<>
+					{player?.secondaryType !== undefined ? (
+						<MissionControls
+							cp={player.cp}
+							currentRound={currentRound}
+							primaryScore={currentRoundData.primaryScore || 0}
+							onCpChange={onCpChange}
+							onRoundChange={onRoundChange}
+							onPrimaryScoreChange={onPrimaryScoreChange}
+							onNextRound={handleNextRound}
+						/>
+					) : (
+						<Row
+							gutter={16}
+							align='middle'
+							justify='center'
+							className='mission-choice'
+						>
+							<Col span={24}>
+								<Row align='middle' justify='center'>
+									<Col>
+										<div className='title'>CHOOSE MISSION TYPE</div>
+									</Col>
+								</Row>
+								<Row gutter={16} align='middle' justify='center'>
+									<Col span={8}>
+										<Button
+											block={true}
+											size='large'
+											onClick={() => onSecondaryTypeChange("fixed")}
+										>
+											Fixed
+										</Button>
+									</Col>
+									<Col span={8}>
+										<Button
+											block={true}
+											size='large'
+											onClick={() => onSecondaryTypeChange("tactical")}
+										>
+											Tactical
+										</Button>
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+					)}
+				</>
 			)}
-
 			<Row align='middle' justify='center' gutter={8}>
 				<Col span={12}>
 					{/* Top controls for secondary 1 */}
 					<SecondaryMission
 						isVisible={player?.secondaryType !== undefined}
 						secondaryType={player?.secondaryType}
+						defender={player?.defender}
+						attacker={player?.attacker}
 						secondaryMission={currentRoundData.secondary1}
 						secondaryScore={currentRoundData.secondary1Score || 0}
 						roundIndex={currentRound}
@@ -228,7 +274,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 						onKeep={() => setKeepSecondary1(!keepSecondary1)}
 						keepActive={keepSecondary1}
 						onDraw={() => onRandomTacticalMission(currentRound, 0)}
-						onChoose={() => setIsModalS1(true)}
+						onChoose={() => onOpenModalS1()}
 						onScoreChange={(value) =>
 							onSecondaryScoreChange(currentRound, 0, value)
 						}
@@ -239,6 +285,8 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 					<SecondaryMission
 						isVisible={player?.secondaryType !== undefined}
 						secondaryType={player?.secondaryType}
+						defender={player?.defender}
+						attacker={player?.attacker}
 						secondaryMission={currentRoundData.secondary2}
 						secondaryScore={currentRoundData.secondary2Score || 0}
 						roundIndex={currentRound}
@@ -257,7 +305,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 						onKeep={() => setKeepSecondary2(!keepSecondary2)}
 						keepActive={keepSecondary2}
 						onDraw={() => onRandomTacticalMission(currentRound, 1)}
-						onChoose={() => setIsModalS2(true)}
+						onChoose={() => onOpenModalS2()}
 						onScoreChange={(value) =>
 							onSecondaryScoreChange(currentRound, 1, value)
 						}

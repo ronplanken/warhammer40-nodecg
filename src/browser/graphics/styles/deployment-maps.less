@@ -1,0 +1,51 @@
+@import "./factions.less";
+
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Regular.otf");
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Bold.otf");
+	font-weight: bold; /*config its weight*/
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Italic.otf");
+	font-style: italic;
+}
+
+body {
+	font-family: ConduitITC, times new roman, serif;
+}
+
+.deployment-maps {
+	height: 100vh;
+	width: 100vw;
+
+	.map {
+		width: 100vw;
+		height: 80vh;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center;
+	}
+	.Crucible_of_Battle {
+		background-image: url("./images/deployment/Crucible of Battle.png");
+	}
+	.Dawn_of_War {
+		background-image: url("./images/deployment/Dawn of War.png");
+	}
+	.Hammer_and_Anvil {
+		background-image: url("./images/deployment/Hammer and Anvil.png");
+	}
+	.Search_and_Destroy {
+		background-image: url("./images/deployment/Search and Destroy.png");
+	}
+	.Sweeping_Engagement {
+		background-image: url("./images/deployment/Sweeping Engagement.png");
+	}
+	.Tipping_Point {
+		background-image: url("./images/deployment/Tipping Point.png");
+	}
+}

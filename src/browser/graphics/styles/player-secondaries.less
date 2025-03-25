@@ -1,0 +1,26 @@
+@import "./factions.less";
+
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Regular.otf");
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Bold.otf");
+	font-weight: bold; /*config its weight*/
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Italic.otf");
+	font-style: italic;
+}
+
+body {
+	font-family: ConduitITC, times new roman, serif;
+	font-size: 32px;
+	text-transform: lowercase;
+
+	:first-letter {
+		text-transform: uppercase;
+	}
+}

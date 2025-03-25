@@ -1,0 +1,145 @@
+@import "./factions.less";
+
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Regular.otf");
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Bold.otf");
+	font-weight: bold; /*config its weight*/
+}
+@font-face {
+	font-family: "ConduitITC";
+	src: url("./Conduit ITC Italic.otf");
+	font-style: italic;
+}
+
+body {
+	font-family: ConduitITC, times new roman, serif;
+	font-size: 32px;
+	text-transform: lowercase;
+
+	:first-letter {
+		text-transform: uppercase;
+	}
+}
+
+.game-scores {
+	height: 100vh;
+	width: 100vw;
+
+	.names {
+		.name {
+			font-family: ConduitITC, times new roman, serif;
+			font-size: 48px;
+			font-weight: 600;
+
+
+			color: white;
+      -webkit-text-stroke-width: 2px;
+      -webkit-text-stroke-color: black;
+		}
+
+		.playerA {
+			text-align: right;
+		}
+		.playerB {
+			text-align: left;
+		}
+	}
+	.factions {
+		.faction {
+			font-family: ConduitITC, times new roman, serif;
+			font-size: 32px;
+			font-weight: 600;
+
+
+			color: white;
+      -webkit-text-stroke-width: 2px;
+      -webkit-text-stroke-color: black;
+		}
+
+		.playerA {
+			text-align: right;
+		}
+		.playerB {
+			text-align: left;
+		}
+	}
+
+	.round {
+		padding: 16px;
+    padding-top: 0;
+
+		.round-index {
+
+			font-family: ConduitITC, times new roman, serif;
+			font-size: 40px;
+      font-weight: 600;
+
+			color: #FFFFFFCC;
+      -webkit-text-stroke-width: 2px;
+      -webkit-text-stroke-color: black;
+		}
+
+		.playerA {
+			color: white;
+			background-color: #4c0606dd;
+			text-align: right;
+			margin-right: 16px;
+
+      &.active {
+        background-color: #8c0909dd;
+      }
+		}
+		.playerB {
+			color: white;
+			background-color: #00007fdd;
+			text-align: left;
+			margin-left: 16px;
+
+      &.active {
+        background-color: #0000bedd;
+      }
+		}
+
+		.player {
+			padding: 8px;
+
+			.primary {
+				font-family: ConduitITC, times new roman, serif;
+				font-size: 32px;
+				text-transform: lowercase;
+
+				font-weight: 600;
+
+				:first-letter {
+					text-transform: uppercase;
+				}
+			}
+
+			.secondary {
+				font-family: ConduitITC, times new roman, serif;
+				font-size: 32px;
+				text-transform: lowercase;
+
+				:first-letter {
+					text-transform: uppercase;
+				}
+			}
+
+			.score {
+        margin-left: 4px;
+        margin-right: 4px;
+				font-family: ConduitITC, times new roman, serif;
+				font-size: 32px;
+				text-transform: lowercase;
+
+				:first-letter {
+					text-transform: uppercase;
+				}
+			}
+		}
+	}
+}

@@ -1,7 +1,7 @@
 import {render} from "../../render";
 import {useReplicant} from "../../use-replicant";
 
-import {Col, Input, Row, Space, Typography, Checkbox} from "antd";
+import {Col, Input, Row, Space, Typography, Checkbox, Select} from "antd";
 
 const App = () => {
 	const gameRep = nodecg.Replicant("game");
@@ -27,15 +27,31 @@ const App = () => {
 					DEPLOYMENT
 				</Col>
 				<Col span={16}>
-					<Input
+					<Select
+						style={{width: "100%"}}
 						value={game?.deployment}
 						onChange={(value) => {
 							gameRep.value = {
 								...game,
-								deployment: value.currentTarget.value,
+								deployment: value,
 							};
 						}}
-					/>
+					>
+						<Select.Option value='Tipping Point'>Tipping Point</Select.Option>
+						<Select.Option value='Hammer and Anvil'>
+							Hammer and Anvil
+						</Select.Option>
+						<Select.Option value='Sweeping Engagement'>
+							Sweeping Engagement
+						</Select.Option>
+						<Select.Option value='Dawn of War'>Dawn of War</Select.Option>
+						<Select.Option value='Search and Destroy'>
+							Search and Destroy
+						</Select.Option>
+						<Select.Option value='Crucible of Battle'>
+							Crucible of Battle
+						</Select.Option>
+					</Select>
 				</Col>
 			</Row>
 			<Row align='middle' gutter={16}>
@@ -43,15 +59,30 @@ const App = () => {
 					PRIMARY MISSION
 				</Col>
 				<Col span={16}>
-					<Input
+					<Select
+						style={{width: "100%"}}
 						value={game?.mission}
 						onChange={(value) => {
 							gameRep.value = {
 								...game,
-								mission: value.currentTarget.value,
+								mission: value,
 							};
 						}}
-					/>
+					>
+						<Select.Option value='Burden of Trust'>
+							Burden of Trust
+						</Select.Option>
+						<Select.Option value='Linchpin'>Linchpin</Select.Option>
+						<Select.Option value='Purge the Foe'>Purge the Foe</Select.Option>
+						<Select.Option value='Scorched Earth'>Scorched Earth</Select.Option>
+						<Select.Option value='Supply Drop'>Supply Drop</Select.Option>
+						<Select.Option value='Take and Hold'>Take and Hold</Select.Option>
+						<Select.Option value='Terraform'>Terraform</Select.Option>
+						<Select.Option value='The Ritual'>The Ritual</Select.Option>
+						<Select.Option value='Unexploded Ordnance'>
+							Unexploded Ordnance
+						</Select.Option>
+					</Select>
 				</Col>
 			</Row>
 			<Row align='middle' gutter={16}>
@@ -59,15 +90,37 @@ const App = () => {
 					MISSION RULE
 				</Col>
 				<Col span={16}>
-					<Input
+					<Select
+						style={{width: "100%"}}
 						value={game?.rule}
 						onChange={(value) => {
 							gameRep.value = {
 								...game,
-								rule: value.currentTarget.value,
+								rule: value,
 							};
 						}}
-					/>
+					>
+						<Select.Option value='Adapt or Die'>Adapt or Die</Select.Option>
+						<Select.Option value='Fog of War'>Fog of War</Select.Option>
+						<Select.Option value='Hidden Supplies'>
+							Hidden Supplies
+						</Select.Option>
+						<Select.Option value='Inspired Leadership'>
+							Inspired Leadership
+						</Select.Option>
+						<Select.Option value='Prepared Positions'>
+							Prepared Positions
+						</Select.Option>
+						<Select.Option value='Raise Banners'>Raise Banners</Select.Option>
+						<Select.Option value='Rapid Escalation'>
+							Rapid Escalation
+						</Select.Option>
+						<Select.Option value='Smoke and Mirrors'>
+							Smoke and Mirrors
+						</Select.Option>
+						<Select.Option value='Stalwarts'>Stalwarts</Select.Option>
+						<Select.Option value='Swift Action'>Swift Action</Select.Option>
+					</Select>
 				</Col>
 			</Row>
 
