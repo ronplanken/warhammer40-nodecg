@@ -72,7 +72,11 @@ const App = () => {
 			if (!playerData.completedSecondaries) {
 				playerData.completedSecondaries = [];
 			}
-			playerData.completedSecondaries.push(currentRoundData.secondary1);
+			if (
+				!playerData.completedSecondaries.includes(currentRoundData.secondary1)
+			) {
+				playerData.completedSecondaries.push(currentRoundData.secondary1);
+			}
 		}
 
 		// Handle secondary mission 2
@@ -91,7 +95,11 @@ const App = () => {
 			if (!playerData.completedSecondaries) {
 				playerData.completedSecondaries = [];
 			}
-			playerData.completedSecondaries.push(currentRoundData.secondary2);
+			if (
+				!playerData.completedSecondaries.includes(currentRoundData.secondary2)
+			) {
+				playerData.completedSecondaries.push(currentRoundData.secondary2);
+			}
 		}
 
 		// Update the round

@@ -1,9 +1,7 @@
 import "modern-normalize";
 import "../styles/player-info.less";
 
-import {useFitViewport} from "../components/lib/use-fit-viewport.js";
 import {render} from "../../render.js";
-import {useRef} from "react";
 import {useReplicant} from "../../use-replicant.js";
 
 const circleStyle = {

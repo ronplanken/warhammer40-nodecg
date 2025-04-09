@@ -46,6 +46,7 @@ const App = () => {
 				<Col span={16}>
 					<Select
 						style={{width: "100%"}}
+						value={player1?.faction}
 						options={[
 							{value: "NONE", label: "None"},
 							{value: "basic", label: "Basic"},
@@ -141,6 +142,7 @@ const App = () => {
 				<Col span={16}>
 					<Select
 						style={{width: "100%"}}
+						value={player2?.faction}
 						options={[
 							{value: "NONE", label: "None"},
 							{value: "basic", label: "Basic"},

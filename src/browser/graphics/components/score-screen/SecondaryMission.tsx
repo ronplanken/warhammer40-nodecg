@@ -66,7 +66,13 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 							{secondaryType === "tactical" ? (
 								<>
 									<Col>
-										<Button onClick={onDiscard} className='mission-button'>
+										<Button
+											onClick={onDiscard}
+											className={`mission-button ${
+												secondaryScore > 0 ? "completed" : ""
+											}`}
+											disabled={secondaryScore > 0}
+										>
 											{secondaryScore > 0 ? "Completed" : "Discard"}
 										</Button>
 									</Col>
