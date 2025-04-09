@@ -23,7 +23,7 @@ export default defineConfig(({mode}) => ({
 		macrosPlugin(),
 		react(),
 		nodecg({
-			bundleName: "warhammer-40k",
+			bundleName: "board-report-warhammer-40k",
 			graphics: "./src/browser/graphics/views/*.tsx",
 			dashboard: "./src/browser/dashboard/views/*.tsx",
 			extension: {

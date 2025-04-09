@@ -21,8 +21,8 @@ https://www.youtube.com/@boardreportchannel
 ## Installation
 
 1. Install [NodeCG](https://www.nodecg.dev/docs/installing)
-2. Clone this repository to `nodecg/bundles/warhammer-40k`
-3. Install dependencies: `cd nodecg/bundles/warhammer-40k && npm install`
+2. Clone this repository to `nodecg/bundles/board-report-warhammer-40k`
+3. Install dependencies: `cd nodecg/bundles/board-report-warhammer-40k && npm install`
 4. Start NodeCG: `cd ../.. && npm start`
 
 ## Development
