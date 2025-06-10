@@ -72,6 +72,9 @@ const App = () => {
 						<Select.Option value='Burden of Trust'>
 							Burden of Trust
 						</Select.Option>
+						<Select.Option value='Hidden Supplies'>
+							Hidden Supplies
+						</Select.Option>
 						<Select.Option value='Linchpin'>Linchpin</Select.Option>
 						<Select.Option value='Purge the Foe'>Purge the Foe</Select.Option>
 						<Select.Option value='Scorched Earth'>Scorched Earth</Select.Option>

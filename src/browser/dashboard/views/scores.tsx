@@ -17,11 +17,11 @@ const fixedMissionOptions = [
 	"ASSASSINATION",
 	"BEHIND ENEMY LINES",
 	"BRING IT DOWN",
-	"STORM HOSTILE OBJECTIVE",
+	"CLEANSE",
 	"CULL THE HORDE",
 	"ENGAGE ON ALL FRONTS",
 	"ESTABLISH LOCUS",
-	"CLEANSE",
+	"STORM HOSTILE OBJECTIVE",
 ];
 
 const tacticalMissionOptions = [
@@ -33,7 +33,6 @@ const tacticalMissionOptions = [
 	"ENGAGE ON ALL FRONTS",
 	"ESTABLISH LOCUS",
 	"CLEANSE",
-	"CONTAINMENT",
 	"MARKED FOR DEATH",
 	"NO PRISONERS",
 	"DEFEND STRONGHOLD",
@@ -42,7 +41,9 @@ const tacticalMissionOptions = [
 	"EXTEND BATTLE LINES",
 	"RECOVER ASSETS",
 	"AREA DENIAL",
-	"SECURE NO MANS LAND",
+	"SECURE NO MAN'S LAND",
+	"A TEMPTING TARGET",
+	"DISPLAY OF MIGHT",
 ];
 
 const MatchControl = () => {

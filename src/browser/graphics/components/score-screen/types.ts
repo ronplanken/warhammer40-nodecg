@@ -2,11 +2,11 @@ export const fixedMissionOptions = [
 	"ASSASSINATION",
 	"BEHIND ENEMY LINES",
 	"BRING IT DOWN",
-	"STORM HOSTILE OBJECTIVE",
+	"CLEANSE",
 	"CULL THE HORDE",
 	"ENGAGE ON ALL FRONTS",
 	"ESTABLISH LOCUS",
-	"CLEANSE",
+	"STORM HOSTILE OBJECTIVE",
 ];
 
 export const tacticalMissionOptions = [
@@ -18,7 +18,6 @@ export const tacticalMissionOptions = [
 	"ENGAGE ON ALL FRONTS",
 	"ESTABLISH LOCUS",
 	"CLEANSE",
-	"CONTAINMENT",
 	"MARKED FOR DEATH",
 	"NO PRISONERS",
 	"DEFEND STRONGHOLD",
@@ -27,7 +26,9 @@ export const tacticalMissionOptions = [
 	"EXTEND BATTLE LINES",
 	"RECOVER ASSETS",
 	"AREA DENIAL",
-	"SECURE NO MANS LAND",
+	"SECURE NO MAN'S LAND",
+	"A TEMPTING TARGET",
+	"DISPLAY OF MIGHT",
 ];
 
 export interface Round {
