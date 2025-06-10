@@ -1,14 +1,15 @@
 import "modern-normalize";
 import "../styles/score-screen.less";
 
-import {Row, message} from "antd";
-import {useState, useCallback} from "react";
+import {Row, Col, Button, message} from "antd";
+import {useState} from "react";
 import {render} from "../../render.js";
 import {useReplicant} from "../../use-replicant.js";
 
 // Import components
 import {DeckModal} from "../components/score-screen/DeckModal";
 import {MissionModal} from "../components/score-screen/MissionModal";
+import {MissionsOverlay} from "../components/score-screen/MissionsOverlay";
 import {PlayerSection} from "../components/score-screen/PlayerSection";
 import {
 	MissionItem,
@@ -31,6 +32,7 @@ const App = () => {
 	const [isModalP2S1, setIsModalP2S1] = useState(false);
 	const [isModalP2S2, setIsModalP2S2] = useState(false);
 	const [isModalP2Deck, setIsModalP2Deck] = useState(false);
+	const [isMissionsOverlayOpen, setIsMissionsOverlayOpen] = useState(false);
 
 	// Helper functions for updating data
 	const updateRound = (player, value) => {
@@ -358,6 +360,32 @@ const App = () => {
 		<>
 			{contextHolder}
 			<div className='score-screen'>
+				{/* Missions Button */}
+				<Row
+					justify='center'
+					style={{
+						position: "absolute",
+						top: "20px",
+						left: "50%",
+						transform: "translateX(-50%)",
+						zIndex: 10,
+					}}
+				>
+					<Col>
+						<Button
+							type='primary'
+							size='large'
+							onClick={() => setIsMissionsOverlayOpen(true)}
+							style={{
+								padding: "8px 24px",
+								height: "auto",
+							}}
+						>
+							Missions
+						</Button>
+					</Col>
+				</Row>
+
 				<Row>
 					{/* Player A Section */}
 					<PlayerSection
@@ -538,6 +566,12 @@ const App = () => {
 					onUndoDiscard={(mission) =>
 						removeDiscardedMission("playerB", mission)
 					}
+				/>
+
+				{/* Missions Overlay */}
+				<MissionsOverlay
+					isVisible={isMissionsOverlayOpen}
+					onClose={() => setIsMissionsOverlayOpen(false)}
 				/>
 			</div>
 		</>
