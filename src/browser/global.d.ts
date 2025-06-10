@@ -5,13 +5,13 @@ import {MessageMap} from "../nodecg/messages";
 
 declare global {
 	const nodecg: CreateNodecgInstance<
-		"warhammer-40k",
+		"board-report-warhammer-40k",
 		Configschema,
 		ReplicantMap,
 		MessageMap
 	>;
 	const NodeCG: CreateNodecgConstructor<
-		"warhammer-40k",
+		"board-report-warhammer-40k",
 		Configschema,
 		ReplicantMap,
 		MessageMap

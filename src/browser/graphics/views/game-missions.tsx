@@ -20,14 +20,10 @@ const App = () => {
 				}}
 			>
 				<div>
-					<Row gutter={16}>
+					<Row gutter={16} justify='center'>
 						<Col
-							span={12}
+							span={24}
 							className={`mission ${game?.mission?.replaceAll(" ", "_")}`}
-						></Col>
-						<Col
-							span={12}
-							className={`mission ${game?.rule?.replaceAll(" ", "_")}`}
 						></Col>
 					</Row>
 				</div>

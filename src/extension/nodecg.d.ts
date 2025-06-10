@@ -5,7 +5,7 @@ import {MessageMap} from "../nodecg/messages";
 import {Configschema} from "../nodecg/generated/configschema";
 
 export type NodeCG = CreateNodecgInstance<
-	"warhammer-40k",
+	"board-report-warhammer-40k",
 	Configschema,
 	ReplicantMap,
 	MessageMap

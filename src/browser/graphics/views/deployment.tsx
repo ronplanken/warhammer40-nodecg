@@ -11,7 +11,6 @@ const App = () => {
 		<div className='game-info'>
 			<div className={`deployment`}>{rep?.deployment}</div>
 			<div className={`mission`}>{rep?.mission}</div>
-			<div className={`rule`}>{rep?.rule}</div>
 		</div>
 	);
 };

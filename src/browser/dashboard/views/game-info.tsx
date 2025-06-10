@@ -88,44 +88,6 @@ const App = () => {
 					</Select>
 				</Col>
 			</Row>
-			<Row align='middle' gutter={16}>
-				<Col span={8} style={{textAlign: "right"}}>
-					MISSION RULE
-				</Col>
-				<Col span={16}>
-					<Select
-						style={{width: "100%"}}
-						value={game?.rule}
-						onChange={(value) => {
-							gameRep.value = {
-								...game,
-								rule: value,
-							};
-						}}
-					>
-						<Select.Option value='Adapt or Die'>Adapt or Die</Select.Option>
-						<Select.Option value='Fog of War'>Fog of War</Select.Option>
-						<Select.Option value='Hidden Supplies'>
-							Hidden Supplies
-						</Select.Option>
-						<Select.Option value='Inspired Leadership'>
-							Inspired Leadership
-						</Select.Option>
-						<Select.Option value='Prepared Positions'>
-							Prepared Positions
-						</Select.Option>
-						<Select.Option value='Raise Banners'>Raise Banners</Select.Option>
-						<Select.Option value='Rapid Escalation'>
-							Rapid Escalation
-						</Select.Option>
-						<Select.Option value='Smoke and Mirrors'>
-							Smoke and Mirrors
-						</Select.Option>
-						<Select.Option value='Stalwarts'>Stalwarts</Select.Option>
-						<Select.Option value='Swift Action'>Swift Action</Select.Option>
-					</Select>
-				</Col>
-			</Row>
 
 			<Typography.Title level={4} style={{color: "white", marginTop: 24}}>
 				ROUND STATE
