@@ -230,7 +230,7 @@ export default async ({
 
 		config: async (_, {command}) => {
 			const host = server?.host ?? "localhost";
-			const port = server?.port ?? 8080;
+			const port = server?.port ?? 9090;
 			origin = `http://${host}:${port}`;
 			return {
 				appType: "mpa",

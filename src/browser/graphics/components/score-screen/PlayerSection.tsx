@@ -2,7 +2,9 @@ import React, {useState} from "react";
 import {Button, Col, Row} from "antd";
 import {MissionControls} from "./MissionControls";
 import {SecondaryMission} from "./SecondaryMission";
-import {Player, MissionItem, Round, tacticalMissionOptions} from "./types";
+import {PrimaryMissionDisplay} from "./PrimaryMissionDisplay";
+import {DeploymentDisplay} from "./DeploymentDisplay";
+import {Player} from "./types";
 
 interface PlayerSectionProps {
 	player: Player;
@@ -54,8 +56,8 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	onCpChange,
 	onRoundChange,
 	onPrimaryScoreChange,
-	onSecondaryMissionChange,
-	onFixedMissionsChange,
+	onSecondaryMissionChange, // Used by modals for mission selection
+	onFixedMissionsChange, // Used by modals for fixed mission selection
 	onSecondaryScoreChange,
 	onCompletedMissionChange,
 	onDiscardedMissionChange,
@@ -249,68 +251,84 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 				</>
 			)}
 			<Row align='middle' justify='center' gutter={8}>
-				<Col span={12}>
-					{/* Top controls for secondary 1 */}
-					<SecondaryMission
-						isVisible={player?.secondaryType !== undefined}
-						secondaryType={player?.secondaryType}
-						defender={player?.defender}
-						attacker={player?.attacker}
-						secondaryMission={currentRoundData.secondary1}
-						secondaryScore={currentRoundData.secondary1Score || 0}
-						roundIndex={currentRound}
-						canRedraw={canRedrawS1}
-						onDiscard={() => {
-							if (
-								currentRoundData.secondary1Score &&
-								currentRoundData.secondary1Score > 0
-							) {
-								onCompletedMissionChange(0, currentRound);
-							} else {
-								onDiscardedMissionChange(0, currentRound);
-							}
-						}}
-						onRedraw={() => onRandomTacticalMission(currentRound, 0)}
-						onKeep={() => setKeepSecondary1(!keepSecondary1)}
-						keepActive={keepSecondary1}
-						onDraw={() => onRandomTacticalMission(currentRound, 0)}
-						onChoose={() => onOpenModalS1()}
-						onScoreChange={(value) =>
-							onSecondaryScoreChange(currentRound, 0, value)
-						}
-					/>
-				</Col>
-				<Col span={12}>
-					{/* Top controls for secondary 2 */}
-					<SecondaryMission
-						isVisible={player?.secondaryType !== undefined}
-						secondaryType={player?.secondaryType}
-						defender={player?.defender}
-						attacker={player?.attacker}
-						secondaryMission={currentRoundData.secondary2}
-						secondaryScore={currentRoundData.secondary2Score || 0}
-						roundIndex={currentRound}
-						canRedraw={canRedrawS2}
-						onDiscard={() => {
-							if (
-								currentRoundData.secondary2Score &&
-								currentRoundData.secondary2Score > 0
-							) {
-								onCompletedMissionChange(1, currentRound);
-							} else {
-								onDiscardedMissionChange(1, currentRound);
-							}
-						}}
-						onRedraw={() => onRandomTacticalMission(currentRound, 1)}
-						onKeep={() => setKeepSecondary2(!keepSecondary2)}
-						keepActive={keepSecondary2}
-						onDraw={() => onRandomTacticalMission(currentRound, 1)}
-						onChoose={() => onOpenModalS2()}
-						onScoreChange={(value) =>
-							onSecondaryScoreChange(currentRound, 1, value)
-						}
-					/>
-				</Col>
+				{player?.defender === undefined && player?.attacker === undefined ? (
+					<>
+						{/* During attacker/defender selection phase */}
+						<Col span={24}>
+							{playerKey === "playerA" ? (
+								<PrimaryMissionDisplay isVisible={true} />
+							) : (
+								<DeploymentDisplay isVisible={true} />
+							)}
+						</Col>
+					</>
+				) : (
+					<>
+						{/* Normal secondary missions display */}
+						<Col span={12}>
+							{/* Top controls for secondary 1 */}
+							<SecondaryMission
+								isVisible={player?.secondaryType !== undefined}
+								secondaryType={player?.secondaryType}
+								defender={player?.defender || false}
+								attacker={player?.attacker || false}
+								secondaryMission={currentRoundData.secondary1}
+								secondaryScore={currentRoundData.secondary1Score || 0}
+								roundIndex={currentRound}
+								canRedraw={canRedrawS1}
+								onDiscard={() => {
+									if (
+										currentRoundData.secondary1Score &&
+										currentRoundData.secondary1Score > 0
+									) {
+										onCompletedMissionChange(0, currentRound);
+									} else {
+										onDiscardedMissionChange(0, currentRound);
+									}
+								}}
+								onRedraw={() => onRandomTacticalMission(currentRound, 0)}
+								onKeep={() => setKeepSecondary1(!keepSecondary1)}
+								keepActive={keepSecondary1}
+								onDraw={() => onRandomTacticalMission(currentRound, 0)}
+								onChoose={() => onOpenModalS1()}
+								onScoreChange={(value) =>
+									onSecondaryScoreChange(currentRound, 0, value)
+								}
+							/>
+						</Col>
+						<Col span={12}>
+							{/* Top controls for secondary 2 */}
+							<SecondaryMission
+								isVisible={player?.secondaryType !== undefined}
+								secondaryType={player?.secondaryType}
+								defender={player?.defender || false}
+								attacker={player?.attacker || false}
+								secondaryMission={currentRoundData.secondary2}
+								secondaryScore={currentRoundData.secondary2Score || 0}
+								roundIndex={currentRound}
+								canRedraw={canRedrawS2}
+								onDiscard={() => {
+									if (
+										currentRoundData.secondary2Score &&
+										currentRoundData.secondary2Score > 0
+									) {
+										onCompletedMissionChange(1, currentRound);
+									} else {
+										onDiscardedMissionChange(1, currentRound);
+									}
+								}}
+								onRedraw={() => onRandomTacticalMission(currentRound, 1)}
+								onKeep={() => setKeepSecondary2(!keepSecondary2)}
+								keepActive={keepSecondary2}
+								onDraw={() => onRandomTacticalMission(currentRound, 1)}
+								onChoose={() => onOpenModalS2()}
+								onScoreChange={(value) =>
+									onSecondaryScoreChange(currentRound, 1, value)
+								}
+							/>
+						</Col>
+					</>
+				)}
 			</Row>
 		</Col>
 	);

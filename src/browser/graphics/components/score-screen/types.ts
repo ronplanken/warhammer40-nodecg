@@ -44,6 +44,8 @@ export interface Player {
 	currentRound: number;
 	cp: number;
 	secondaryType?: "fixed" | "tactical";
+	defender?: boolean;
+	attacker?: boolean;
 	rounds: Round[];
 	secondaryDiscards: string[];
 	completedSecondaries: string[];

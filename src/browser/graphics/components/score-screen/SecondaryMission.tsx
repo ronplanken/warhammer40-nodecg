@@ -105,7 +105,7 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 					span={24}
 					className={`mission ${
 						secondaryMission
-							? secondaryMission?.replaceAll(" ", "")
+							? secondaryMission?.replaceAll(" ", "").replaceAll("'", "")
 							: (defender && "NONE_DEFENDER") || (attacker && "NONE_ATTACKER")
 					}`}
 				></Col>
