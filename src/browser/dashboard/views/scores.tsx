@@ -269,6 +269,23 @@ const MatchControl = () => {
 			...game,
 			currentRound: 0,
 			cpGrantedForRounds: [],
+			challenger: null,
+			challengerHistory: [null, null, null, null, null],
+			challengerCards: {
+				available: [
+					"attrition",
+					"dug in",
+					"establish comms",
+					"focused effort",
+					"over the line",
+					"secure extraction zone",
+					"self preservation",
+					"sow chaos",
+					"zone defence",
+				],
+				used: [],
+				currentCard: null,
+			},
 			deployment: "",
 			mission: "",
 		};

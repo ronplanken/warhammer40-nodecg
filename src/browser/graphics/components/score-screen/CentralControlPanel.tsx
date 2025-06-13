@@ -4,24 +4,32 @@ import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 
 interface CentralControlPanelProps {
 	currentRound: number;
+	challenger: string | null;
+	challengerCards: any;
 	onGlobalRoundChange: (value: number) => void;
 	onGlobalNextRound: () => void;
 	onOpenMissionsOverlay: () => void;
 	onOpenScoresOverlay: () => void;
+	onOpenChallengerCardOverlay: () => void;
+	onDrawChallengerCard: () => void;
 	maxRound?: number;
 }
 
 export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 	currentRound,
+	challenger,
+	challengerCards,
 	onGlobalRoundChange,
 	onGlobalNextRound,
 	onOpenMissionsOverlay,
 	onOpenScoresOverlay,
+	onOpenChallengerCardOverlay,
+	onDrawChallengerCard,
 	maxRound = 4,
 }) => {
 	return (
 		<Col
-			flex={"250px"}
+			span={3}
 			style={{
 				display: "flex",
 				flexDirection: "column",
@@ -72,13 +80,104 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 						SCORES
 					</Button>
 				</Col>
+				{/* Challenger Card Section */}
+				{challenger && (
+					<Col span={24}>
+						<div
+							style={{
+								textAlign: "center",
+								fontSize: "16px",
+								fontWeight: "bold",
+								marginBottom: "10px",
+								color: "#ff6b35",
+								fontFamily: "ConduitITC, times new roman, serif",
+								textTransform: "uppercase",
+							}}
+						>
+							CHALLENGER CARDS
+						</div>
+						<Button
+							type='primary'
+							size='large'
+							block
+							disabled={
+								!challengerCards?.available ||
+								challengerCards.available.length === 0 ||
+								(challengerCards?.currentCard &&
+									challengerCards.currentCard.round === currentRound)
+							}
+							onClick={onDrawChallengerCard}
+							style={{
+								padding: "12px 24px",
+								height: "60px",
+								fontSize: "18px",
+								fontWeight: "bold",
+								backgroundColor:
+									challengerCards?.available &&
+									challengerCards.available.length > 0 &&
+									!(
+										challengerCards?.currentCard &&
+										challengerCards.currentCard.round === currentRound
+									)
+										? "#ff6b35"
+										: "#666",
+								borderColor:
+									challengerCards?.available &&
+									challengerCards.available.length > 0 &&
+									!(
+										challengerCards?.currentCard &&
+										challengerCards.currentCard.round === currentRound
+									)
+										? "#ff6b35"
+										: "#666",
+								fontFamily: "ConduitITC, times new roman, serif",
+							}}
+						>
+							{challengerCards?.currentCard &&
+							challengerCards.currentCard.round === currentRound
+								? "CARD DRAWN"
+								: "DRAW CHALLENGER"}
+						</Button>
+						{challengerCards?.currentCard && (
+							<div style={{marginTop: "10px", textAlign: "center"}}>
+								{/* Small card image */}
+								<div
+									className={`challenger-card-small ${challengerCards.currentCard.cardName
+										.toLowerCase()
+										.replace(/[^a-z0-9]/g, "")}`}
+									onClick={onOpenChallengerCardOverlay}
+									style={{
+										margin: "0 auto",
+									}}
+								/>
+								{/* Card name below image */}
+								<div
+									style={{
+										marginTop: "8px",
+										padding: "4px 8px",
+										backgroundColor: "#333",
+										borderRadius: "4px",
+										color: "#fff",
+										fontSize: "24px",
+										textAlign: "center",
+										fontFamily: "ConduitITC, times new roman, serif",
+									}}
+								>
+									{challengerCards.currentCard.cardName.replace(/\b\w/g, (l) =>
+										l.toUpperCase(),
+									)}
+								</div>
+							</div>
+						)}
+					</Col>
+				)}
 			</Row>
 
-			{/* Spacer to push round controls to middle */}
+			{/* Spacer to push round controls to bottom */}
 			<div style={{flex: 1}} />
 
-			{/* Round Controls - Centered vertically */}
-			<Row gutter={[0, 20]} style={{width: "100%"}}>
+			{/* Round Controls - Aligned to bottom */}
+			<Row gutter={[0, 20]} style={{width: "100%", paddingBottom: "64px"}}>
 				<Col span={24}>
 					<div
 						style={{
@@ -95,7 +194,7 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 					</div>
 				</Col>
 				<Col span={24}>
-					<Row align='middle' justify='center' gutter={12}>
+					<Row align='middle' justify='center' gutter={8}>
 						<Col>
 							<Button
 								type='primary'
@@ -105,7 +204,7 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 									display: "flex",
 									alignItems: "center",
 									justifyContent: "center",
-									width: "50px",
+									width: "48px",
 									height: "50px",
 								}}
 							>
@@ -117,11 +216,10 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 								style={{
 									fontSize: "32px",
 									fontWeight: "bold",
-									padding: "12px 20px",
+									padding: "8px 16px",
 									backgroundColor: "#fff",
 									border: "3px solid #0d4d6b",
 									borderRadius: "8px",
-									minWidth: "80px",
 									textAlign: "center",
 									color: "#2c2c2c",
 									fontFamily: "ConduitITC, times new roman, serif",
@@ -141,7 +239,7 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 									display: "flex",
 									alignItems: "center",
 									justifyContent: "center",
-									width: "50px",
+									width: "48px",
 									height: "50px",
 								}}
 							>
@@ -151,9 +249,6 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 					</Row>
 				</Col>
 			</Row>
-
-			{/* Spacer to balance the layout */}
-			<div style={{flex: 1}} />
 		</Col>
 	);
 };

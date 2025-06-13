@@ -81,7 +81,12 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 									</Col>
 									{roundIndex === 0 && canRedraw && (
 										<Col>
-											<Button onClick={onRedraw}>Recycle</Button>
+											<Button
+												onClick={onRedraw}
+												className='mission-secondary-button'
+											>
+												Recycle
+											</Button>
 										</Col>
 									)}
 								</>
@@ -102,7 +107,11 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 					}`}
 				></Col>
 			</Row>
-			<Row justify='center' className='secondary-actions'>
+			<Row
+				justify='center'
+				className='secondary-actions'
+				style={{paddingBottom: "16px"}}
+			>
 				<Col>
 					<Button
 						type='primary'

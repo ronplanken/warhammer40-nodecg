@@ -1,6 +1,18 @@
 import {NodeCG} from "./nodecg";
 
 export default (nodecg: NodeCG) => {
+	const challengerCardNames = [
+		"attrition",
+		"dug in",
+		"establish comms",
+		"focused effort",
+		"over the line",
+		"secure extraction zone",
+		"self preservation",
+		"sow chaos",
+		"zone defence",
+	];
+
 	const defaultMatchData = {
 		game: {
 			playerAWonRollOff: false,
@@ -8,6 +20,11 @@ export default (nodecg: NodeCG) => {
 			cpGrantedForRounds: [],
 			challenger: null,
 			challengerHistory: [null, null, null, null, null],
+			challengerCards: {
+				available: [...challengerCardNames],
+				used: [],
+				currentCard: null,
+			},
 		},
 		playerA: {
 			secondaryType: "fixed",

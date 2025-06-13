@@ -11,6 +11,7 @@ import {DeckModal} from "../components/score-screen/DeckModal";
 import {MissionModal} from "../components/score-screen/MissionModal";
 import {MissionsOverlay} from "../components/score-screen/MissionsOverlay";
 import {ScoresOverlay} from "../components/score-screen/ScoresOverlay";
+import {ChallengerCardOverlay} from "../components/score-screen/ChallengerCardOverlay";
 import {PlayerSection} from "../components/score-screen/PlayerSection";
 import {CentralControlPanel} from "../components/score-screen/CentralControlPanel";
 import {
@@ -39,6 +40,8 @@ const App = () => {
 	const [isModalP2Deck, setIsModalP2Deck] = useState(false);
 	const [isMissionsOverlayOpen, setIsMissionsOverlayOpen] = useState(false);
 	const [isScoresOverlayOpen, setIsScoresOverlayOpen] = useState(false);
+	const [isChallengerCardOverlayOpen, setIsChallengerCardOverlayOpen] =
+		useState(false);
 
 	// Helper function to calculate total score for a player up to a specific round (exclusive)
 	const calculateTotalScoreUpToRound = (player, upToRound) => {
@@ -77,6 +80,19 @@ const App = () => {
 		return null;
 	};
 
+	// Helper function to find the challenger card for a specific round
+	const findChallengerCardForRound = (challengerCards, round) => {
+		if (!challengerCards?.used || challengerCards.used.length === 0) {
+			return null;
+		}
+
+		// Find the card that was drawn for this specific round
+		const cardForRound = challengerCards.used.find(
+			(card) => card.round === round,
+		);
+		return cardForRound || null;
+	};
+
 	// Helper functions for updating data
 	const updateGlobalRound = (value) => {
 		if (value < 0 || value > 4) return; // Validate round range
@@ -91,12 +107,22 @@ const App = () => {
 		}
 		challengerHistory[value] = challenger;
 
+		// Check if there's already a card drawn for this round
+		const existingCard = findChallengerCardForRound(
+			game?.challengerCards,
+			value,
+		);
+
 		// Update game round and challenger status
 		gameRep.value = {
 			...game,
 			currentRound: value,
 			challenger: challenger,
 			challengerHistory: challengerHistory,
+			challengerCards: {
+				...game?.challengerCards,
+				currentCard: existingCard, // Restore existing card or null if none
+			},
 		};
 	};
 
@@ -149,6 +175,12 @@ const App = () => {
 		}
 		challengerHistory[nextRound] = challenger;
 
+		// Check if there's already a card drawn for the next round
+		const existingCard = findChallengerCardForRound(
+			game?.challengerCards,
+			nextRound,
+		);
+
 		// Update global round and CP tracking
 		gameRep.value = {
 			...game,
@@ -158,6 +190,10 @@ const App = () => {
 			cpGrantedForRounds: shouldGrantCP
 				? [...cpGrantedForRounds, nextRound]
 				: cpGrantedForRounds,
+			challengerCards: {
+				...game?.challengerCards,
+				currentCard: existingCard, // Restore existing card or null if none
+			},
 		};
 	};
 
@@ -491,11 +527,69 @@ const App = () => {
 	const p1DeckList = getDeckList("playerA");
 	const p2DeckList = getDeckList("playerB");
 
+	// Challenger card drawing function
+	const drawChallengerCard = () => {
+		const challengerCards = game?.challengerCards;
+		const currentChallenger = game?.challenger;
+		const currentRound = game?.currentRound || 0;
+
+		if (
+			!currentChallenger ||
+			!challengerCards ||
+			challengerCards.available.length === 0
+		) {
+			messageApi.open({
+				type: "error",
+				content: "No challenger cards available or no challenger player.",
+			});
+			return;
+		}
+
+		// Pick a random card from available cards
+		const availableCards = challengerCards.available;
+		const randomIndex = Math.floor(Math.random() * availableCards.length);
+		const drawnCard = availableCards[randomIndex];
+
+		// Remove the card from available and add to used
+		const newAvailable = availableCards.filter(
+			(_, index) => index !== randomIndex,
+		);
+		const newUsed = [
+			...challengerCards.used,
+			{
+				cardName: drawnCard,
+				round: currentRound,
+				player: currentChallenger,
+			},
+		];
+
+		// Update the game state
+		gameRep.value = {
+			...game,
+			challengerCards: {
+				available: newAvailable,
+				used: newUsed,
+				currentCard: {
+					cardName: drawnCard,
+					round: currentRound,
+					player: currentChallenger,
+				},
+			},
+		};
+
+		messageApi.open({
+			type: "success",
+			content: `Drew challenger card: ${drawnCard.replace(/\b\w/g, (l) =>
+				l.toUpperCase(),
+			)}`,
+		});
+	};
+
 	return (
 		<>
 			{contextHolder}
 			<div className='score-screen'>
-				<Row>
+				<Row justify={"space-evenly"} gutter={0}>
 					{/* Player A Section */}
 					<PlayerSection
 						player={matchData?.playerA}
@@ -534,10 +628,16 @@ const App = () => {
 					{/* Central Control Panel */}
 					<CentralControlPanel
 						currentRound={game?.currentRound || 0}
+						challenger={game?.challenger}
+						challengerCards={game?.challengerCards}
 						onGlobalRoundChange={updateGlobalRound}
 						onGlobalNextRound={updateGlobalNextRound}
 						onOpenMissionsOverlay={() => setIsMissionsOverlayOpen(true)}
 						onOpenScoresOverlay={() => setIsScoresOverlayOpen(true)}
+						onOpenChallengerCardOverlay={() =>
+							setIsChallengerCardOverlayOpen(true)
+						}
+						onDrawChallengerCard={drawChallengerCard}
 					/>
 
 					{/* Player B Section */}
@@ -640,6 +740,12 @@ const App = () => {
 				<ScoresOverlay
 					isVisible={isScoresOverlayOpen}
 					onClose={() => setIsScoresOverlayOpen(false)}
+				/>
+
+				{/* Challenger Card Overlay */}
+				<ChallengerCardOverlay
+					isVisible={isChallengerCardOverlayOpen}
+					onClose={() => setIsChallengerCardOverlayOpen(false)}
 				/>
 			</div>
 		</>

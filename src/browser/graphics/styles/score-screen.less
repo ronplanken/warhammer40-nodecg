@@ -29,9 +29,7 @@ body {
   overflow: hidden;
 }
 .score-screen {
-	background-color: rgb(212, 212, 212);
-
-	.playerA {
+	background-color: rgb(212, 212, 212);		.playerA {
 		height: 100vh;
 		color: white;
 		background-color: #4c0606;
@@ -55,10 +53,11 @@ body {
 		}
 		.main-bar,
 		.secondary-actions {
-			padding-top: 8px;
+			padding-top: 0px;
+      padding-bottom: 8px;
 
 			button {
-				font-size: 18px;
+				font-size: 32px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
@@ -129,6 +128,12 @@ body {
 				color: white;
 				font-weight: bold;
 				border-color: #0d4d6b;
+        font-size: 28px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				line-height: 1;
+				padding: 0;
 
 				&:hover,
 				&:focus {
@@ -159,6 +164,18 @@ body {
 						border-color: #18a449;
 					}
 				}
+			}
+			.mission-secondary-button {
+				width: 135px;
+				font-weight: bold;
+				border-color: #0d4d6b;
+        font-size: 28px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				line-height: 1;
+				padding: 0;
+
 			}
 			.mission-primary-button {
 				width: 150px;
@@ -267,10 +284,11 @@ body {
 		}
 		.main-bar,
 		.secondary-actions {
-			padding-top: 8px;
+			padding-top: 0px;
+      padding-bottom: 8px;
 
 			button {
-				font-size: 18px;
+				font-size: 32px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
@@ -341,6 +359,12 @@ body {
 				color: white;
 				font-weight: bold;
 				border-color: #0d4d6b;
+        font-size: 28px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				line-height: 1;
+				padding: 0;
 
 				&:hover,
 				&:focus {
@@ -821,6 +845,79 @@ body {
 .secondary-score,
 .cp-value {
 	font-family: Bahnschrift, Arial, sans-serif !important;
+}
+
+// Challenger card styles
+.challenger-card-small {
+	width: 180px;
+	height: 240px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	border: 2px solid #ff6b35;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	
+	&:hover {
+		transform: scale(1.05);
+		box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+	}
+}
+
+.challenger-card-large {
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+
+// Individual challenger card background images
+.attrition {
+	background-image: url("./images/challenger/attrition.png");
+}
+
+.dugin {
+	background-image: url("./images/challenger/dug in.png");
+}
+
+.establishcomms {
+	background-image: url("./images/challenger/establish comms.png");
+}
+
+.focusedeffort {
+	background-image: url("./images/challenger/focused effort.png");
+}
+
+.overtheline {
+	background-image: url("./images/challenger/over the line.png");
+}
+
+.secureextractionzone {
+	background-image: url("./images/challenger/secure extraction zone.png");
+}
+
+.selfpreservation {
+	background-image: url("./images/challenger/self preservation.png");
+}
+
+.sowchaos {
+	background-image: url("./images/challenger/sow chaos.png");
+}
+
+.zonedefence {
+	background-image: url("./images/challenger/zone defence.png");
+}
+
+// Challenger card overlay styles
+.challenger-card-overlay {
+	.ant-modal-content {
+		background-color: #1a1a1a;
+		border-radius: 8px;
+	}
+
+	.ant-modal-body {
+		padding: 20px;
+	}
 }
 
 

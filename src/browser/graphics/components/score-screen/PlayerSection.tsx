@@ -87,7 +87,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 			currentRoundData.secondary2 === "BEHIND ENEMY LINES");
 
 	return (
-		<Col className={playerKey} flex={18}>
+		<Col className={playerKey} flex={2}>
 			<Row justify='space-between' align='middle'>
 				{alignment === "left" && (
 					<>

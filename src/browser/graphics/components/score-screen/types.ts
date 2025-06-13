@@ -31,6 +31,18 @@ export const tacticalMissionOptions = [
 	"DISPLAY OF MIGHT",
 ];
 
+export const challengerCardOptions = [
+	"attrition",
+	"dug in",
+	"establish comms",
+	"focused effort",
+	"over the line",
+	"secure extraction zone",
+	"self preservation",
+	"sow chaos",
+	"zone defence",
+];
+
 export interface Round {
 	primaryScore?: number;
 	secondary1?: string;
@@ -53,4 +65,16 @@ export interface Player {
 export interface MissionItem {
 	name: string;
 	type: "default" | "used" | "discarded";
+}
+
+export interface ChallengerCard {
+	cardName: string;
+	round: number;
+	player: "playerA" | "playerB";
+}
+
+export interface ChallengerCards {
+	available: string[];
+	used: ChallengerCard[];
+	currentCard: ChallengerCard | null;
 }
