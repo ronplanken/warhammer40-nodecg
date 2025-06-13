@@ -1,7 +1,17 @@
 import {render} from "../../render";
 import {useReplicant} from "../../use-replicant";
 
-import {Col, Input, Row, Space, Typography, Checkbox, Select} from "antd";
+import {
+	Col,
+	Input,
+	Row,
+	Space,
+	Typography,
+	Checkbox,
+	Select,
+	Popconfirm,
+	Button,
+} from "antd";
 
 const App = () => {
 	const gameRep = nodecg.Replicant("game");
@@ -17,8 +27,31 @@ const App = () => {
 		};
 	};
 
+	const resetMatchData = () => {
+		// Reset the game replicant to clear currentRound and cpGrantedForRounds
+		gameRep.value = {
+			currentRound: 0,
+			cpGrantedForRounds: [],
+			deployment: "",
+			mission: "",
+		};
+	};
+
 	return (
 		<Space direction='vertical' style={{width: "100%", minHeight: "450px"}}>
+			<Row align='middle' gutter={16}>
+				<Col span={4} style={{textAlign: "right", color: "white"}}>
+					<Popconfirm
+						title='Reset Matchdata'
+						description='Weet je zeker dat je deze data wilt resetten?'
+						onConfirm={() => resetMatchData()}
+						okText='Ja'
+						cancelText='Nee'
+					>
+						<Button danger>Reset Matchdata</Button>
+					</Popconfirm>
+				</Col>
+			</Row>
 			<Typography.Title level={4} style={{color: "white"}}>
 				GAME
 			</Typography.Title>

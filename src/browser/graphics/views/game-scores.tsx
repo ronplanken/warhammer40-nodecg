@@ -44,7 +44,7 @@ const App = () => {
 						<Col
 							span={6}
 							className={`player playerA ${
-								matchData?.playerA?.currentRound === roundIndex ? "active" : ""
+								game?.currentRound === roundIndex ? "active" : ""
 							}`}
 						>
 							<Row gutter={16}>
@@ -77,7 +77,7 @@ const App = () => {
 						<Col
 							span={6}
 							className={`player playerB ${
-								matchData?.playerB?.currentRound === roundIndex ? "active" : ""
+								game?.currentRound === roundIndex ? "active" : ""
 							}`}
 						>
 							<Row gutter={16}>

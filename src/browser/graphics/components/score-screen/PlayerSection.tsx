@@ -11,9 +11,10 @@ interface PlayerSectionProps {
 	playerKey: "playerA" | "playerB";
 	playerName?: string;
 	alignment: "left" | "right";
+	currentRound: number;
 	onSecondaryTypeChange: (type: string) => void;
 	onCpChange: (value: number) => void;
-	onRoundChange: (value: number) => void;
+	onGlobalRoundChange?: (value: number) => void;
 	onPrimaryScoreChange: (value: number) => void;
 	onSecondaryScoreChange: (
 		roundIndex: number,
@@ -31,7 +32,7 @@ interface PlayerSectionProps {
 	) => void;
 	onRandomTacticalMission: (roundIndex: number, secondaryIndex: number) => void;
 	onOpenDeckList: () => void;
-	onNextRound: (currentRound: number, nextRound: number) => void;
+	onGlobalNextRound?: () => void;
 	onOpenModalS1: () => void;
 	onOpenModalS2: () => void;
 }
@@ -41,24 +42,23 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	playerKey,
 	playerName,
 	alignment,
+	currentRound,
 	onSecondaryTypeChange,
 	onCpChange,
-	onRoundChange,
+	onGlobalRoundChange,
 	onPrimaryScoreChange,
 	onSecondaryScoreChange,
 	onCompletedMissionChange,
 	onDiscardedMissionChange,
 	onRandomTacticalMission,
 	onOpenDeckList,
-	onNextRound,
+	onGlobalNextRound,
 	onDefenderAttackerChange,
 	onOpenModalS1,
 	onOpenModalS2,
 }) => {
-	const currentRound = player?.currentRound || 0;
 	const rounds = player?.rounds || [];
 	const currentRoundData = rounds[currentRound] || {};
-	const nextRound = currentRound + 1;
 
 	// Calculate statistics
 	const totalVP = rounds.reduce((total, round) => {
@@ -76,13 +76,6 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	const totalSecondaryScore = rounds.reduce((total, round) => {
 		return total + (round.secondary1Score || 0) + (round.secondary2Score || 0);
 	}, 0);
-
-	const handleNextRound = () => {
-		if (currentRound >= 4) return;
-
-		// Use the new onNextRound function that handles all changes in one atomic operation
-		onNextRound(currentRound, nextRound);
-	};
 
 	// Check if mission can be redrawn (only in round 0 for certain missions)
 	const canRedrawS1 =
@@ -187,10 +180,11 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 							cp={player.cp}
 							currentRound={currentRound}
 							primaryScore={currentRoundData.primaryScore || 0}
+							alignment={alignment}
 							onCpChange={onCpChange}
-							onRoundChange={onRoundChange}
+							onGlobalRoundChange={onGlobalRoundChange}
 							onPrimaryScoreChange={onPrimaryScoreChange}
-							onNextRound={handleNextRound}
+							onGlobalNextRound={onGlobalNextRound}
 						/>
 					) : (
 						<Row

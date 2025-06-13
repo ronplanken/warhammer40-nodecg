@@ -26,6 +26,9 @@ const App = () => {
 	const matchDataRep = nodecg.Replicant("scores");
 	const matchData = useReplicant("scores");
 
+	const gameRep = nodecg.Replicant("game");
+	const game = useReplicant("game");
+
 	// Modal states
 	const [isModalP1S1, setIsModalP1S1] = useState(false);
 	const [isModalP1S2, setIsModalP1S2] = useState(false);
@@ -37,18 +40,68 @@ const App = () => {
 	const [isScoresOverlayOpen, setIsScoresOverlayOpen] = useState(false);
 
 	// Helper functions for updating data
-	const updateRound = (player, value) => {
+	const updateGlobalRound = (value) => {
 		if (value < 0 || value > 4) return; // Validate round range
 
-		matchDataRep.value = {
-			...matchData,
-			[player]: {...matchData[player], currentRound: value},
+		// Update game round and CP tracking
+		gameRep.value = {
+			...game,
+			currentRound: value,
 		};
 	};
 
-	// New function to handle next round with secondaries in one operation
-	const updateNextRound = (player, currentRound, nextRound) => {
-		if (nextRound < 0 || nextRound > 4) return; // Validate round range
+	const updateGlobalNextRound = () => {
+		const currentRound = game?.currentRound || 0;
+		const nextRound = currentRound + 1;
+
+		if (nextRound > 4) return;
+
+		// Handle secondary missions for both players using current state
+		const playerAUpdates = processNextRoundForPlayer(
+			"playerA",
+			currentRound,
+			nextRound,
+		);
+		const playerBUpdates = processNextRoundForPlayer(
+			"playerB",
+			currentRound,
+			nextRound,
+		);
+
+		// Check if CP has already been granted for this round transition
+		const cpGrantedForRounds = game?.cpGrantedForRounds || [];
+		const shouldGrantCP = !cpGrantedForRounds.includes(nextRound);
+		console.log(`Granting CP for round ${nextRound}: ${shouldGrantCP}`);
+		console.log(`cpGrantedForRounds:`, game);
+		// Calculate CP increases for advancing round (only if not already granted)
+		const cpIncrease = shouldGrantCP ? nextRound - currentRound : 0;
+
+		// Apply all updates together including CP increases
+		matchDataRep.value = {
+			...matchData,
+			playerA: {
+				...playerAUpdates,
+				cp: (playerAUpdates.cp || 0) + cpIncrease,
+			},
+			playerB: {
+				...playerBUpdates,
+				cp: (playerBUpdates.cp || 0) + cpIncrease,
+			},
+		};
+
+		// Update global round and CP tracking
+		gameRep.value = {
+			...game,
+			currentRound: nextRound,
+			cpGrantedForRounds: shouldGrantCP
+				? [...cpGrantedForRounds, nextRound]
+				: cpGrantedForRounds,
+		};
+	};
+
+	// Function to process next round changes for a specific player without applying them
+	const processNextRoundForPlayer = (player, currentRound, nextRound) => {
+		if (nextRound < 0 || nextRound > 4) return matchData[player]; // Return unchanged if invalid
 
 		// Make a deep copy of the player data to work with
 		const playerData = JSON.parse(JSON.stringify(matchData[player]));
@@ -131,14 +184,7 @@ const App = () => {
 			}
 		}
 
-		// Update the round
-		playerData.currentRound = nextRound;
-
-		// Apply all changes in one operation
-		matchDataRep.value = {
-			...matchData,
-			[player]: playerData,
-		};
+		return playerData;
 	};
 
 	const updateSecondaryType = (player, value) => {
@@ -248,8 +294,6 @@ const App = () => {
 			...updatedRounds[roundIndex],
 			[secondaryKey]: value,
 		};
-		console.log("updatedRounds", updatedRounds);
-		console.log("matchData", matchData);
 		matchDataRep.value = {
 			...matchData,
 			[player]: {...matchData[player], rounds: updatedRounds},
@@ -436,6 +480,7 @@ const App = () => {
 						playerKey='playerA'
 						playerName={p1?.name}
 						alignment='left'
+						currentRound={game?.currentRound || 0}
 						onSecondaryTypeChange={(type) =>
 							updateSecondaryType("playerA", type)
 						}
@@ -443,13 +488,9 @@ const App = () => {
 							updateDefenderAttacker("playerA", defender, attacker)
 						}
 						onCpChange={(value) => updateCp("playerA", value)}
-						onRoundChange={(value) => updateRound("playerA", value)}
+						onGlobalRoundChange={updateGlobalRound}
 						onPrimaryScoreChange={(value) =>
-							updatePrimaryScore(
-								"playerA",
-								matchData?.playerA?.currentRound || 0,
-								value,
-							)
+							updatePrimaryScore("playerA", game?.currentRound || 0, value)
 						}
 						onSecondaryScoreChange={(roundIndex, secondaryIndex, value) =>
 							updateSecondaryScore("playerA", roundIndex, secondaryIndex, value)
@@ -464,9 +505,7 @@ const App = () => {
 							getRandomTacticalMission("playerA", roundIndex, secondaryIndex)
 						}
 						onOpenDeckList={() => setIsModalP1Deck(true)}
-						onNextRound={(currentRound, nextRound) =>
-							updateNextRound("playerA", currentRound, nextRound)
-						}
+						onGlobalNextRound={updateGlobalNextRound}
 						onOpenModalS1={() => setIsModalP1S1(true)}
 						onOpenModalS2={() => setIsModalP1S2(true)}
 					/>
@@ -477,6 +516,7 @@ const App = () => {
 						playerKey='playerB'
 						playerName={p2?.name}
 						alignment='right'
+						currentRound={game?.currentRound || 0}
 						onSecondaryTypeChange={(type) =>
 							updateSecondaryType("playerB", type)
 						}
@@ -484,13 +524,9 @@ const App = () => {
 							updateDefenderAttacker("playerB", defender, attacker)
 						}
 						onCpChange={(value) => updateCp("playerB", value)}
-						onRoundChange={(value) => updateRound("playerB", value)}
+						onGlobalRoundChange={updateGlobalRound}
 						onPrimaryScoreChange={(value) =>
-							updatePrimaryScore(
-								"playerB",
-								matchData?.playerB?.currentRound || 0,
-								value,
-							)
+							updatePrimaryScore("playerB", game?.currentRound || 0, value)
 						}
 						onSecondaryScoreChange={(roundIndex, secondaryIndex, value) =>
 							updateSecondaryScore("playerB", roundIndex, secondaryIndex, value)
@@ -505,9 +541,7 @@ const App = () => {
 							getRandomTacticalMission("playerB", roundIndex, secondaryIndex)
 						}
 						onOpenDeckList={() => setIsModalP2Deck(true)}
-						onNextRound={(currentRound, nextRound) =>
-							updateNextRound("playerB", currentRound, nextRound)
-						}
+						onGlobalNextRound={updateGlobalNextRound}
 						onOpenModalS1={() => setIsModalP2S1(true)}
 						onOpenModalS2={() => setIsModalP2S2(true)}
 					/>

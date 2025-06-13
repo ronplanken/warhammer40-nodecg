@@ -6,6 +6,7 @@ import {useReplicant} from "../../use-replicant.js";
 
 const App = () => {
 	const matchData = useReplicant("scores");
+	const game = useReplicant("game");
 
 	const params = new URLSearchParams(window.location.search);
 	let round = params.get("round");
@@ -19,7 +20,7 @@ const App = () => {
 		return <div className='vp'>No secondary specified</div>;
 	}
 	if (!round) {
-		round = matchData?.[player]?.currentRound;
+		round = game?.currentRound || 0;
 	}
 
 	const rounds = matchData?.[player]?.rounds || [];

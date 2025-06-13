@@ -4,6 +4,8 @@ export default (nodecg: NodeCG) => {
 	const defaultMatchData = {
 		game: {
 			playerAWonRollOff: false,
+			currentRound: 0,
+			cpGrantedForRounds: [],
 		},
 		playerA: {
 			secondaryType: "fixed",

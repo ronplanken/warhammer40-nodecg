@@ -49,6 +49,10 @@ const tacticalMissionOptions = [
 const MatchControl = () => {
 	const matchDataRep = nodecg.Replicant("scores");
 	const matchData = useReplicant("scores");
+
+	const gameRep = nodecg.Replicant("game");
+	const game = useReplicant("game");
+
 	console.log(matchData);
 	// Specifieke update functies
 	const updateRollOffWinner = (value) => {
@@ -160,13 +164,14 @@ const MatchControl = () => {
 		const defaultMatchData = {
 			game: {
 				playerAWonRollOff: false,
+				currentRound: 0,
+				cpGrantedForRounds: [],
 			},
 			playerA: {
 				secondaryType: undefined,
 				cp: 0,
 				fixedSecondaries: [null, null],
 				primaryScore: 0,
-				currentRound: 0,
 				secondaryDiscards: [],
 				completedSecondaries: [],
 				rounds: [
@@ -212,7 +217,6 @@ const MatchControl = () => {
 				cp: 0,
 				fixedSecondaries: [null, null],
 				primaryScore: 0,
-				currentRound: 0,
 				secondaryDiscards: [],
 				completedSecondaries: [],
 				rounds: [
@@ -255,8 +259,17 @@ const MatchControl = () => {
 			},
 		};
 
-		// Maak de Replicant aan met de default waarde
+		// Reset the match data replicant
 		matchDataRep.value = defaultMatchData;
+
+		// Reset the game replicant to clear currentRound and cpGrantedForRounds
+		gameRep.value = {
+			...game,
+			currentRound: 0,
+			cpGrantedForRounds: [],
+			deployment: "",
+			mission: "",
+		};
 	};
 
 	return (

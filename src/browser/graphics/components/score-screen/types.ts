@@ -41,7 +41,6 @@ export interface Round {
 
 export interface Player {
 	name?: string;
-	currentRound: number;
 	cp: number;
 	secondaryType?: "fixed" | "tactical";
 	defender?: boolean;
