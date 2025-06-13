@@ -1,7 +1,7 @@
 import "modern-normalize";
 import "../styles/score-screen.less";
 
-import {Row, Col, Button, message} from "antd";
+import {Row, message} from "antd";
 import {useState} from "react";
 import {render} from "../../render.js";
 import {useReplicant} from "../../use-replicant.js";
@@ -12,6 +12,7 @@ import {MissionModal} from "../components/score-screen/MissionModal";
 import {MissionsOverlay} from "../components/score-screen/MissionsOverlay";
 import {ScoresOverlay} from "../components/score-screen/ScoresOverlay";
 import {PlayerSection} from "../components/score-screen/PlayerSection";
+import {CentralControlPanel} from "../components/score-screen/CentralControlPanel";
 import {
 	MissionItem,
 	tacticalMissionOptions,
@@ -39,14 +40,63 @@ const App = () => {
 	const [isMissionsOverlayOpen, setIsMissionsOverlayOpen] = useState(false);
 	const [isScoresOverlayOpen, setIsScoresOverlayOpen] = useState(false);
 
+	// Helper function to calculate total score for a player up to a specific round (exclusive)
+	const calculateTotalScoreUpToRound = (player, upToRound) => {
+		if (!matchData?.[player]) return 10; // Start with 10 base points
+
+		const rounds = matchData[player].rounds || [];
+		let totalScore = 10; // Base score
+
+		for (let i = 0; i < upToRound && i < rounds.length; i++) {
+			const round = rounds[i];
+			totalScore +=
+				(round.primaryScore || 0) +
+				(round.secondary1Score || 0) +
+				(round.secondary2Score || 0);
+		}
+
+		return totalScore;
+	};
+
+	// Helper function to determine challenger status for a given round
+	const determineChallenger = (currentRound) => {
+		if (currentRound < 1) return null; // No challenger for rounds 1
+
+		// Calculate total scores up to (but not including) the current round
+		const playerAScore = calculateTotalScoreUpToRound("playerA", currentRound);
+		const playerBScore = calculateTotalScoreUpToRound("playerB", currentRound);
+
+		const scoreDifference = Math.abs(playerAScore - playerBScore);
+
+		// Only set challenger if difference is 6 or more
+		if (scoreDifference >= 6) {
+			// Player with lowest score becomes challenger
+			return playerAScore < playerBScore ? "playerA" : "playerB";
+		}
+
+		return null;
+	};
+
 	// Helper functions for updating data
 	const updateGlobalRound = (value) => {
 		if (value < 0 || value > 4) return; // Validate round range
 
-		// Update game round and CP tracking
+		// Determine challenger status for this round
+		const challenger = determineChallenger(value);
+
+		// Update challenger history - ensure it's properly sized for all rounds
+		const challengerHistory = game?.challengerHistory || [];
+		while (challengerHistory.length <= value) {
+			challengerHistory.push(null);
+		}
+		challengerHistory[value] = challenger;
+
+		// Update game round and challenger status
 		gameRep.value = {
 			...game,
 			currentRound: value,
+			challenger: challenger,
+			challengerHistory: challengerHistory,
 		};
 	};
 
@@ -89,10 +139,22 @@ const App = () => {
 			},
 		};
 
+		// Determine challenger status for the new round
+		const challenger = determineChallenger(nextRound);
+
+		// Update challenger history - ensure it's properly sized for all rounds
+		const challengerHistory = game?.challengerHistory || [];
+		while (challengerHistory.length <= nextRound) {
+			challengerHistory.push(null);
+		}
+		challengerHistory[nextRound] = challenger;
+
 		// Update global round and CP tracking
 		gameRep.value = {
 			...game,
 			currentRound: nextRound,
+			challenger: challenger,
+			challengerHistory: challengerHistory,
 			cpGrantedForRounds: shouldGrantCP
 				? [...cpGrantedForRounds, nextRound]
 				: cpGrantedForRounds,
@@ -433,46 +495,6 @@ const App = () => {
 		<>
 			{contextHolder}
 			<div className='score-screen'>
-				{/* Action Buttons */}
-				<Row
-					justify='center'
-					gutter={16}
-					style={{
-						position: "absolute",
-						top: "20px",
-						left: "50%",
-						transform: "translateX(-50%)",
-						zIndex: 10,
-					}}
-				>
-					<Col>
-						<Button
-							type='primary'
-							size='large'
-							onClick={() => setIsMissionsOverlayOpen(true)}
-							style={{
-								padding: "8px 24px",
-								height: "auto",
-							}}
-						>
-							Missions
-						</Button>
-					</Col>
-					<Col>
-						<Button
-							type='primary'
-							size='large'
-							onClick={() => setIsScoresOverlayOpen(true)}
-							style={{
-								padding: "8px 24px",
-								height: "auto",
-							}}
-						>
-							Scores
-						</Button>
-					</Col>
-				</Row>
-
 				<Row>
 					{/* Player A Section */}
 					<PlayerSection
@@ -481,6 +503,7 @@ const App = () => {
 						playerName={p1?.name}
 						alignment='left'
 						currentRound={game?.currentRound || 0}
+						isChallenger={game?.challenger === "playerA"}
 						onSecondaryTypeChange={(type) =>
 							updateSecondaryType("playerA", type)
 						}
@@ -488,7 +511,6 @@ const App = () => {
 							updateDefenderAttacker("playerA", defender, attacker)
 						}
 						onCpChange={(value) => updateCp("playerA", value)}
-						onGlobalRoundChange={updateGlobalRound}
 						onPrimaryScoreChange={(value) =>
 							updatePrimaryScore("playerA", game?.currentRound || 0, value)
 						}
@@ -505,9 +527,17 @@ const App = () => {
 							getRandomTacticalMission("playerA", roundIndex, secondaryIndex)
 						}
 						onOpenDeckList={() => setIsModalP1Deck(true)}
-						onGlobalNextRound={updateGlobalNextRound}
 						onOpenModalS1={() => setIsModalP1S1(true)}
 						onOpenModalS2={() => setIsModalP1S2(true)}
+					/>
+
+					{/* Central Control Panel */}
+					<CentralControlPanel
+						currentRound={game?.currentRound || 0}
+						onGlobalRoundChange={updateGlobalRound}
+						onGlobalNextRound={updateGlobalNextRound}
+						onOpenMissionsOverlay={() => setIsMissionsOverlayOpen(true)}
+						onOpenScoresOverlay={() => setIsScoresOverlayOpen(true)}
 					/>
 
 					{/* Player B Section */}
@@ -517,6 +547,7 @@ const App = () => {
 						playerName={p2?.name}
 						alignment='right'
 						currentRound={game?.currentRound || 0}
+						isChallenger={game?.challenger === "playerB"}
 						onSecondaryTypeChange={(type) =>
 							updateSecondaryType("playerB", type)
 						}
@@ -524,7 +555,6 @@ const App = () => {
 							updateDefenderAttacker("playerB", defender, attacker)
 						}
 						onCpChange={(value) => updateCp("playerB", value)}
-						onGlobalRoundChange={updateGlobalRound}
 						onPrimaryScoreChange={(value) =>
 							updatePrimaryScore("playerB", game?.currentRound || 0, value)
 						}
@@ -541,7 +571,6 @@ const App = () => {
 							getRandomTacticalMission("playerB", roundIndex, secondaryIndex)
 						}
 						onOpenDeckList={() => setIsModalP2Deck(true)}
-						onGlobalNextRound={updateGlobalNextRound}
 						onOpenModalS1={() => setIsModalP2S1(true)}
 						onOpenModalS2={() => setIsModalP2S2(true)}
 					/>

@@ -12,6 +12,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 	onClose,
 }) => {
 	const matchData = useReplicant("scores");
+	const game = useReplicant("game");
 	const p1 = useReplicant("player1");
 	const p2 = useReplicant("player2");
 
@@ -25,6 +26,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			secondary2Name: round.secondary2 || "-",
 			secondary2Score: round.secondary2Score || 0,
 			primaryScore: round.primaryScore || 0,
+			isChallenger: game?.challengerHistory?.[index] === "playerA",
 		})) || [];
 
 	// Prepare table data for Player B
@@ -37,6 +39,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			secondary2Name: round.secondary2 || "-",
 			secondary2Score: round.secondary2Score || 0,
 			primaryScore: round.primaryScore || 0,
+			isChallenger: game?.challengerHistory?.[index] === "playerB",
 		})) || [];
 
 	const columns = [
@@ -46,6 +49,29 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			key: "round",
 			width: 60,
 			align: "center" as const,
+		},
+		{
+			title: "Challenger",
+			dataIndex: "isChallenger",
+			key: "isChallenger",
+			width: 80,
+			align: "center" as const,
+			render: (isChallenger: boolean) =>
+				isChallenger ? (
+					<span
+						style={{
+							backgroundColor: "#ff6b35",
+							color: "white",
+							padding: "2px 6px",
+							borderRadius: "3px",
+							fontSize: "11px",
+							fontWeight: "bold",
+							textTransform: "uppercase",
+						}}
+					>
+						🏆
+					</span>
+				) : null,
 		},
 		{
 			title: "Secondary 1",
@@ -66,6 +92,16 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			key: "secondary1Score",
 			width: 70,
 			align: "center" as const,
+			render: (score: number) => (
+				<span
+					style={{
+						fontFamily: "Bahnschrift, Arial, sans-serif",
+						fontWeight: "bold",
+					}}
+				>
+					{score}
+				</span>
+			),
 		},
 		{
 			title: "Secondary 2",
@@ -86,6 +122,16 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			key: "secondary2Score",
 			width: 70,
 			align: "center" as const,
+			render: (score: number) => (
+				<span
+					style={{
+						fontFamily: "Bahnschrift, Arial, sans-serif",
+						fontWeight: "bold",
+					}}
+				>
+					{score}
+				</span>
+			),
 		},
 		{
 			title: "Primary",
@@ -93,6 +139,16 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			key: "primaryScore",
 			width: 70,
 			align: "center" as const,
+			render: (score: number) => (
+				<span
+					style={{
+						fontFamily: "Bahnschrift, Arial, sans-serif",
+						fontWeight: "bold",
+					}}
+				>
+					{score}
+				</span>
+			),
 		},
 	];
 
@@ -132,6 +188,40 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 				overflowY: "auto",
 			}}
 		>
+			{/* Challenger History Summary */}
+			<Row justify='center' style={{marginBottom: "20px"}}>
+				<Col span={24}>
+					<div style={{textAlign: "center", color: "#fff"}}>
+						<h3 style={{color: "#ff6b35", margin: "0 0 8px 0"}}>
+							Challenger History
+						</h3>
+						<div style={{fontSize: "16px", color: "#ccc"}}>
+							{game?.challengerHistory && game.challengerHistory.length > 0 ? (
+								game.challengerHistory.map((challenger, index) => (
+									<span key={index} style={{marginRight: "16px"}}>
+										Round {index + 1}:{" "}
+										{challenger === "playerA"
+											? p1?.name || "Player A"
+											: challenger === "playerB"
+											? p2?.name || "Player B"
+											: "No Challenger"}
+										{challenger && (
+											<span style={{color: "#ff6b35", marginLeft: "4px"}}>
+												🏆
+											</span>
+										)}
+									</span>
+								))
+							) : (
+								<span style={{color: "#888"}}>
+									No challenger data available
+								</span>
+							)}
+						</div>
+					</div>
+				</Col>
+			</Row>
+
 			<Row gutter={[32, 16]} justify='center'>
 				{/* Player A Section */}
 				<Col span={12}>
@@ -140,9 +230,33 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 							{p1?.name || "Player A"}
 						</h2>
 						<div style={{color: "#ccc", fontSize: "19px", marginTop: "8px"}}>
-							Total VP: {playerATotals.totalVP} | Primary:{" "}
-							{playerATotals.primaryScore} | Secondary:{" "}
-							{playerATotals.secondary1Score + playerATotals.secondary2Score}
+							Total VP:{" "}
+							<span
+								style={{
+									fontFamily: "Bahnschrift, Arial, sans-serif",
+									fontWeight: "bold",
+								}}
+							>
+								{playerATotals.totalVP}
+							</span>{" "}
+							| Primary:{" "}
+							<span
+								style={{
+									fontFamily: "Bahnschrift, Arial, sans-serif",
+									fontWeight: "bold",
+								}}
+							>
+								{playerATotals.primaryScore}
+							</span>{" "}
+							| Secondary:{" "}
+							<span
+								style={{
+									fontFamily: "Bahnschrift, Arial, sans-serif",
+									fontWeight: "bold",
+								}}
+							>
+								{playerATotals.secondary1Score + playerATotals.secondary2Score}
+							</span>
 						</div>
 					</div>
 					<Table
@@ -165,9 +279,33 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 							{p2?.name || "Player B"}
 						</h2>
 						<div style={{color: "#ccc", fontSize: "19px", marginTop: "8px"}}>
-							Total VP: {playerBTotals.totalVP} | Primary:{" "}
-							{playerBTotals.primaryScore} | Secondary:{" "}
-							{playerBTotals.secondary1Score + playerBTotals.secondary2Score}
+							Total VP:{" "}
+							<span
+								style={{
+									fontFamily: "Bahnschrift, Arial, sans-serif",
+									fontWeight: "bold",
+								}}
+							>
+								{playerBTotals.totalVP}
+							</span>{" "}
+							| Primary:{" "}
+							<span
+								style={{
+									fontFamily: "Bahnschrift, Arial, sans-serif",
+									fontWeight: "bold",
+								}}
+							>
+								{playerBTotals.primaryScore}
+							</span>{" "}
+							| Secondary:{" "}
+							<span
+								style={{
+									fontFamily: "Bahnschrift, Arial, sans-serif",
+									fontWeight: "bold",
+								}}
+							>
+								{playerBTotals.secondary1Score + playerBTotals.secondary2Score}
+							</span>
 						</div>
 					</div>
 					<Table

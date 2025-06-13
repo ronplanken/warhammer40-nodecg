@@ -2,14 +2,24 @@
 	"$schema": "http://json-schema.org/draft-04/schema#",
 	"type": "object",
 	"properties": {
-		"deployment": {
-			"type": "string"
-		},
-		"mission": {
-			"type": "string"
-		},
 		"rule": {
 			"type": "string"
+		},
+		"currentRound": {
+			"type": "integer",
+			"minimum": 0,
+			"maximum": 4,
+			"description": "The current round for the game (0-indexed, 0 is round 1, 4 is round 5)."
+		},
+		"cpGrantedForRounds": {
+			"type": "array",
+			"items": {
+				"type": "integer",
+				"minimum": 0,
+				"maximum": 4
+			},
+			"description": "Array of rounds (0-indexed) for which CP has already been granted to prevent duplicate CP gains.",
+			"uniqueItems": true
 		},
 		"round": {
 			"type": "object",

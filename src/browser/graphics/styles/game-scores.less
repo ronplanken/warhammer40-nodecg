@@ -15,6 +15,15 @@
 	font-style: italic;
 }
 
+// Add Bahnschrift font for scores
+@font-face {
+	font-family: "Bahnschrift";
+	src: local("Bahnschrift"),
+		 local("Bahnschrift SemiBold"),
+		 local("Bahnschrift Light"),
+		 local("Bahnschrift SemiLight");
+}
+
 body {
 	font-family: ConduitITC, times new roman, serif;
 	font-size: 32px;
@@ -132,7 +141,7 @@ body {
 			.score {
         margin-left: 4px;
         margin-right: 4px;
-				font-family: ConduitITC, times new roman, serif;
+				font-family: Bahnschrift, Arial, sans-serif;
 				font-size: 32px;
 				text-transform: lowercase;
 

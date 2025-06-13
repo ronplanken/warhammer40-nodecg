@@ -12,9 +12,9 @@ interface PlayerSectionProps {
 	playerName?: string;
 	alignment: "left" | "right";
 	currentRound: number;
+	isChallenger?: boolean;
 	onSecondaryTypeChange: (type: string) => void;
 	onCpChange: (value: number) => void;
-	onGlobalRoundChange?: (value: number) => void;
 	onPrimaryScoreChange: (value: number) => void;
 	onSecondaryScoreChange: (
 		roundIndex: number,
@@ -32,7 +32,6 @@ interface PlayerSectionProps {
 	) => void;
 	onRandomTacticalMission: (roundIndex: number, secondaryIndex: number) => void;
 	onOpenDeckList: () => void;
-	onGlobalNextRound?: () => void;
 	onOpenModalS1: () => void;
 	onOpenModalS2: () => void;
 }
@@ -43,16 +42,15 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	playerName,
 	alignment,
 	currentRound,
+	isChallenger,
 	onSecondaryTypeChange,
 	onCpChange,
-	onGlobalRoundChange,
 	onPrimaryScoreChange,
 	onSecondaryScoreChange,
 	onCompletedMissionChange,
 	onDiscardedMissionChange,
 	onRandomTacticalMission,
 	onOpenDeckList,
-	onGlobalNextRound,
 	onDefenderAttackerChange,
 	onOpenModalS1,
 	onOpenModalS2,
@@ -89,15 +87,23 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 			currentRoundData.secondary2 === "BEHIND ENEMY LINES");
 
 	return (
-		<Col className={playerKey} span={12}>
+		<Col className={playerKey} flex={18}>
 			<Row justify='space-between' align='middle'>
 				{alignment === "left" && (
-					<Col>
-						<div className='name'>{playerName}</div>
-					</Col>
+					<>
+						<Col>
+							<div className='name'>{playerName}</div>
+						</Col>
+						{isChallenger && (
+							<Col>
+								<div className='challenger-badge'>CHALLENGER</div>
+							</Col>
+						)}
+					</>
 				)}
+
 				<Col>
-					<Row gutter={16} align='middle'>
+					<Row gutter={2} align='middle'>
 						{alignment === "left" ? (
 							<>
 								<Col>
@@ -130,15 +136,22 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 					</Row>
 				</Col>
 				{alignment === "right" && (
-					<Col>
-						<div className='name'>{playerName}</div>
-					</Col>
+					<>
+						{isChallenger && (
+							<Col>
+								<div className='challenger-badge'>CHALLENGER</div>
+							</Col>
+						)}
+						<Col>
+							<div className='name'>{playerName}</div>
+						</Col>
+					</>
 				)}
 			</Row>
 
 			{player?.defender === undefined && player?.attacker === undefined ? (
 				<Row
-					gutter={16}
+					gutter={2}
 					align='middle'
 					justify='center'
 					className='mission-choice'
@@ -178,17 +191,13 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 					{player?.secondaryType !== undefined ? (
 						<MissionControls
 							cp={player.cp}
-							currentRound={currentRound}
 							primaryScore={currentRoundData.primaryScore || 0}
-							alignment={alignment}
 							onCpChange={onCpChange}
-							onGlobalRoundChange={onGlobalRoundChange}
 							onPrimaryScoreChange={onPrimaryScoreChange}
-							onGlobalNextRound={onGlobalNextRound}
 						/>
 					) : (
 						<Row
-							gutter={16}
+							gutter={2}
 							align='middle'
 							justify='center'
 							className='mission-choice'
@@ -199,7 +208,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 										<div className='title'>CHOOSE MISSION TYPE</div>
 									</Col>
 								</Row>
-								<Row gutter={16} align='middle' justify='center'>
+								<Row gutter={2} align='middle' justify='center'>
 									<Col span={8}>
 										<Button
 											block={true}
@@ -224,7 +233,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 					)}
 				</>
 			)}
-			<Row align='middle' justify='center' gutter={8}>
+			<Row align='middle' justify='center' gutter={2}>
 				{player?.defender === undefined && player?.attacker === undefined ? (
 					<>
 						{/* During attacker/defender selection phase */}

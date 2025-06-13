@@ -15,6 +15,15 @@
 	font-style: italic;
 }
 
+// Add Bahnschrift font for scores
+@font-face {
+	font-family: "Bahnschrift";
+	src: local("Bahnschrift"),
+		 local("Bahnschrift SemiBold"),
+		 local("Bahnschrift Light"),
+		 local("Bahnschrift SemiLight");
+}
+
 body {
 	font-family: ConduitITC, times new roman, serif;
   overflow: hidden;
@@ -70,6 +79,7 @@ body {
 				height: 60px;
 				text-align: center;
 				vertical-align: middle;
+				font-family: Bahnschrift, Arial, sans-serif;
 				font-size: 32px;
 				width: 50px;
 				line-height: 1;
@@ -83,6 +93,7 @@ body {
 				padding: 13px;
 				height: 60px;
 				text-align: center;
+				font-family: Bahnschrift, Arial, sans-serif;
 				font-size: 32px;
 				width: 60px;
 				line-height: 1;
@@ -198,6 +209,7 @@ body {
 		.vp {
 			text-align: left;
 			margin: 16px;
+			font-family: Bahnschrift, Arial, sans-serif;
 			font-size: 40px;
 			font-weight: bold;
 		}
@@ -223,11 +235,11 @@ body {
 			text-align: right;
 			font-size: 44px;
 			height: 65px;
-			padding-right: 64px !important;
+			padding-right: 16x !important;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
-			max-width: 550px;
+			max-width: 350px;
 		}
 	}
 
@@ -279,6 +291,7 @@ body {
 				height: 60px;
 				text-align: center;
 				vertical-align: middle;
+				font-family: Bahnschrift, Arial, sans-serif;
 				font-size: 32px;
 				width: 50px;
 				line-height: 1;
@@ -292,6 +305,7 @@ body {
 				padding: 13px;
 				height: 60px;
 				text-align: center;
+				font-family: Bahnschrift, Arial, sans-serif;
 				font-size: 32px;
 				width: 60px;
 				line-height: 1;
@@ -407,6 +421,7 @@ body {
 		.vp {
 			text-align: left;
 			margin: 16px;
+			font-family: Bahnschrift, Arial, sans-serif;
 			font-size: 40px;
 			font-weight: bold;
 		}
@@ -431,13 +446,30 @@ body {
 			text-align: right;
 			font-size: 44px;
 			height: 65px;
-			padding-left: 64px !important;
+			padding-left: 16px !important;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
-			max-width: 550px;
+			max-width: 350px;
 		}
 	}
+}
+
+// Challenger badge styling - positioned between name and scores
+.challenger-badge {
+	background: linear-gradient(135deg, #ff6b35 0%, #ff8a4a 100%);
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 8px 16px;
+	border-radius: 12px;
+	text-transform: uppercase;
+	display: inline-block;
+	border: 2px solid #ffffff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+	letter-spacing: 1px;
+	margin: 8px;
+	position: relative;
 }
 
 .mission {
@@ -744,6 +776,14 @@ body {
 		.ant-table-tbody > tr > td {
 			font-size: 13px;
 			padding: 6px 4px;
+
+			// Apply Bahnschrift to score columns
+			&[data-index="secondary1Score"],
+			&[data-index="secondary2Score"],
+			&[data-index="primaryScore"] {
+				font-family: Bahnschrift, Arial, sans-serif;
+				font-weight: bold;
+			}
 		}
 
 		.ant-table-cell {
@@ -757,3 +797,30 @@ body {
 		}
 	}
 }
+
+// Global Ant Design component overrides
+.ant-btn {
+	font-family: ConduitITC, Arial, sans-serif !important;
+}
+
+.ant-input-number {
+	font-family: Bahnschrift, Arial, sans-serif !important;
+}
+
+.ant-select {
+	font-family: ConduitITC, Arial, sans-serif !important;
+}
+
+.ant-modal {
+	font-family: ConduitITC, Arial, sans-serif !important;
+}
+
+// Score-specific classes that should use Bahnschrift
+.score-value,
+.primary-score,
+.secondary-score,
+.cp-value {
+	font-family: Bahnschrift, Arial, sans-serif !important;
+}
+
+

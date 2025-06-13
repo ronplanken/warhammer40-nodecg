@@ -1,29 +1,18 @@
 import React from "react";
 import {Button, Col, Row} from "antd";
-import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 
 interface MissionControlsProps {
 	cp: number;
-	currentRound: number;
 	primaryScore: number;
-	alignment: "left" | "right";
 	onCpChange: (value: number) => void;
-	onGlobalRoundChange?: (value: number) => void;
 	onPrimaryScoreChange: (value: number) => void;
-	onGlobalNextRound?: () => void;
-	maxRound?: number;
 }
 
 export const MissionControls: React.FC<MissionControlsProps> = ({
 	cp,
-	currentRound,
 	primaryScore,
-	alignment,
 	onCpChange,
-	onGlobalRoundChange,
 	onPrimaryScoreChange,
-	onGlobalNextRound,
-	maxRound = 4,
 }) => {
 	// CP Component
 	const CpComponent = (
@@ -50,46 +39,6 @@ export const MissionControls: React.FC<MissionControlsProps> = ({
 			</Row>
 		</Col>
 	);
-
-	// Round Component - only show for left player
-	const RoundComponent =
-		alignment === "left" ? (
-			<Col className='main-bar'>
-				<Row justify='center'>
-					<Col>
-						<div className='title'>ROUND</div>
-					</Col>
-				</Row>
-				<Row align='middle' justify='center' gutter={8} className='round-bar'>
-					<Col>
-						<Button
-							color='default'
-							variant='outlined'
-							type='primary'
-							disabled={currentRound < 1}
-							onClick={() => {
-								onGlobalRoundChange?.(currentRound - 1);
-							}}
-						>
-							<LeftOutlined />
-						</Button>
-					</Col>
-					<Col>
-						<div className='cp'>{currentRound + 1}</div>
-					</Col>
-					<Col>
-						<Button
-							color='default'
-							variant='outlined'
-							disabled={currentRound >= maxRound}
-							onClick={onGlobalNextRound}
-						>
-							<RightOutlined />
-						</Button>
-					</Col>
-				</Row>
-			</Col>
-		) : null;
 
 	// Primary Component
 	const PrimaryComponent = (
@@ -123,11 +72,8 @@ export const MissionControls: React.FC<MissionControlsProps> = ({
 		</Col>
 	);
 
-	// Render components in different order based on alignment
-	const components =
-		alignment === "left"
-			? [CpComponent, PrimaryComponent, RoundComponent].filter(Boolean) // Player A: CP, PRIMARY, ROUND (if exists)
-			: [CpComponent, PrimaryComponent].filter(Boolean); // Player B: CP, PRIMARY (no round controls)
+	// Render components - only CP and PRIMARY now that round controls are in central panel
+	const components = [CpComponent, PrimaryComponent].filter(Boolean);
 
 	return (
 		<Row align='middle' justify='center' gutter={8} className='round-bar'>

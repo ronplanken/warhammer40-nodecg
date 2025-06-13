@@ -166,6 +166,8 @@ const MatchControl = () => {
 				playerAWonRollOff: false,
 				currentRound: 0,
 				cpGrantedForRounds: [],
+				challenger: null,
+				challengerHistory: [null, null, null, null, null],
 			},
 			playerA: {
 				secondaryType: undefined,
