@@ -28,7 +28,9 @@ export const DeploymentDisplay: React.FC<DeploymentDisplayProps> = ({
 				<Col
 					span={24}
 					className={`deployment-map ${
-						game?.deployment ? game?.deployment?.replaceAll(" ", "_") : "NONE"
+						game?.deployment
+							? game?.deployment?.replaceAll(" ", "_")
+							: "NONE_DEPLOYMENT"
 					}`}
 				></Col>
 			</Row>

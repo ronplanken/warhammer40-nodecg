@@ -28,7 +28,7 @@ export const PrimaryMissionDisplay: React.FC<PrimaryMissionDisplayProps> = ({
 				<Col
 					span={24}
 					className={`primary-mission ${
-						game?.mission ? game?.mission?.replaceAll(" ", "_") : "NONE"
+						game?.mission ? game?.mission?.replaceAll(" ", "_") : "NONE_PRIMARY"
 					}`}
 				></Col>
 			</Row>

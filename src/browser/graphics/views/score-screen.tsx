@@ -298,6 +298,7 @@ const App = () => {
 			}, []),
 			...(matchData[player].secondaryDiscards || []),
 			...(roundIndex === 0 ? ["DEFEND STRONGHOLD"] : []),
+			...(roundIndex === 0 ? ["DISPLAY OF MIGHT"] : []),
 		];
 
 		const availableMissions = tacticalMissionOptions.filter(

@@ -49,12 +49,12 @@ body {
 			padding-top: 8px;
 
 			button {
-				font-size: 22px;
+				font-size: 18px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
 				font-weight: bold;
-				width: 80px;
+				width: 60px;
 			}
 			.title {
 				font-size: 26px;
@@ -71,7 +71,7 @@ body {
 				text-align: center;
 				vertical-align: middle;
 				font-size: 32px;
-				width: 70px;
+				width: 50px;
 				line-height: 1;
 			}
 			.primary {
@@ -84,7 +84,7 @@ body {
 				height: 60px;
 				text-align: center;
 				font-size: 32px;
-				width: 80px;
+				width: 60px;
 				line-height: 1;
 			}
 		}
@@ -223,8 +223,11 @@ body {
 			text-align: right;
 			font-size: 44px;
 			height: 65px;
-
 			padding-right: 64px !important;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			max-width: 550px;
 		}
 	}
 
@@ -255,12 +258,12 @@ body {
 			padding-top: 8px;
 
 			button {
-				font-size: 22px;
+				font-size: 18px;
 				height: 60px;
 				padding-top: 8px;
 				padding-bottom: 8px;
 				font-weight: bold;
-				width: 80px;
+				width: 60px;
 			}
 			.title {
 				font-size: 26px;
@@ -277,7 +280,7 @@ body {
 				text-align: center;
 				vertical-align: middle;
 				font-size: 32px;
-				width: 70px;
+				width: 50px;
 				line-height: 1;
 			}
 			.primary {
@@ -290,7 +293,7 @@ body {
 				height: 60px;
 				text-align: center;
 				font-size: 32px;
-				width: 80px;
+				width: 60px;
 				line-height: 1;
 			}
 		}
@@ -428,8 +431,11 @@ body {
 			text-align: right;
 			font-size: 44px;
 			height: 65px;
-
 			padding-left: 64px !important;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			max-width: 550px;
 		}
 	}
 }
@@ -555,6 +561,18 @@ body {
 }
 .NONE {
 	background-image: url("./images/missions/BACKGROUND.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.NONE_PRIMARY {
+	background-image: url("./images/primary/BACKGROUND_PRIMARY.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+}
+.NONE_DEPLOYMENT {
+	background-image: url("./images/deployment/BACKGROUND_DEPLOYMENT.png");
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center;
