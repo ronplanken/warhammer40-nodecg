@@ -13,6 +13,27 @@ const App = () => {
 	const p1 = useReplicant("player1");
 	const p2 = useReplicant("player2");
 
+	// Helper function to get challenger card name for a specific round and player
+	const getChallengerCardName = (roundIndex, player) => {
+		if (
+			!game?.challengerCards?.used ||
+			game?.challengerHistory?.[roundIndex] !== player
+		) {
+			return "";
+		}
+
+		const cardForRound = game.challengerCards.used.find(
+			(card) => card.round === roundIndex && card.player === player,
+		);
+
+		if (cardForRound) {
+			// Format card name to title case for display
+			return cardForRound.cardName.replace(/\b\w/g, (l) => l.toUpperCase());
+		}
+
+		return "CHALLENGER";
+	};
+
 	return (
 		<div className='game-scores'>
 			<Row className='names' align={"middle"} justify={"center"} gutter={64}>
@@ -73,6 +94,32 @@ const App = () => {
 										"0"}
 								</Col>
 							</Row>
+							{/* Challenger Points Row */}
+							<Row gutter={16}>
+								<Col
+									flex={"auto"}
+									className={`challenger ${
+										game?.challengerHistory?.[roundIndex] === "playerA"
+											? "active-challenger"
+											: ""
+									}`}
+								>
+									{getChallengerCardName(roundIndex, "playerA")}
+								</Col>
+								<Col
+									flex={"32px"}
+									className={`score challenger-score ${
+										game?.challengerHistory?.[roundIndex] === "playerA"
+											? "active-challenger"
+											: ""
+									}`}
+								>
+									{game?.challengerHistory?.[roundIndex] === "playerA"
+										? matchData?.playerA?.rounds[roundIndex].challengerPoints ||
+										  "0"
+										: ""}
+								</Col>
+							</Row>
 						</Col>
 						<Col
 							span={6}
@@ -104,6 +151,32 @@ const App = () => {
 								</Col>
 								<Col flex={"auto"} className='secondary'>
 									{matchData?.playerB?.rounds[roundIndex].secondary2 || "-"}
+								</Col>
+							</Row>
+							{/* Challenger Points Row */}
+							<Row gutter={16}>
+								<Col
+									flex={"32px"}
+									className={`score challenger-score ${
+										game?.challengerHistory?.[roundIndex] === "playerB"
+											? "active-challenger"
+											: ""
+									}`}
+								>
+									{game?.challengerHistory?.[roundIndex] === "playerB"
+										? matchData?.playerB?.rounds[roundIndex].challengerPoints ||
+										  "0"
+										: ""}
+								</Col>
+								<Col
+									flex={"auto"}
+									className={`challenger ${
+										game?.challengerHistory?.[roundIndex] === "playerB"
+											? "active-challenger"
+											: ""
+									}`}
+								>
+									{getChallengerCardName(roundIndex, "playerB")}
 								</Col>
 							</Row>
 						</Col>

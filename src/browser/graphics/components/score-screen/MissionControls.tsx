@@ -91,6 +91,7 @@ export const MissionControls: React.FC<MissionControlsProps> = ({
 					<Col>
 						<Button
 							type='primary'
+							disabled={challengerPoints <= 0}
 							onClick={() => onChallengerPointsChange(challengerPoints - 1)}
 						>
 							-1
@@ -102,6 +103,7 @@ export const MissionControls: React.FC<MissionControlsProps> = ({
 					<Col>
 						<Button
 							type='primary'
+							disabled={challengerPoints >= 3}
 							onClick={() => onChallengerPointsChange(challengerPoints + 1)}
 						>
 							+1

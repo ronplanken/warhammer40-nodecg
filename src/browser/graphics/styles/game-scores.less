@@ -101,6 +101,10 @@ body {
       &.active {
         background-color: #8c0909dd;
       }
+
+			.challenger {
+				justify-content: flex-end;
+			}
 		}
 		.playerB {
 			color: white;
@@ -111,6 +115,10 @@ body {
       &.active {
         background-color: #0000bedd;
       }
+
+			.challenger {
+				justify-content: flex-start;
+			}
 		}
 
 		.player {
@@ -147,6 +155,35 @@ body {
 
 				:first-letter {
 					text-transform: uppercase;
+				}
+			}
+
+			.challenger {
+				font-family: ConduitITC, times new roman, serif;
+				font-size: 24px;
+				font-weight: bold;
+				text-transform: uppercase;
+				color: #666;
+				min-height: 32px;
+				line-height: 32px;
+				display: flex;
+				align-items: center;
+
+				&.active-challenger {
+					color: #ff6b35;
+				}
+			}
+
+			.challenger-score {
+				min-height: 32px;
+				line-height: 32px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				&.active-challenger {
+					color: #ff6b35;
+					font-weight: bold;
 				}
 			}
 		}

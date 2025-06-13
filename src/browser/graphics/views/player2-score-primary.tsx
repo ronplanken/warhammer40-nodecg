@@ -10,7 +10,7 @@ const App = () => {
 	return (
 		<div className='vp'>
 			{rep?.playerB?.rounds?.reduce((total, round) => {
-				const score = round.primaryScore;
+				const score = round.primaryScore + (round.challengerPoints || 0);
 				total += score || 0;
 				return total;
 			}, 0)}

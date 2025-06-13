@@ -348,10 +348,13 @@ const App = () => {
 	};
 
 	const updateChallengerPoints = (player, roundIndex, value) => {
+		// Enforce min/max constraints
+		const constrainedValue = Math.max(0, Math.min(3, value));
+
 		const updatedRounds = [...matchData[player].rounds];
 		updatedRounds[roundIndex] = {
 			...updatedRounds[roundIndex],
-			challengerPoints: value,
+			challengerPoints: constrainedValue,
 		};
 		matchDataRep.value = {
 			...matchData,
