@@ -12,8 +12,6 @@ interface SecondaryMissionProps {
 	attacker: boolean;
 	onDiscard: () => void;
 	onRedraw: () => void;
-	onKeep: () => void;
-	keepActive: boolean;
 	onDraw: () => void;
 	onChoose: () => void;
 	onScoreChange: (value: number) => void;
@@ -30,8 +28,6 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 	attacker,
 	onDiscard,
 	onRedraw,
-	onKeep,
-	keepActive,
 	onDraw,
 	onChoose,
 	onScoreChange,
@@ -62,7 +58,7 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 							</Col>
 						</Row>
 					) : (
-						<Row className='mission-bottom-bar' justify='space-between'>
+						<Row className='mission-bottom-bar' justify='center' gutter={16}>
 							{secondaryType === "tactical" ? (
 								<>
 									<Col>
@@ -72,26 +68,22 @@ export const SecondaryMission: React.FC<SecondaryMissionProps> = ({
 												secondaryScore > 0 ? "completed" : ""
 											}`}
 											disabled={secondaryScore > 0}
+											style={{
+												opacity: secondaryScore > 0 ? 0.6 : 1,
+												backgroundColor:
+													secondaryScore > 0 ? "#f0f0f0" : undefined,
+												borderColor: secondaryScore > 0 ? "#d9d9d9" : undefined,
+												color: secondaryScore > 0 ? "#999" : undefined,
+											}}
 										>
 											{secondaryScore > 0 ? "Completed" : "Discard"}
 										</Button>
 									</Col>
 									{roundIndex === 0 && canRedraw && (
 										<Col>
-											<Button onClick={onRedraw}>Redraw</Button>
+											<Button onClick={onRedraw}>Recycle</Button>
 										</Col>
 									)}
-									<Col>
-										<Button
-											onClick={onKeep}
-											className={`mission-button ${
-												keepActive ? "active" : ""
-											} ${secondaryScore > 0 ? "disabled" : ""}`}
-											disabled={secondaryScore > 0}
-										>
-											Keep
-										</Button>
-									</Col>
 								</>
 							) : (
 								<></>

@@ -10,6 +10,7 @@ import {useReplicant} from "../../use-replicant.js";
 import {DeckModal} from "../components/score-screen/DeckModal";
 import {MissionModal} from "../components/score-screen/MissionModal";
 import {MissionsOverlay} from "../components/score-screen/MissionsOverlay";
+import {ScoresOverlay} from "../components/score-screen/ScoresOverlay";
 import {PlayerSection} from "../components/score-screen/PlayerSection";
 import {
 	MissionItem,
@@ -33,6 +34,7 @@ const App = () => {
 	const [isModalP2S2, setIsModalP2S2] = useState(false);
 	const [isModalP2Deck, setIsModalP2Deck] = useState(false);
 	const [isMissionsOverlayOpen, setIsMissionsOverlayOpen] = useState(false);
+	const [isScoresOverlayOpen, setIsScoresOverlayOpen] = useState(false);
 
 	// Helper functions for updating data
 	const updateRound = (player, value) => {
@@ -45,62 +47,87 @@ const App = () => {
 	};
 
 	// New function to handle next round with secondaries in one operation
-	const updateNextRound = (
-		player,
-		currentRound,
-		nextRound,
-		keepSecondary1,
-		keepSecondary2,
-	) => {
+	const updateNextRound = (player, currentRound, nextRound) => {
 		if (nextRound < 0 || nextRound > 4) return; // Validate round range
 
 		// Make a deep copy of the player data to work with
 		const playerData = JSON.parse(JSON.stringify(matchData[player]));
 		const currentRoundData = playerData.rounds[currentRound] || {};
+		const nextRoundData = playerData.rounds[nextRound] || {};
+
+		// Initialize next round data if it doesn't exist
+		if (!playerData.rounds[nextRound]) {
+			playerData.rounds[nextRound] = {};
+		}
+
+		// Handle edge case: check if same secondary exists in next round and is now completed in current round
+		// If so, remove it from next round to allow drawing a new one
+		if (
+			nextRoundData.secondary1 &&
+			currentRoundData.secondary1 === nextRoundData.secondary1
+		) {
+			if (
+				currentRoundData.secondary1Score &&
+				currentRoundData.secondary1Score > 0
+			) {
+				// Mission is now completed, remove from next round
+				playerData.rounds[nextRound].secondary1 = undefined;
+			}
+		}
+		if (
+			nextRoundData.secondary2 &&
+			currentRoundData.secondary2 === nextRoundData.secondary2
+		) {
+			if (
+				currentRoundData.secondary2Score &&
+				currentRoundData.secondary2Score > 0
+			) {
+				// Mission is now completed, remove from next round
+				playerData.rounds[nextRound].secondary2 = undefined;
+			}
+		}
 
 		// Handle secondary mission 1
-		if (keepSecondary1 && currentRoundData.secondary1) {
-			// Ensure the next round has the secondary mission data
-			if (!playerData.rounds[nextRound]) {
-				playerData.rounds[nextRound] = {};
-			}
-			playerData.rounds[nextRound].secondary1 = currentRoundData.secondary1;
-		} else if (
-			currentRoundData.secondary1 &&
-			currentRoundData.secondary1Score &&
-			currentRoundData.secondary1Score > 0
-		) {
-			// Add to completed missions
-			if (!playerData.completedSecondaries) {
-				playerData.completedSecondaries = [];
-			}
+		if (currentRoundData.secondary1) {
 			if (
-				!playerData.completedSecondaries.includes(currentRoundData.secondary1)
+				currentRoundData.secondary1Score &&
+				currentRoundData.secondary1Score > 0
 			) {
-				playerData.completedSecondaries.push(currentRoundData.secondary1);
+				// If the mission has a score, mark it as completed
+				if (!playerData.completedSecondaries) {
+					playerData.completedSecondaries = [];
+				}
+				if (
+					!playerData.completedSecondaries.includes(currentRoundData.secondary1)
+				) {
+					playerData.completedSecondaries.push(currentRoundData.secondary1);
+				}
+				// Don't carry the mission to the next round (empty slot)
+			} else {
+				// If the mission has no score, keep it for the next round
+				playerData.rounds[nextRound].secondary1 = currentRoundData.secondary1;
 			}
 		}
 
 		// Handle secondary mission 2
-		if (keepSecondary2 && currentRoundData.secondary2) {
-			// Ensure the next round has the secondary mission data
-			if (!playerData.rounds[nextRound]) {
-				playerData.rounds[nextRound] = {};
-			}
-			playerData.rounds[nextRound].secondary2 = currentRoundData.secondary2;
-		} else if (
-			currentRoundData.secondary2 &&
-			currentRoundData.secondary2Score &&
-			currentRoundData.secondary2Score > 0
-		) {
-			// Add to completed missions
-			if (!playerData.completedSecondaries) {
-				playerData.completedSecondaries = [];
-			}
+		if (currentRoundData.secondary2) {
 			if (
-				!playerData.completedSecondaries.includes(currentRoundData.secondary2)
+				currentRoundData.secondary2Score &&
+				currentRoundData.secondary2Score > 0
 			) {
-				playerData.completedSecondaries.push(currentRoundData.secondary2);
+				// If the mission has a score, mark it as completed
+				if (!playerData.completedSecondaries) {
+					playerData.completedSecondaries = [];
+				}
+				if (
+					!playerData.completedSecondaries.includes(currentRoundData.secondary2)
+				) {
+					playerData.completedSecondaries.push(currentRoundData.secondary2);
+				}
+				// Don't carry the mission to the next round (empty slot)
+			} else {
+				// If the mission has no score, keep it for the next round
+				playerData.rounds[nextRound].secondary2 = currentRoundData.secondary2;
 			}
 		}
 
@@ -182,7 +209,6 @@ const App = () => {
 	};
 
 	const updateCompletedMission = (player, secondaryIndex, round) => {
-		const updatedRounds = [...matchData[player].rounds];
 		const secondaryKey = secondaryIndex === 0 ? "secondary1" : "secondary2";
 		const completedSecondary =
 			matchData[player]?.rounds?.[round]?.[secondaryKey];
@@ -307,15 +333,17 @@ const App = () => {
 
 		const discardedMissons = matchData[player].secondaryDiscards || [];
 
-		const updatedMissions = tacticalMissionOptions.map((mission) => {
-			if (previouslyUsedMissions.includes(mission)) {
-				return {name: mission, type: "used"};
-			}
-			if (discardedMissons.includes(mission)) {
-				return {name: mission, type: "discarded"};
-			}
-			return {name: mission, type: "default"};
-		});
+		const updatedMissions = tacticalMissionOptions.map(
+			(mission): MissionItem => {
+				if (previouslyUsedMissions.includes(mission)) {
+					return {name: mission, type: "used"};
+				}
+				if (discardedMissons.includes(mission)) {
+					return {name: mission, type: "discarded"};
+				}
+				return {name: mission, type: "default"};
+			},
+		);
 
 		updatedMissions.sort((a, b) => {
 			return a.type.localeCompare(b.type);
@@ -360,9 +388,10 @@ const App = () => {
 		<>
 			{contextHolder}
 			<div className='score-screen'>
-				{/* Missions Button */}
+				{/* Action Buttons */}
 				<Row
 					justify='center'
+					gutter={16}
 					style={{
 						position: "absolute",
 						top: "20px",
@@ -382,6 +411,19 @@ const App = () => {
 							}}
 						>
 							Missions
+						</Button>
+					</Col>
+					<Col>
+						<Button
+							type='primary'
+							size='large'
+							onClick={() => setIsScoresOverlayOpen(true)}
+							style={{
+								padding: "8px 24px",
+								height: "auto",
+							}}
+						>
+							Scores
 						</Button>
 					</Col>
 				</Row>
@@ -408,17 +450,6 @@ const App = () => {
 								value,
 							)
 						}
-						onSecondaryMissionChange={(roundIndex, secondaryIndex, value) => {
-							updateSecondaryMission(
-								"playerA",
-								roundIndex,
-								secondaryIndex,
-								value,
-							);
-						}}
-						onFixedMissionsChange={(secondaryIndex, value) =>
-							updateFixedMissions("playerA", secondaryIndex, value)
-						}
 						onSecondaryScoreChange={(roundIndex, secondaryIndex, value) =>
 							updateSecondaryScore("playerA", roundIndex, secondaryIndex, value)
 						}
@@ -432,19 +463,8 @@ const App = () => {
 							getRandomTacticalMission("playerA", roundIndex, secondaryIndex)
 						}
 						onOpenDeckList={() => setIsModalP1Deck(true)}
-						onNextRound={(
-							currentRound,
-							nextRound,
-							keepSecondary1,
-							keepSecondary2,
-						) =>
-							updateNextRound(
-								"playerA",
-								currentRound,
-								nextRound,
-								keepSecondary1,
-								keepSecondary2,
-							)
+						onNextRound={(currentRound, nextRound) =>
+							updateNextRound("playerA", currentRound, nextRound)
 						}
 						onOpenModalS1={() => setIsModalP1S1(true)}
 						onOpenModalS2={() => setIsModalP1S2(true)}
@@ -471,17 +491,6 @@ const App = () => {
 								value,
 							)
 						}
-						onSecondaryMissionChange={(roundIndex, secondaryIndex, value) =>
-							updateSecondaryMission(
-								"playerB",
-								roundIndex,
-								secondaryIndex,
-								value,
-							)
-						}
-						onFixedMissionsChange={(secondaryIndex, value) =>
-							updateFixedMissions("playerB", secondaryIndex, value)
-						}
 						onSecondaryScoreChange={(roundIndex, secondaryIndex, value) =>
 							updateSecondaryScore("playerB", roundIndex, secondaryIndex, value)
 						}
@@ -495,19 +504,8 @@ const App = () => {
 							getRandomTacticalMission("playerB", roundIndex, secondaryIndex)
 						}
 						onOpenDeckList={() => setIsModalP2Deck(true)}
-						onNextRound={(
-							currentRound,
-							nextRound,
-							keepSecondary1,
-							keepSecondary2,
-						) =>
-							updateNextRound(
-								"playerB",
-								currentRound,
-								nextRound,
-								keepSecondary1,
-								keepSecondary2,
-							)
+						onNextRound={(currentRound, nextRound) =>
+							updateNextRound("playerB", currentRound, nextRound)
 						}
 						onOpenModalS1={() => setIsModalP2S1(true)}
 						onOpenModalS2={() => setIsModalP2S2(true)}
@@ -572,6 +570,12 @@ const App = () => {
 				<MissionsOverlay
 					isVisible={isMissionsOverlayOpen}
 					onClose={() => setIsMissionsOverlayOpen(false)}
+				/>
+
+				{/* Scores Overlay */}
+				<ScoresOverlay
+					isVisible={isScoresOverlayOpen}
+					onClose={() => setIsScoresOverlayOpen(false)}
 				/>
 			</div>
 		</>

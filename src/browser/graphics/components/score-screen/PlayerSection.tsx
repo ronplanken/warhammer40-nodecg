@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {Button, Col, Row} from "antd";
 import {MissionControls} from "./MissionControls";
 import {SecondaryMission} from "./SecondaryMission";
@@ -15,12 +15,6 @@ interface PlayerSectionProps {
 	onCpChange: (value: number) => void;
 	onRoundChange: (value: number) => void;
 	onPrimaryScoreChange: (value: number) => void;
-	onSecondaryMissionChange: (
-		roundIndex: number,
-		secondaryIndex: number,
-		value: string,
-	) => void;
-	onFixedMissionsChange: (secondaryIndex: number, value: string) => void;
 	onSecondaryScoreChange: (
 		roundIndex: number,
 		secondaryIndex: number,
@@ -37,12 +31,7 @@ interface PlayerSectionProps {
 	) => void;
 	onRandomTacticalMission: (roundIndex: number, secondaryIndex: number) => void;
 	onOpenDeckList: () => void;
-	onNextRound: (
-		currentRound: number,
-		nextRound: number,
-		keepSecondary1: boolean,
-		keepSecondary2: boolean,
-	) => void;
+	onNextRound: (currentRound: number, nextRound: number) => void;
 	onOpenModalS1: () => void;
 	onOpenModalS2: () => void;
 }
@@ -56,8 +45,6 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	onCpChange,
 	onRoundChange,
 	onPrimaryScoreChange,
-	onSecondaryMissionChange, // Used by modals for mission selection
-	onFixedMissionsChange, // Used by modals for fixed mission selection
 	onSecondaryScoreChange,
 	onCompletedMissionChange,
 	onDiscardedMissionChange,
@@ -68,9 +55,6 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	onOpenModalS1,
 	onOpenModalS2,
 }) => {
-	const [keepSecondary1, setKeepSecondary1] = useState(false);
-	const [keepSecondary2, setKeepSecondary2] = useState(false);
-
 	const currentRound = player?.currentRound || 0;
 	const rounds = player?.rounds || [];
 	const currentRoundData = rounds[currentRound] || {};
@@ -97,11 +81,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 		if (currentRound >= 4) return;
 
 		// Use the new onNextRound function that handles all changes in one atomic operation
-		onNextRound(currentRound, nextRound, keepSecondary1, keepSecondary2);
-
-		// Reset the keep states
-		setKeepSecondary1(false);
-		setKeepSecondary2(false);
+		onNextRound(currentRound, nextRound);
 	};
 
 	// Check if mission can be redrawn (only in round 0 for certain missions)
@@ -117,46 +97,46 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 
 	return (
 		<Col className={playerKey} span={12}>
-			<Row justify={alignment === "left" ? "space-between" : "space-between"}>
-				{alignment === "right" && (
+			<Row justify='space-between' align='middle'>
+				{alignment === "left" && (
 					<Col>
 						<div className='name'>{playerName}</div>
 					</Col>
 				)}
 				<Col>
-					<Row justify='space-between' align='middle'>
+					<Row gutter={16} align='middle'>
 						{alignment === "left" ? (
 							<>
 								<Col>
-									<div className='vp' onClick={onOpenDeckList}>
-										VP: {totalVP}
-									</div>
+									<div className='sec'>SEC: {totalSecondaryScore}</div>
 								</Col>
 								<Col>
 									<div className='pri'>PRI: {totalPrimaryScore}</div>
 								</Col>
 								<Col>
-									<div className='sec'>Sec: {totalSecondaryScore}</div>
+									<div className='vp' onClick={onOpenDeckList}>
+										VP: {totalVP}
+									</div>
 								</Col>
 							</>
 						) : (
 							<>
 								<Col>
-									<div className='sec'>Sec: {totalSecondaryScore}</div>
+									<div className='vp' onClick={onOpenDeckList}>
+										VP: {totalVP}
+									</div>
 								</Col>
 								<Col>
 									<div className='pri'>PRI: {totalPrimaryScore}</div>
 								</Col>
 								<Col>
-									<div className='vp' onClick={onOpenDeckList}>
-										VP: {totalVP}
-									</div>
+									<div className='sec'>SEC: {totalSecondaryScore}</div>
 								</Col>
 							</>
 						)}
 					</Row>
 				</Col>
-				{alignment === "left" && (
+				{alignment === "right" && (
 					<Col>
 						<div className='name'>{playerName}</div>
 					</Col>
@@ -287,8 +267,6 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 									}
 								}}
 								onRedraw={() => onRandomTacticalMission(currentRound, 0)}
-								onKeep={() => setKeepSecondary1(!keepSecondary1)}
-								keepActive={keepSecondary1}
 								onDraw={() => onRandomTacticalMission(currentRound, 0)}
 								onChoose={() => onOpenModalS1()}
 								onScoreChange={(value) =>
@@ -318,8 +296,6 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 									}
 								}}
 								onRedraw={() => onRandomTacticalMission(currentRound, 1)}
-								onKeep={() => setKeepSecondary2(!keepSecondary2)}
-								keepActive={keepSecondary2}
 								onDraw={() => onRandomTacticalMission(currentRound, 1)}
 								onChoose={() => onOpenModalS2()}
 								onScoreChange={(value) =>
