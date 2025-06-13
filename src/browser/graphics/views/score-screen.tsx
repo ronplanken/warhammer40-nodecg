@@ -111,13 +111,9 @@ const App = () => {
 		const challenger = determineChallenger(value);
 
 		// Update challenger history - ensure it's properly sized for all rounds
-		const challengerHistory = game?.challengerHistory || [
-			null,
-			null,
-			null,
-			null,
-			null,
-		];
+		const challengerHistory = game?.challengerHistory
+			? [...game.challengerHistory] // Clone existing array to preserve data
+			: [null, null, null, null, null]; // Create new array only if none exists
 		challengerHistory[value] = challenger;
 
 		console.log(
@@ -194,13 +190,9 @@ const App = () => {
 			`[CHALLENGER HISTORY NEXT] Game history:`,
 			game?.challengerHistory,
 		);
-		const challengerHistory = game?.challengerHistory || [
-			null,
-			null,
-			null,
-			null,
-			null,
-		];
+		const challengerHistory = game?.challengerHistory
+			? [...game.challengerHistory] // Clone existing array to preserve data
+			: [null, null, null, null, null]; // Create new array only if none exists
 		console.log(`[CHALLENGER HISTORY NEXT] Game history 2:`, challengerHistory);
 
 		challengerHistory[nextRound] = challenger;

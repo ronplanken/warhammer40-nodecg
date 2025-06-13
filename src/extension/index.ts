@@ -124,4 +124,22 @@ export default (nodecg: NodeCG) => {
 
 	// Maak de Replicant aan met de default waarde
 	nodecg.Replicant("scores", {defaultValue: defaultMatchData});
+
+	// Create separate game replicant with game-specific default values
+	nodecg.Replicant("game", {
+		defaultValue: {
+			currentRound: 0,
+			cpGrantedForRounds: [],
+			challenger: null,
+			challengerHistory: [null, null, null, null, null],
+			challengerCards: {
+				available: [...challengerCardNames],
+				used: [],
+				currentCard: null,
+			},
+			deployment: "",
+			mission: "",
+			round: {},
+		},
+	});
 };

@@ -60,36 +60,13 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			align: "center" as const,
 		},
 		{
-			title: "Challenger",
-			dataIndex: "isChallenger",
-			key: "isChallenger",
-			width: 80,
-			align: "center" as const,
-			render: (isChallenger: boolean) =>
-				isChallenger ? (
-					<span
-						style={{
-							backgroundColor: "#ff6b35",
-							color: "white",
-							padding: "2px 6px",
-							borderRadius: "3px",
-							fontSize: "11px",
-							fontWeight: "bold",
-							textTransform: "uppercase",
-						}}
-					>
-						🏆
-					</span>
-				) : null,
-		},
-		{
 			title: "Secondary 1",
 			dataIndex: "secondary1Name",
 			key: "secondary1Name",
 			width: 200,
 			render: (text: string) => (
 				<div
-					style={{fontSize: "13px", wordBreak: "break-word", lineHeight: "1.2"}}
+					style={{fontSize: "15px", wordBreak: "break-word", lineHeight: "1.2"}}
 				>
 					{text}
 				</div>
@@ -119,7 +96,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			width: 200,
 			render: (text: string) => (
 				<div
-					style={{fontSize: "13px", wordBreak: "break-word", lineHeight: "1.2"}}
+					style={{fontSize: "15px", wordBreak: "break-word", lineHeight: "1.2"}}
 				>
 					{text}
 				</div>
@@ -160,7 +137,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			),
 		},
 		{
-			title: "Challenger",
+			title: "Score",
 			dataIndex: "challengerPoints",
 			key: "challengerPoints",
 			width: 80,
@@ -230,7 +207,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 						<h2 style={{color: "#fff", margin: 0, fontSize: "24px"}}>
 							{p1?.name || "Player A"}
 						</h2>
-						<div style={{color: "#ccc", fontSize: "19px", marginTop: "8px"}}>
+						<div style={{color: "#ccc", fontSize: "21px", marginTop: "8px"}}>
 							Total VP:{" "}
 							<span
 								style={{
@@ -269,7 +246,9 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 						style={{
 							backgroundColor: "#fff",
 						}}
-						rowClassName={() => "scores-table-row"}
+						rowClassName={(record: any) =>
+							`scores-table-row ${record.isChallenger ? "challenger-row" : ""}`
+						}
 					/>
 				</Col>
 
@@ -279,7 +258,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 						<h2 style={{color: "#fff", margin: 0, fontSize: "24px"}}>
 							{p2?.name || "Player B"}
 						</h2>
-						<div style={{color: "#ccc", fontSize: "19px", marginTop: "8px"}}>
+						<div style={{color: "#ccc", fontSize: "21px", marginTop: "8px"}}>
 							Total VP:{" "}
 							<span
 								style={{
@@ -318,7 +297,9 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 						style={{
 							backgroundColor: "#fff",
 						}}
-						rowClassName={() => "scores-table-row"}
+						rowClassName={(record: any) =>
+							`scores-table-row ${record.isChallenger ? "challenger-row" : ""}`
+						}
 					/>
 				</Col>
 			</Row>
