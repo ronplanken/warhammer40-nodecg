@@ -16,6 +16,7 @@ interface PlayerSectionProps {
 	onSecondaryTypeChange: (type: string) => void;
 	onCpChange: (value: number) => void;
 	onPrimaryScoreChange: (value: number) => void;
+	onChallengerPointsChange?: (value: number) => void;
 	onSecondaryScoreChange: (
 		roundIndex: number,
 		secondaryIndex: number,
@@ -46,6 +47,7 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 	onSecondaryTypeChange,
 	onCpChange,
 	onPrimaryScoreChange,
+	onChallengerPointsChange,
 	onSecondaryScoreChange,
 	onCompletedMissionChange,
 	onDiscardedMissionChange,
@@ -63,7 +65,8 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 		const score =
 			(round.primaryScore || 0) +
 			(round.secondary1Score || 0) +
-			(round.secondary2Score || 0);
+			(round.secondary2Score || 0) +
+			(round.challengerPoints || 0);
 		return total + score;
 	}, 10); // Start with 10 points
 
@@ -192,8 +195,11 @@ export const PlayerSection: React.FC<PlayerSectionProps> = ({
 						<MissionControls
 							cp={player.cp}
 							primaryScore={currentRoundData.primaryScore || 0}
+							challengerPoints={currentRoundData.challengerPoints || 0}
+							isChallenger={isChallenger}
 							onCpChange={onCpChange}
 							onPrimaryScoreChange={onPrimaryScoreChange}
+							onChallengerPointsChange={onChallengerPointsChange}
 						/>
 					) : (
 						<Row

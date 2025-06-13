@@ -49,6 +49,7 @@ export interface Round {
 	secondary1Score?: number;
 	secondary2?: string;
 	secondary2Score?: number;
+	challengerPoints?: number;
 }
 
 export interface Player {

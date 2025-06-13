@@ -55,7 +55,8 @@ const App = () => {
 			totalScore +=
 				(round.primaryScore || 0) +
 				(round.secondary1Score || 0) +
-				(round.secondary2Score || 0);
+				(round.secondary2Score || 0) +
+				(round.challengerPoints || 0);
 		}
 
 		return totalScore;
@@ -71,12 +72,20 @@ const App = () => {
 
 		const scoreDifference = Math.abs(playerAScore - playerBScore);
 
+		console.log(`[CHALLENGER DEBUG] Round ${currentRound + 1}:`);
+		console.log(`  Player A Score: ${playerAScore}`);
+		console.log(`  Player B Score: ${playerBScore}`);
+		console.log(`  Score Difference: ${scoreDifference}`);
+
 		// Only set challenger if difference is 6 or more
 		if (scoreDifference >= 6) {
 			// Player with lowest score becomes challenger
-			return playerAScore < playerBScore ? "playerA" : "playerB";
+			const challenger = playerAScore < playerBScore ? "playerA" : "playerB";
+			console.log(`  Challenger: ${challenger}`);
+			return challenger;
 		}
 
+		console.log(`  No challenger (difference < 6)`);
 		return null;
 	};
 
@@ -95,17 +104,28 @@ const App = () => {
 
 	// Helper functions for updating data
 	const updateGlobalRound = (value) => {
+		console.log(`[UPDATE GLOBAL ROUND] Triggered with value: ${value}`);
 		if (value < 0 || value > 4) return; // Validate round range
 
 		// Determine challenger status for this round
 		const challenger = determineChallenger(value);
 
 		// Update challenger history - ensure it's properly sized for all rounds
-		const challengerHistory = game?.challengerHistory || [];
-		while (challengerHistory.length <= value) {
-			challengerHistory.push(null);
-		}
+		const challengerHistory = game?.challengerHistory || [
+			null,
+			null,
+			null,
+			null,
+			null,
+		];
 		challengerHistory[value] = challenger;
+
+		console.log(
+			`[CHALLENGER HISTORY UPDATE] Round ${
+				value + 1
+			}: Setting challenger to ${challenger}`,
+		);
+		console.log(`[CHALLENGER HISTORY UPDATE] Full history:`, challengerHistory);
 
 		// Check if there's already a card drawn for this round
 		const existingCard = findChallengerCardForRound(
@@ -127,6 +147,7 @@ const App = () => {
 	};
 
 	const updateGlobalNextRound = () => {
+		console.log("[UPDATE GLOBAL NEXT ROUND] Triggered");
 		const currentRound = game?.currentRound || 0;
 		const nextRound = currentRound + 1;
 
@@ -169,11 +190,27 @@ const App = () => {
 		const challenger = determineChallenger(nextRound);
 
 		// Update challenger history - ensure it's properly sized for all rounds
-		const challengerHistory = game?.challengerHistory || [];
-		while (challengerHistory.length <= nextRound) {
-			challengerHistory.push(null);
-		}
+		console.log(
+			`[CHALLENGER HISTORY NEXT] Game history:`,
+			game?.challengerHistory,
+		);
+		const challengerHistory = game?.challengerHistory || [
+			null,
+			null,
+			null,
+			null,
+			null,
+		];
+		console.log(`[CHALLENGER HISTORY NEXT] Game history 2:`, challengerHistory);
+
 		challengerHistory[nextRound] = challenger;
+
+		console.log(
+			`[CHALLENGER HISTORY NEXT] Round ${
+				nextRound + 1
+			}: Setting challenger to ${challenger}`,
+		);
+		console.log(`[CHALLENGER HISTORY NEXT] Full history:`, challengerHistory);
 
 		// Check if there's already a card drawn for the next round
 		const existingCard = findChallengerCardForRound(
@@ -315,6 +352,18 @@ const App = () => {
 		matchDataRep.value = {
 			...matchData,
 			[player]: {...matchData[player], cp: value},
+		};
+	};
+
+	const updateChallengerPoints = (player, roundIndex, value) => {
+		const updatedRounds = [...matchData[player].rounds];
+		updatedRounds[roundIndex] = {
+			...updatedRounds[roundIndex],
+			challengerPoints: value,
+		};
+		matchDataRep.value = {
+			...matchData,
+			[player]: {...matchData[player], rounds: updatedRounds},
 		};
 	};
 
@@ -608,6 +657,9 @@ const App = () => {
 						onPrimaryScoreChange={(value) =>
 							updatePrimaryScore("playerA", game?.currentRound || 0, value)
 						}
+						onChallengerPointsChange={(value) =>
+							updateChallengerPoints("playerA", game?.currentRound || 0, value)
+						}
 						onSecondaryScoreChange={(roundIndex, secondaryIndex, value) =>
 							updateSecondaryScore("playerA", roundIndex, secondaryIndex, value)
 						}
@@ -657,6 +709,9 @@ const App = () => {
 						onCpChange={(value) => updateCp("playerB", value)}
 						onPrimaryScoreChange={(value) =>
 							updatePrimaryScore("playerB", game?.currentRound || 0, value)
+						}
+						onChallengerPointsChange={(value) =>
+							updateChallengerPoints("playerB", game?.currentRound || 0, value)
 						}
 						onSecondaryScoreChange={(roundIndex, secondaryIndex, value) =>
 							updateSecondaryScore("playerB", roundIndex, secondaryIndex, value)

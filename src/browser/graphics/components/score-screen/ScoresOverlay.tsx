@@ -26,6 +26,7 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			secondary2Name: round.secondary2 || "-",
 			secondary2Score: round.secondary2Score || 0,
 			primaryScore: round.primaryScore || 0,
+			challengerPoints: round.challengerPoints || 0,
 			isChallenger: game?.challengerHistory?.[index] === "playerA",
 		})) || [];
 
@@ -39,8 +40,16 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 			secondary2Name: round.secondary2 || "-",
 			secondary2Score: round.secondary2Score || 0,
 			primaryScore: round.primaryScore || 0,
+			challengerPoints: round.challengerPoints || 0,
 			isChallenger: game?.challengerHistory?.[index] === "playerB",
 		})) || [];
+
+	console.log(
+		"[SCORES OVERLAY DEBUG] Challenger History:",
+		game?.challengerHistory,
+	);
+	console.log("[SCORES OVERLAY DEBUG] Player A Data:", playerAData);
+	console.log("[SCORES OVERLAY DEBUG] Player B Data:", playerBData);
 
 	const columns = [
 		{
@@ -150,6 +159,24 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 				</span>
 			),
 		},
+		{
+			title: "Challenger",
+			dataIndex: "challengerPoints",
+			key: "challengerPoints",
+			width: 80,
+			align: "center" as const,
+			render: (score: number) => (
+				<span
+					style={{
+						fontFamily: "Bahnschrift, Arial, sans-serif",
+						fontWeight: "bold",
+						color: "#ff6b35",
+					}}
+				>
+					{score}
+				</span>
+			),
+		},
 	];
 
 	// Calculate totals
@@ -159,13 +186,21 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 				secondary1Score: totals.secondary1Score + round.secondary1Score,
 				secondary2Score: totals.secondary2Score + round.secondary2Score,
 				primaryScore: totals.primaryScore + round.primaryScore,
+				challengerPoints: totals.challengerPoints + round.challengerPoints,
 				totalVP:
 					totals.totalVP +
 					round.secondary1Score +
 					round.secondary2Score +
-					round.primaryScore,
+					round.primaryScore +
+					round.challengerPoints,
 			}),
-			{secondary1Score: 0, secondary2Score: 0, primaryScore: 0, totalVP: 10},
+			{
+				secondary1Score: 0,
+				secondary2Score: 0,
+				primaryScore: 0,
+				challengerPoints: 0,
+				totalVP: 10,
+			},
 		);
 	};
 
@@ -188,40 +223,6 @@ export const ScoresOverlay: React.FC<ScoresOverlayProps> = ({
 				overflowY: "auto",
 			}}
 		>
-			{/* Challenger History Summary */}
-			<Row justify='center' style={{marginBottom: "20px"}}>
-				<Col span={24}>
-					<div style={{textAlign: "center", color: "#fff"}}>
-						<h3 style={{color: "#ff6b35", margin: "0 0 8px 0"}}>
-							Challenger History
-						</h3>
-						<div style={{fontSize: "16px", color: "#ccc"}}>
-							{game?.challengerHistory && game.challengerHistory.length > 0 ? (
-								game.challengerHistory.map((challenger, index) => (
-									<span key={index} style={{marginRight: "16px"}}>
-										Round {index + 1}:{" "}
-										{challenger === "playerA"
-											? p1?.name || "Player A"
-											: challenger === "playerB"
-											? p2?.name || "Player B"
-											: "No Challenger"}
-										{challenger && (
-											<span style={{color: "#ff6b35", marginLeft: "4px"}}>
-												🏆
-											</span>
-										)}
-									</span>
-								))
-							) : (
-								<span style={{color: "#888"}}>
-									No challenger data available
-								</span>
-							)}
-						</div>
-					</div>
-				</Col>
-			</Row>
-
 			<Row gutter={[32, 16]} justify='center'>
 				{/* Player A Section */}
 				<Col span={12}>

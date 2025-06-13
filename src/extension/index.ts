@@ -37,6 +37,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -44,6 +45,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -51,6 +53,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -58,6 +61,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -65,6 +69,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 			],
 		},
@@ -79,6 +84,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -86,6 +92,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -93,6 +100,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -100,6 +108,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 				{
 					primaryScore: 0,
@@ -107,6 +116,7 @@ export default (nodecg: NodeCG) => {
 					secondary1Score: 0,
 					secondary2: null,
 					secondary2Score: 0,
+					challengerPoints: 0,
 				},
 			],
 		},

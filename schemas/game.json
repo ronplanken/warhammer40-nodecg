@@ -21,6 +21,73 @@
 			"description": "Array of rounds (0-indexed) for which CP has already been granted to prevent duplicate CP gains.",
 			"uniqueItems": true
 		},
+		"challenger": {
+			"type": ["string", "null"],
+			"enum": ["playerA", "playerB", null],
+			"description": "The player who is the challenger for the current round, or null if no challenger."
+		},
+		"challengerHistory": {
+			"type": "array",
+			"items": {
+				"type": ["string", "null"],
+				"enum": ["playerA", "playerB", null]
+			},
+			"description": "Array tracking which player was the challenger for each round (0-indexed). null means no challenger for that round.",
+			"maxItems": 5
+		},
+		"challengerCards": {
+			"type": "object",
+			"properties": {
+				"available": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "List of challenger cards still available to be drawn."
+				},
+				"used": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"cardName": {
+								"type": "string"
+							},
+							"round": {
+								"type": "integer",
+								"minimum": 0,
+								"maximum": 4
+							},
+							"player": {
+								"type": "string",
+								"enum": ["playerA", "playerB"]
+							}
+						},
+						"required": ["cardName", "round", "player"]
+					},
+					"description": "List of challenger cards that have been drawn with their round and player."
+				},
+				"currentCard": {
+					"type": ["object", "null"],
+					"properties": {
+						"cardName": {
+							"type": "string"
+						},
+						"round": {
+							"type": "integer",
+							"minimum": 0,
+							"maximum": 4
+						},
+						"player": {
+							"type": "string",
+							"enum": ["playerA", "playerB"]
+						}
+					},
+					"description": "The challenger card currently drawn for this round, or null if none."
+				}
+			},
+			"description": "Challenger cards deck management."
+		},
 		"round": {
 			"type": "object",
 			"properties": {
