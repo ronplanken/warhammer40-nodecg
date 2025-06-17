@@ -1,6 +1,7 @@
 import React from "react";
 import {Button, Col, Row} from "antd";
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
+import {CountdownTimer} from "./CountdownTimer";
 
 interface CentralControlPanelProps {
 	currentRound: number;
@@ -175,6 +176,9 @@ export const CentralControlPanel: React.FC<CentralControlPanelProps> = ({
 
 			{/* Spacer to push round controls to bottom */}
 			<div style={{flex: 1}} />
+
+			{/* Countdown Timer */}
+			<CountdownTimer />
 
 			{/* Round Controls - Aligned to bottom */}
 			<Row gutter={[0, 20]} style={{width: "100%", paddingBottom: "64px"}}>

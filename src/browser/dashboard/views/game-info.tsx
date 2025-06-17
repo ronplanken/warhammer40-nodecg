@@ -1,5 +1,6 @@
 import {render} from "../../render";
 import {useReplicant} from "../../use-replicant";
+import {useState} from "react";
 
 import {
 	Col,
@@ -16,6 +17,7 @@ import {
 const App = () => {
 	const gameRep = nodecg.Replicant("game");
 	const game = useReplicant("game");
+	const [timerInputValue, setTimerInputValue] = useState("");
 
 	const handleCheckboxChange = (roundKey: string, checked: boolean) => {
 		gameRep.value = {
@@ -25,6 +27,31 @@ const App = () => {
 				[roundKey]: checked,
 			},
 		};
+	};
+
+	const setTimerTargetTime = () => {
+		// Basic validation for HH:MM format
+		if (
+			timerInputValue === "" ||
+			/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(timerInputValue)
+		) {
+			gameRep.value = {
+				...game,
+				timerTargetTime: timerInputValue || null,
+			};
+			// Clear the input after setting
+			setTimerInputValue("");
+		} else {
+			alert("Please enter a valid time in HH:MM format (24-hour)");
+		}
+	};
+
+	const clearTimer = () => {
+		gameRep.value = {
+			...game,
+			timerTargetTime: null,
+		};
+		setTimerInputValue("");
 	};
 
 	const resetMatchData = () => {
@@ -51,6 +78,7 @@ const App = () => {
 			},
 			deployment: "",
 			mission: "",
+			timerTargetTime: null,
 		};
 	};
 
@@ -136,6 +164,50 @@ const App = () => {
 							Unexploded Ordnance
 						</Select.Option>
 					</Select>
+				</Col>
+			</Row>
+
+			<Typography.Title level={4} style={{color: "white", marginTop: 24}}>
+				COUNTDOWN TIMER
+			</Typography.Title>
+			<Row align='middle' gutter={16} style={{marginBottom: 8}}>
+				<Col span={8} style={{textAlign: "right"}}>
+					CURRENT TARGET
+				</Col>
+				<Col span={16}>
+					<div style={{color: "white", fontSize: "16px"}}>
+						{game?.timerTargetTime || "Not set"}
+					</div>
+				</Col>
+			</Row>
+			<Row align='middle' gutter={16}>
+				<Col span={8} style={{textAlign: "right"}}>
+					NEW TARGET TIME
+				</Col>
+				<Col span={12}>
+					<Input
+						style={{width: "100%"}}
+						placeholder='HH:MM (e.g., 14:30)'
+						value={timerInputValue}
+						onChange={(e) => setTimerInputValue(e.target.value)}
+					/>
+				</Col>
+				<Col span={4}>
+					<Button
+						type='primary'
+						onClick={setTimerTargetTime}
+						style={{width: "100%"}}
+					>
+						Set
+					</Button>
+				</Col>
+			</Row>
+			<Row align='middle' gutter={16} style={{marginTop: 8}}>
+				<Col span={8}></Col>
+				<Col span={16}>
+					<Button danger onClick={clearTimer} size='small'>
+						Clear Timer
+					</Button>
 				</Col>
 			</Row>
 

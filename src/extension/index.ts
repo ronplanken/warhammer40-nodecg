@@ -140,6 +140,7 @@ export default (nodecg: NodeCG) => {
 			deployment: "",
 			mission: "",
 			round: {},
+			timerTargetTime: null,
 		},
 	});
 };

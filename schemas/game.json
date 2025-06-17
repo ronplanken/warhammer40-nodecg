@@ -122,6 +122,10 @@
 					"type": "boolean"
 				}
 			}
+		},
+		"timerTargetTime": {
+			"type": ["string", "null"],
+			"description": "Target time for the countdown timer in 24-hour format (HH:MM), or null if not set."
 		}
 	}
 }

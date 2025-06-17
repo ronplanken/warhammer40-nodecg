@@ -966,4 +966,74 @@ body {
 	}
 }
 
+// Standalone challenger display styles
+.challenger-display {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100vw;
+	background-color: rgba(0, 0, 0, 0.1);
+	padding: 20px;
+
+	.challenger-badge-large {
+		background: linear-gradient(135deg, #ff6b35 0%, #ff8a4a 100%);
+		color: white;
+		font-size: 48px;
+		font-weight: bold;
+		padding: 24px 48px;
+		border-radius: 24px;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+		text-align: center;
+		box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+		margin-bottom: 40px;
+		font-family: ConduitITC, times new roman, serif;
+		border: 4px solid rgba(255, 255, 255, 0.3);
+
+		animation: pulse-glow 2s ease-in-out infinite alternate;
+	}
+
+	.challenger-card-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.challenger-card-display {
+			width: 400px;
+			height: 500px;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: center;
+			border: 4px solid #ff6b35;
+			border-radius: 12px;
+			box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+			margin-bottom: 20px;
+		}
+
+		.challenger-card-name {
+			color: #ff6b35;
+			font-size: 28px;
+			font-weight: bold;
+			text-transform: uppercase;
+			text-align: center;
+			font-family: ConduitITC, times new roman, serif;
+			letter-spacing: 2px;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+		}
+	}
+}
+
+@keyframes pulse-glow {
+	from {
+		box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+		transform: scale(1);
+	}
+	to {
+		box-shadow: 0 12px 32px rgba(255, 107, 53, 0.6);
+		transform: scale(1.02);
+	}
+}
+
 
