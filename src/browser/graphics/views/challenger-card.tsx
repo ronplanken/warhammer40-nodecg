@@ -15,9 +15,10 @@ const App = () => {
 		challengerCard && challengerCard.round === currentRound;
 
 	// Convert card name to CSS class name format if we have a card
-	const cardClassName = hasCardForCurrentRound
-		? challengerCard.cardName.toLowerCase().replace(/[^a-z0-9]/g, "")
-		: "";
+	const cardClassName =
+		hasCardForCurrentRound && challengerCard.cardName
+			? challengerCard.cardName.toLowerCase().replace(/[^a-z0-9]/g, "")
+			: "";
 
 	return (
 		<div className='challenger-display'>
@@ -26,7 +27,9 @@ const App = () => {
 				<div className='challenger-card-container'>
 					<div className={`challenger-card-display ${cardClassName}`} />
 					<div className='challenger-card-name'>
-						{challengerCard.cardName.replace(/\b\w/g, (l) => l.toUpperCase())}
+						{challengerCard.cardName?.replace(/\b\w/g, (l) =>
+							l.toUpperCase(),
+						) || "Unknown Card"}
 					</div>
 				</div>
 			)}

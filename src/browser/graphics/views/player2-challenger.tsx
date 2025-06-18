@@ -52,36 +52,15 @@ const App = () => {
 	const isPlayer1Challenger = challenger === "playerB";
 
 	// Get the current challenger card if one exists
-	const challengerCard = game?.challengerCards?.currentCard;
-	const hasCardForCurrentRound =
-		challengerCard && challengerCard.round === currentRound;
-
-	// Only render if player 1 is the challenger
+	// Only render if player 2 is the challenger
 	if (!isPlayer1Challenger) {
 		return <div></div>;
 	}
-
-	// Convert card name to CSS class name format if we have a card
-	const cardClassName = hasCardForCurrentRound
-		? challengerCard.cardName.toLowerCase().replace(/[^a-z0-9]/g, "")
-		: "";
 
 	return (
 		<div className='challenger-display'>
 			{/* Challenger Badge */}
 			<div className='challenger-badge-large'>CHALLENGER</div>
-
-			{/* Challenger Card (if drawn for current round) */}
-			{/* {hasCardForCurrentRound && (
-				<div className='challenger-card-container'>
-					<div
-						className={`challenger-card-display ${cardClassName}`}
-					/>
-					<div className='challenger-card-name'>
-						{challengerCard.cardName.replace(/\b\w/g, (l) => l.toUpperCase())}
-					</div>
-				</div>
-			)} */}
 		</div>
 	);
 };

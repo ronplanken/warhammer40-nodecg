@@ -111,9 +111,10 @@ const App = () => {
 		const challenger = determineChallenger(value);
 
 		// Update challenger history - ensure it's properly sized for all rounds
-		const challengerHistory = game?.challengerHistory
-			? [...game.challengerHistory] // Clone existing array to preserve data
-			: [null, null, null, null, null]; // Create new array only if none exists
+		const challengerHistory: Array<"playerA" | "playerB" | null> =
+			game?.challengerHistory
+				? [...game.challengerHistory] // Clone existing array to preserve data
+				: [null, null, null, null, null]; // Create new array only if none exists
 		challengerHistory[value] = challenger;
 
 		console.log(
@@ -134,7 +135,7 @@ const App = () => {
 			...game,
 			currentRound: value,
 			challenger: challenger,
-			challengerHistory: challengerHistory,
+			challengerHistory: challengerHistory as any,
 			challengerCards: {
 				...game?.challengerCards,
 				currentCard: existingCard, // Restore existing card or null if none
@@ -215,7 +216,7 @@ const App = () => {
 			...game,
 			currentRound: nextRound,
 			challenger: challenger,
-			challengerHistory: challengerHistory,
+			challengerHistory: challengerHistory as any,
 			cpGrantedForRounds: shouldGrantCP
 				? [...cpGrantedForRounds, nextRound]
 				: cpGrantedForRounds,
@@ -580,6 +581,7 @@ const App = () => {
 		if (
 			!currentChallenger ||
 			!challengerCards ||
+			!challengerCards.available ||
 			challengerCards.available.length === 0
 		) {
 			messageApi.open({
@@ -591,6 +593,13 @@ const App = () => {
 
 		// Pick a random card from available cards
 		const availableCards = challengerCards.available;
+		if (!availableCards) {
+			messageApi.open({
+				type: "error",
+				content: "No available cards found.",
+			});
+			return;
+		}
 		const randomIndex = Math.floor(Math.random() * availableCards.length);
 		const drawnCard = availableCards[randomIndex];
 
@@ -599,7 +608,7 @@ const App = () => {
 			(_, index) => index !== randomIndex,
 		);
 		const newUsed = [
-			...challengerCards.used,
+			...(challengerCards.used || []),
 			{
 				cardName: drawnCard,
 				round: currentRound,
@@ -675,7 +684,7 @@ const App = () => {
 					{/* Central Control Panel */}
 					<CentralControlPanel
 						currentRound={game?.currentRound || 0}
-						challenger={game?.challenger}
+						challenger={game?.challenger || null}
 						challengerCards={game?.challengerCards}
 						onGlobalRoundChange={updateGlobalRound}
 						onGlobalNextRound={updateGlobalNextRound}

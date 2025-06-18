@@ -126,6 +126,14 @@
 		"timerTargetTime": {
 			"type": ["string", "null"],
 			"description": "Target time for the countdown timer in 24-hour format (HH:MM), or null if not set."
+		},
+		"deployment": {
+			"type": "string",
+			"description": "The deployment type for the current game."
+		},
+		"mission": {
+			"type": "string",
+			"description": "The mission type for the current game."
 		}
 	}
 }

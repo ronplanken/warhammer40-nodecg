@@ -17,6 +17,9 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({className}) => {
 
 		const updateTimer = () => {
 			const now = new Date();
+			if (!game.timerTargetTime) {
+				return;
+			}
 			const [targetHours, targetMinutes] = game.timerTargetTime
 				.split(":")
 				.map(Number);

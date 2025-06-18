@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, List, Modal} from "antd";
+import {List, Modal} from "antd";
 import {fixedMissionOptions} from "./types";
 
 interface MissionModalProps {

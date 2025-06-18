@@ -21,8 +21,8 @@ export const ChallengerCardOverlay: React.FC<ChallengerCardOverlayProps> = ({
 
 	// Convert card name to CSS class name format
 	const cardClassName = challengerCard.cardName
-		.toLowerCase()
-		.replace(/[^a-z0-9]/g, "");
+		? challengerCard.cardName.toLowerCase().replace(/[^a-z0-9]/g, "")
+		: "";
 
 	return (
 		<Modal
@@ -54,7 +54,9 @@ export const ChallengerCardOverlay: React.FC<ChallengerCardOverlayProps> = ({
 							textAlign: "center",
 						}}
 					>
-						{challengerCard.cardName.replace(/\b\w/g, (l) => l.toUpperCase())}
+						{challengerCard.cardName?.replace(/\b\w/g, (l) =>
+							l.toUpperCase(),
+						) || "Unknown Card"}
 					</h2>
 				</Col>
 			</Row>

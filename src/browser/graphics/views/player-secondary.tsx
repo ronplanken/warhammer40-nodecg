@@ -20,11 +20,12 @@ const App = () => {
 		return <div className='vp'>No secondary specified</div>;
 	}
 	if (!round) {
-		round = game?.currentRound || 0;
+		round = (game?.currentRound || 0).toString();
 	}
 
 	const rounds = matchData?.[player]?.rounds || [];
-	const currentRoundData = rounds?.[round] || {};
+	const roundIndex = parseInt(round, 10);
+	const currentRoundData = rounds?.[roundIndex] || {};
 
 	return <div className='vp'>{currentRoundData?.[secondary] || "-"}</div>;
 };

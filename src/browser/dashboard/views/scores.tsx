@@ -55,13 +55,6 @@ const MatchControl = () => {
 
 	console.log(matchData);
 	// Specifieke update functies
-	const updateRollOffWinner = (value) => {
-		matchDataRep.value = {
-			...matchData,
-			game: {...matchData?.game, playerAWonRollOff: value},
-		};
-	};
-
 	const updateSecondaryType = (player, value) => {
 		matchDataRep.value = {
 			...matchData,
